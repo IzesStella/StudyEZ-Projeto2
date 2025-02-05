@@ -4,6 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+
+/*Relacionado à autenticação de API usando tokens, caso o sistema precise disso.*/
+
 return new class extends Migration
 {
     /**

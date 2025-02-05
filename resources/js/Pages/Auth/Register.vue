@@ -1,104 +1,98 @@
-<script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+<template>
+  <div class="flex h-screen">
+    <!-- Lado esquerdo -->
+    <div class="w-1/2 flex items-center justify-center bg-yellow-100">
+      <img src="/images/CorujaSEMFUNDO.png" alt="Coruja Acadêmica" class="w-96">
+    </div>
 
-const form = useForm({
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
-    terms: false,
-});
+    <!-- Lado direito -->
+    <div class="w-1/2 flex items-center justify-center bg-white p-10">
+      <div class="w-full max-w-md">
+        <h2 class="text-2xl font-bold text-center mb-6">Cadastre-se</h2>
 
-const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
-    });
+        <!-- Mensagens de erro -->
+        <div v-if="erros.length" class="mb-4 p-3 bg-red-100 text-red-600 rounded-lg">
+          <ul>
+            <li v-for="(erro, index) in erros" :key="index">{{ erro }}</li>
+          </ul>
+        </div>
+
+        <!-- Formulário -->
+        <form @submit.prevent="enviarFormulario" class="space-y-4">
+          <input type="text" v-model="formulario.nome" placeholder="Nome" class="campo-entrada">
+          <input type="email" v-model="formulario.email" placeholder="E-mail" class="campo-entrada">
+          <input type="password" v-model="formulario.senha" placeholder="Senha" class="campo-entrada">
+          <input type="password" v-model="formulario.confirmar_senha" placeholder="Confirmar senha" class="campo-entrada">
+          <div class="flex justify-center">
+            <button type="submit" class="botao-enviar">Entrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      formulario: {
+        nome: '',
+        email: '',
+        senha: '',
+        confirmar_senha: ''
+      },
+      erros: []
+    };
+  },
+  methods: {
+    enviarFormulario() {
+      if (this.formulario.senha !== this.formulario.confirmar_senha) {
+        this.erros = ["As senhas não correspondem"];
+        return;
+      }
+      this.$inertia.post('/register', this.formulario, {
+        onSuccess: () => {
+          console.log('Usuário cadastrado com sucesso!');
+          this.erros = [];
+        },
+        onError: (erros) => {
+          this.erros = Object.values(erros).flat();
+        }
+      });
+    }
+  }
 };
 </script>
 
-<template>
-    <GuestLayout>
-        <Head title="Register" />
+<style scoped>
+.campo-entrada {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  background-color: white;
+  transition: border-color 0.3s;
+}
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="name" value="Name" />
+.campo-entrada:focus {
+  border-color: #3b82f6;
+}
 
-                <TextInput
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
+.botao-enviar {
+  width: 70%;
+  background-color: #3b82f6;
+  color: white;
+  font-weight: bold;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  transition: background-color 0.3s;
+}
 
-                <InputError class="mt-2" :message="form.errors.name" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
-
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password_confirmation" />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <Link
-                    :href="route('login')"
-                    class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                >
-                    Already registered?
-                </Link>
-
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout>
-</template>
+.botao-enviar:hover {
+  background-color: #2563eb;
+}
+</style>

@@ -4,6 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+
+/* Armazena os dados dos mentorados (alunos sendo orientados).*/
+
 return new class extends Migration
 {
     /**

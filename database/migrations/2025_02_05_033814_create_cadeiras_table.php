@@ -4,6 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+
+/*  Guarda informações sobre as cadeiras (disciplinas).*/
+
 return new class extends Migration
 {
     /**
