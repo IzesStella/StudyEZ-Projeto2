@@ -4,6 +4,12 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+
+/*Serve para armazenar tokens temporários usados no processo de redefinição de senha. 
+Exemplo de uso:
+Quando o usuário esquece a senha, um token é gerado e enviado por e-mail.
+O token é verificado ao redefinir a senha.*/
+
 return new class extends Migration
 {
     /**
