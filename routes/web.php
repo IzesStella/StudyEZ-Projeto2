@@ -18,6 +18,9 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
+// 📌 Rota para deslogar
+Route::middleware('auth')->post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
 // 📌 Esqueci minha senha
 Route::get('/forgot-password', function () {
     return Inertia::render('Auth/ForgotPassword');
@@ -28,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
 
     // 📌 Perfil do usuário
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

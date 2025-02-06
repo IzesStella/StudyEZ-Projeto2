@@ -50,8 +50,18 @@
           };
         },
         methods: {
-          login() {
-            console.log("Tentando logar:", this.form);
+          login() { //metodo pra redirecionar pra dashboard dps do login.
+            
+            //console.log("Tentando logar:", this.form);
+            this.$inertia.post('/login', this.form, {
+              onSuccess: () => {
+                console.log('Usuário conseguiu logar!');
+                this.$inertia.visit('/dashboard');
+              },
+              onError: () => {
+                console.log('Erro!');
+              }
+            });
           }
         }
       };
