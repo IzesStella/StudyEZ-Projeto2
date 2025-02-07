@@ -11,18 +11,18 @@
         <h2 class="text-2xl font-bold text-center mb-6">Cadastre-se</h2>
 
         <!-- Mensagens de erro -->
-        <div v-if="erros.length" class="mb-4 p-3 bg-red-100 text-red-600 rounded-lg">
+        <div v-if="errors.length" class="mb-4 p-3 bg-red-100 text-red-600 rounded-lg">
           <ul>
-            <li v-for="(erro, index) in erros" :key="index">{{ erro }}</li>
+            <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
           </ul>
         </div>
 
         <!-- Formulário -->
-        <form @submit.prevent="enviarFormulario" class="space-y-4">
-          <input type="text" v-model="formulario.nome" placeholder="Nome" class="campo-entrada">
-          <input type="email" v-model="formulario.email" placeholder="E-mail" class="campo-entrada">
-          <input type="password" v-model="formulario.senha" placeholder="Senha" class="campo-entrada">
-          <input type="password" v-model="formulario.confirmar_senha" placeholder="Confirmar senha" class="campo-entrada">
+        <form @submit.prevent="sendForm" class="space-y-4">
+          <input type="text" v-model="form.name" placeholder="Nome" class="campo-entrada">
+          <input type="email" v-model="form.email" placeholder="E-mail" class="campo-entrada">
+          <input type="password" v-model="form.password" placeholder="Senha" class="campo-entrada">
+          <input type="password" v-model="form.password_confirmation" placeholder="Confirmar senha" class="campo-entrada">
           <div class="flex justify-center">
             <button type="submit" class="botao-enviar">Entrar</button>
           </div>
@@ -35,29 +35,29 @@
 <script>
 export default {
   data() {
-    return {
-      formulario: {
-        nome: '',
+    return {  //tive que colocar os nomes em ingles, no banco ta em ingles.
+      form: {
+        name: '',
         email: '',
-        senha: '',
-        confirmar_senha: ''
+        password: '',
+        password_confirmation: ''  
       },
-      erros: []
+      errors: []
     };
   },
   methods: {
-    enviarFormulario() {
-      if (this.formulario.senha !== this.formulario.confirmar_senha) {
-        this.erros = ["As senhas não correspondem"];
+    sendForm() {
+      if (this.form.password !== this.form.password_confirmation) {
+        this.errors = ["As senhas não correspondem"];
         return;
       }
-      this.$inertia.post('/register', this.formulario, {
+      this.$inertia.post('/register', this.form, {
         onSuccess: () => {
           console.log('Usuário cadastrado com sucesso!');
-          this.erros = [];
+          this.errors = [];
         },
-        onError: (erros) => {
-          this.erros = Object.values(erros).flat();
+        onError: (errors) => {
+          this.errors = Object.values(errors).flat();
         }
       });
     }
