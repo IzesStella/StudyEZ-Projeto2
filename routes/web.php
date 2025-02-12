@@ -38,3 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// 📌 Página Sobre Nós
+Route::get('/sobre', function () {
+    return Inertia::render('About'); // Renderiza o componente Vue About.vue
+})->name('about');
