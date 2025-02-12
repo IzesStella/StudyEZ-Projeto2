@@ -6,6 +6,8 @@
     </div>
 
     <!-- Lado direito -->
+
+
     <div class="w-1/2 flex items-center justify-center bg-white p-10">
       <div class="w-full max-w-md">
         <h2 class="text-2xl font-bold text-center mb-6">Cadastre-se</h2>
@@ -24,7 +26,7 @@
           <input type="password" v-model="form.password" placeholder="Senha" class="campo-entrada">
           <input type="password" v-model="form.password_confirmation" placeholder="Confirmar senha" class="campo-entrada">
           <div class="flex justify-center">
-            <button type="submit" class="botao-enviar">Entrar</button>
+            <button type="submit" class="botao-enviar">Registar</button>
           </div>
         </form>
       </div>
@@ -47,22 +49,28 @@ export default {
   },
   methods: {
     sendForm() {
-      if (this.form.password !== this.form.password_confirmation) {
-        this.errors = ["As senhas não correspondem"];
-        return;
-      }
-      this.$inertia.post('/register', this.form, {
-        onSuccess: () => {
-          console.log('Usuário cadastrado com sucesso!');
-          this.errors = [];
-        },
-        onError: (errors) => {
-          this.errors = Object.values(errors).flat();
-        }
-      });
+  if (this.form.password !== this.form.password_confirmation) {
+    this.errors = { password: ['As senhas não correspondem.'] };
+    return;
+  }
+
+  this.errors = {}; // Limpa erros antes de enviar
+
+  this.$inertia.post('/register', this.form, {
+    onSuccess: () => {
+      console.log('Usuário cadastrado com sucesso!');
+      this.$inertia.visit(route('login'));
+    },
+
+    onError: (errors) => {
+      console.log(errors);
+      this.errors = errors;
     }
+  });
+}
   }
 };
+
 </script>
 
 <style scoped>

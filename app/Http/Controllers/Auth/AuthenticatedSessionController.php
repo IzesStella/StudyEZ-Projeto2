@@ -29,11 +29,16 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate(); // Executa a validação de login
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
 
-        $request->session()->regenerate();
+        if (Auth::attempt($credentials)) {
+            return redirect()->route('dashboard');
+        }
 
-        return redirect()->route('dashboard'); // ✅ Redireciona para o Dashboard.vue
+        return back()->withErrors(['email' => 'Credenciais inválidas']);
     }
 
     /**
@@ -41,11 +46,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/'); // ✅ Redireciona para a tela inicial
+        Auth::logout();
+        return redirect('/');; // ✅ Redireciona para a tela inicial
     }
 }
