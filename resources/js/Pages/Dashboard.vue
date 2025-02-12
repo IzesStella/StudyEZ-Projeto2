@@ -4,24 +4,32 @@
     <div class="sidebar">
         <img src="/images/zizi.png" alt="StudyEZ Logo" class="logo small-logo" />
         <nav>
-        <button class="nav-button home-button">🏠</button>
-        <button class="nav-button grid-button">➕</button>
+          <button class="nav-button">
+          <font-awesome-icon icon="home" style="color: #CE9E10;" />
+        </button>
+        <button class="nav-button" style="color: #3885A7;">
+          <font-awesome-icon icon="plus" />
+        </button>
         </nav>
+
         <div class="profile-section" @click="goToProfile">
         <img src="/images/profile-icon.png" alt="User Profile" class="profile-icon" />
         </div>
-    </div>
+        
+      </div>
 
     <!-- Main Content -->
     <div class="main-content">
         <h1>Olá! O que você deseja aprender hoje?</h1>
 
         <!-- Center Card -->
-    <!-- <div class="center-card">
-        <p>Parece que você ainda não está inscrito em nenhuma disciplina.</p>
-        <p>Explore as disciplinas disponíveis!</p>
-        <button class="btn explore-button">Explorar</button>
-    </div> -->
+    <div class = "aside">    
+    <!-- Center Card (ao lado da Sidebar) -->
+         <div class="center-card">
+            <p>Parece que você ainda não está inscrito em nenhuma disciplina.</p>
+            <p>Explore as disciplinas disponíveis!</p>
+            <button class="btn explore-button">Explorar</button>
+        </div>
 
         <!-- Planner Section -->
         <div class="planner-section">
@@ -45,6 +53,7 @@
         </div>
         </div>
     </div>
+    </div> 
     </div>
 </template>
 
@@ -100,32 +109,39 @@ export default {
     border-radius: 12px;
     position: fixed;
     height: calc(100% - 30px);
-}
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  }
 
-.small-logo {
+  .small-logo {
     width: 80px;
-}
+  }
 
-.nav {
+  nav {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100%;
-}
+  }
 
-.nav-button {
-    background: none;
+  .nav-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: #ffffff;
     border: none;
-    font-size: 24px;
+    border-radius: 50%;
+    font-size: 1.5rem;
     cursor: pointer;
-    margin: 15px 0;
-    color: #555;
-}
+    margin-bottom: 10px;
+    transition: all 0.2s ease-in-out;
+  }
 
-.nav-button:hover {
+  .nav-button:hover {
     color: #000;
-}
+  }
 
 .profile-section {
     margin-top: auto;
@@ -158,27 +174,39 @@ h1 {
     font-weight: bold;
 }
 
-/*
-.center-card {
-    background-color: #d9f8ff;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    width: 60%;
-    margin: 0 auto;
-} 
-    */
+.aside{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%; /* Ocupará todo o espaço disponível */
+    justify-content: space-between; /* Mantém espaçamento adequado */
+}
 
+/* Center Card */
+.center-card {
+    background-color: #BAE8FF;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: justify;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    height: fit-content;
+    margin-left: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items:  flex-end;
+}
 
 .center-card p {
     font-size: 16px;
+    text-align: justify; /* Justifica o texto */
     margin: 10px 0;
+    width: 100%; /* Garante que ocupe toda a largura do card */
 }
 
 .explore-button {
-    background-color: #007bff;
-    color: #fff;
+    background-color: #FFFFFF;
+    color: #0a60e0;
     border: none;
     padding: 10px 20px;
     border-radius: 8px;
@@ -192,15 +220,16 @@ h1 {
 .planner-section {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start; /* Alinha à esquerda */
     gap: 20px;
-    margin-top: 20px;
+    width: 100%; /* Garante que ocupe todo o espaço disponível */
+    max-width: 600px; /* Ajuste conforme necessário */
 }
 
 .planner-right {
-    width: 40%;
+    width: 100%; /* Faz o planner ocupar todo o espaço disponível */
+    min-width: 500px; /* Evita que fique muito pequeno */
 }
-
 .calendar {
     background-color: #fdf5cc;
     padding: 20px;
