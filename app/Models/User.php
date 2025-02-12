@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,35 +9,35 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    protected $fillable = ['name', 'email', 'password'];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    // Relacionamento com cursos (muitos para muitos)
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'users_courses');
+    }
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    // Relacionamento com perguntas no fórum
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    // Relacionamento com respostas no fórum
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
+
+    // Relacionamento com comentários
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    // Relacionamento com anotações (planner)
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
 }

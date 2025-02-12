@@ -21,12 +21,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->timestamps();
+            $table->id(); // ID do usuário.
+            $table->string('name'); // Nome do usuário
+            $table->string('email')->unique(); // Email do usuário, deve ser único no banco de dados
+            $table->timestamp('email_verified_at')->nullable(); // Data e hora em que o email foi verificado, pode ser nulo
+            $table->string('password'); // Senha do usuário (armazenada de forma segura, geralmente com hash)
+            $table->timestamps(); // Campos automáticos: 'created_at' (data de criação) e 'updated_at' (data de última atualização)
+
         });
     }
 
