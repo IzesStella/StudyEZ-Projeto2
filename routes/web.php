@@ -40,6 +40,6 @@ Route::middleware('auth')->group(function () {
 });
 
 // 📌 Página Sobre Nós
-Route::get('/sobre', function () {
-    return Inertia::render('About'); // Renderiza o componente Vue About.vue
+Route::get('/about', function () {
+    return Inertia::render('About');
 })->name('about');
