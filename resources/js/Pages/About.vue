@@ -27,14 +27,14 @@
   
       <section class="about-content">
         <div class="mission">
-          <h2>Nosso Propósito</h2>
+          <h2>NOSSO PROPÓSITO</h2>
           <p>
             O site busca transformar a experiência acadêmica, facilitando o aprendizado por meio da conexão entre alunos e monitores em um ambiente colaborativo e organizado.
           </p>
         </div>
   
         <div class="vision">
-          <h2>Nossa Personalidade</h2>
+          <h2>NOSSA PERSONALIDADE</h2>
           <p>
             Valorizamos a troca de conhecimento e a construção de uma comunidade onde todos possam aprender e ensinar, tornando o estudo mais dinâmico e eficiente.
           </p>
@@ -42,34 +42,67 @@
       </section>
   
       <section class="developers">
-        <h2>Desenvolvedores</h2>
-        <div class="dev-list">
-          <div class="dev-card" v-for="dev in developers" :key="dev.name">
-            <img :src="dev.image" :alt="dev.name" />
-            <h3>{{ dev.name }}</h3>
-          </div>
-        </div>
-      </section>
+  <h2>Desenvolvedores</h2>
+  <div class="dev-list">
+    <div class="dev-card">
+      <img src="/images/github-logo.png" alt="GitHub" class="github-logo" />
+      <div>
+        <h3>Isabelly Arruda</h3>
+        <a href="https://github.com/IsabellyArrudaa" target="_blank">IsabellyArrudaa</a>
+      </div>
+    </div>
+
+    <div class="dev-card">
+      <img src="/images/github-logo.png" alt="GitHub" class="github-logo" />
+      <div>
+        <h3>Izes Stella</h3>
+        <a href="https://github.com/IzesStella" target="_blank">IzesStella</a>
+      </div>
+    </div>
+
+    <div class="dev-card">
+      <img src="/images/github-logo.png" alt="GitHub" class="github-logo" />
+      <div>
+        <h3>José Vinícius</h3>
+        <a href="https://github.com/Vinnijds" target="_blank">Vinnijds</a>
+      </div>
+    </div>
+
+    <div class="dev-card">
+      <img src="/images/github-logo.png" alt="GitHub" class="github-logo" />
+      <div>
+        <h3>Lucas Souza</h3>
+        <a href="https://github.com/lucazle" target="_blank">lucazle</a>
+      </div>
+    </div>
+
+    <div class="dev-card">
+      <img src="/images/github-logo.png" alt="GitHub" class="github-logo" />
+      <div>
+        <h3>Marcos Antônio</h3>
+        <a href="https://github.com/M4rk1n02" target="_blank">M4rk1n02</a>
+      </div>
+    </div>
+
+    <div class="dev-card">
+      <img src="/images/github-logo.png" alt="GitHub" class="github-logo" />
+      <div>
+        <h3>Mariana Tavares</h3>
+        <a href="https://github.com/marianantavares" target="_blank">marianantavares</a>
+      </div>
+    </div>
+
+    <div class="dev-card">
+      <img src="/images/github-logo.png" alt="GitHub" class="github-logo" />
+      <div>
+        <h3>Talita Vitória</h3>
+        <a href="https://github.com/Talitavit" target="_blank">Talitavit</a>
+      </div>
+    </div>
+  </div>
+     </section>
     </div>
 </template>
-  
-<script>
-export default {
-  data() {
-    return {
-      developers: [
-        { name: "Isabelly Arruda", image: "/images/isabelly.png" },
-        { name: "Izes Stella", image: "/images/izes.png" },
-        { name: "José Vinícius", image: "/images/jose.png" },
-        { name: "Lucas Souza", image: "/images/lucas.png" },
-        { name: "Marcos Antônio", image: "/images/marcos.png" },
-        { name: "Mariana Tavares", image: "/images/mariana.png" },
-        { name: "Talita Vitória", image: "/images/talita.png" },
-      ],
-    };
-  },
-};
-</script>
   
 <style scoped>
 
@@ -154,8 +187,9 @@ nav {
   max-width: 900px;
 }
 
+/* 📌 Botão */
 .register-button {
-  background-color: #c1e1ff; /* Azul claro */
+  background-color: #c1e1ff;
   color: rgb(0, 0, 0);
   font-size: 15px;
   font-weight: bold;
@@ -164,7 +198,7 @@ nav {
   border-radius: 15px;
   cursor: pointer;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-  margin-top: 30px;
+  margin-top: 5%;
 }
 
 /* 📌 Seção de Missão e Visão */
@@ -173,7 +207,7 @@ nav {
   justify-content: center;
   gap: 40px;
   margin: 40px 0;
-   gap: 60px; /* Aumenta o espaço entre os blocos */
+  gap: 60px;
   margin: 60px 0;
 }
 
@@ -183,7 +217,7 @@ nav {
   border-radius: 10px;
   width: 40%;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
-  border: 1px solid #305B7B;
+  border: 2px solid #305B7B;
   width: 40%;
 }
 
@@ -193,45 +227,153 @@ nav {
 }
 
 h2 {
-  color: #305B7B; 
+  color: #000000; 
   font-weight: bold; 
 }
 
 /* 📌 Seção dos Desenvolvedores */
-.developers {
-  margin-top: 50px; /* Reduzindo o espaço acima */
+.developers h2{
   text-align: center;
-  font-size: 18px; /* Diminuindo o tamanho do título */
+  font-size: 25px;
+  color: #305B7B; 
 }
 
 .dev-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px; /* Reduzindo o espaço entre os cards */
-  max-width: 500px; /* Diminuindo a largura */
-  margin: auto;
-  font-size: 10px;
+  gap: 20px;
+  color: #000000;
+  margin-top: 10px;
 }
 
 .dev-card {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  width: 80px; /* Reduzindo o tamanho do card */
-  text-align: center;
+  gap: 10px;
+  text-align: left;
+  font-size: 14px;
+  
 }
 
-.dev-card img {
-  width: 40px; /* Diminuindo a imagem */
-  height: 40px;
-  border-radius: 50%;
+.github-logo {
+  width: 35px;
+  height: 35px;
 }
 
-.dev-card h3 {
-  font-size: 8px; /* Diminuindo o tamanho da fonte */
-  margin-top: 3px; /* Reduzindo o espaçamento */
+a {
+  text-decoration: none;
+  color: #000000;
+  font-size: 10px;
 }
 
+a:hover {
+  text-decoration: underline;
+}
+
+/* 📌 Responsividade */
+@media (max-width: 1024px) {
+  .about-container {
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .about-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .mission, .vision {
+    width: 100%;
+  }
+
+  .sidebar {
+    width: 80px;
+    padding: 10px 0;
+  }
+
+  .small-logo {
+    width: 60px;
+  }
+
+  .nav-button {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 60px;
+    padding: 5px 0;
+  }
+
+  .small-logo {
+    width: 50px;
+  }
+
+  .nav-button {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+
+  .about-container {
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  .header h1 {
+    font-size: 20px;
+  }
+
+  .header p {
+    font-size: 14px;
+  }
+
+  .register-button {
+    font-size: 13px;
+    padding: 12px 20px;
+  }
+
+  .dev-list {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .dev-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    display: none; /* Esconde completamente a barra lateral não esta funcionando (?)*/
+  }
+
+  .about-container {
+    padding: 10px;
+  }
+
+  .header h1 {
+    font-size: 18px;
+  }
+
+  .header p {
+    font-size: 12px;
+  }
+
+  .register-button {
+    font-size: 12px;
+    padding: 10px 16px;
+  }
+
+  .developers h2 {
+    font-size: 20px;
+  }
+}
 
 </style>
