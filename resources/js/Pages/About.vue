@@ -22,7 +22,7 @@
         aprendizado acessível e colaborativo.</p>
 
         <!-- Botão de cadastro -->
-  <button class="register-button">CADASTRE-SE</button>
+  <button @click="goToRegister" class="register-button">CADASTRE-SE</button>
       </header>
   
       <section class="about-content">
@@ -103,6 +103,20 @@
      </section>
     </div>
 </template>
+
+<script>
+
+  import { router } from '@inertiajs/vue3';
+
+  export default {
+    name: 'About',
+    methods: {
+      goToRegister() {
+        router.get('/register');
+      }
+    }
+  };
+</script>
   
 <style scoped>
 
@@ -164,7 +178,6 @@ nav {
   background: url('/images/zizi-opacidade.png') no-repeat center center;
   background-size: contain; 
   background-position: center;
-  background-attachment: fixed; 
   color: #333;
   max-width: 1000px;
   margin: auto;
