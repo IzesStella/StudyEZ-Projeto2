@@ -53,7 +53,7 @@ class AuthController extends Controller
         }
     
         return back()->withErrors(['email' => 'Credenciais inválidas.']);
-
+    }
     public function logout()
     {
         Auth::logout();

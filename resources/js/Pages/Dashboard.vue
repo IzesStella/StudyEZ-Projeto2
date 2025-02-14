@@ -58,6 +58,9 @@
 </template>
 
 <script>
+
+import { router } from '@inertiajs/vue3';
+
 export default {
     data() {
     return {
@@ -79,8 +82,7 @@ export default {
         }
     },
     goToProfile() {
-        
-        alert('Indo para o perfil...');
+        router.get('/profile');
     }
     }
 };
