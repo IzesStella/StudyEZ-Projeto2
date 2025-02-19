@@ -45,6 +45,10 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
+     // 📌 Nova Rota para a Tela de Pesquisa (SearchScreen)
+     Route::middleware(['auth'])->get('/search', function () {
+        return Inertia::render('SearchScreen');
+    })->name('search');
 
     // 📌 Perfil do usuário
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
