@@ -7,7 +7,7 @@
               <button class="nav-button">
               <font-awesome-icon icon="home" style="color: #CE9E10;" />
             </button>
-            <button class="nav-button" style="color: #3885A7;">
+            <button class="nav-button" style="color: #3885A7;" @click="goToSearch">
               <font-awesome-icon icon="plus" />
             </button>
             </nav>
@@ -43,21 +43,24 @@
 </template>
     
 <script>
-    
-    import { router } from '@inertiajs/vue3';
-    import Calendar from '@/Components/Calendar.vue';
-    
-    export default {
-        methods: {
+import { router } from '@inertiajs/vue3';
+import Calendar from '@/Components/Calendar.vue';
+
+export default {
+    methods: {
         goToProfile() {
             router.get('/profile');
+        },
+        goToSearch() {
+            router.get('/search');
         }
-        },
-        components: {
-            Calendar
-        },
-    };
+    },
+    components: {
+        Calendar
+    },
+};
 </script>
+
     
 <style scoped>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
