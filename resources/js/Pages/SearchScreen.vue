@@ -1,5 +1,5 @@
     <template>
-        <div class="searchscreen-container">
+        <div class="prelogin-container">
         <!-- Sidebar -->
         <div class="sidebar">
             <img src="/images/zizi.png" alt="StudyEZ Logo" class="logo small-logo" />
@@ -70,7 +70,7 @@
     </template>
 
     <script>
-    import { router } from '@inertiajs/vue3';
+    import { router, usePage } from '@inertiajs/vue3';
     import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
     export default {

@@ -52,7 +52,7 @@ export default {
             router.get('/profile');
         },
         goToSearch() {
-            router.get('/search');
+        this.$inertia.get('/search');
         }
     },
     components: {

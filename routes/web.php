@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
      // 📌 Nova Rota para a Tela de Pesquisa (SearchScreen)
-     Route::get('/search', function () {
+     Route::middleware(['auth'])->get('/search', function () {
         return Inertia::render('SearchScreen');
     })->name('search');
 
