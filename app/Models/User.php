@@ -6,16 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
     protected $fillable = ['name', 'email', 'password'];
 
     // Relacionamento com cursos (muitos para muitos)
-    public function courses()
-    {
-        return $this->belongsToMany(Course::class, 'users_courses');
-    }
+    public function courses(): BelongsToMany
+{
+    return $this->belongsToMany(Course::class, 'users_courses');
+}
 
     // Relacionamento com perguntas no fórum
     public function questions()
