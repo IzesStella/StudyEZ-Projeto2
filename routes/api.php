@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/notes', [NoteController::class, 'saveNote']);
+    Route::get('/notes', [NoteController::class, 'getNotes']);
+    Route::get('/notes/{date}', [NoteController::class, 'show']);
+});

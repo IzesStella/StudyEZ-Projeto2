@@ -13,16 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('notes', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('users_id')->constrained('users')->onDelete('cascade');
-            $table->integer('day');
-            $table->integer('month');
-            $table->integer('year');
-            $table->text('content')->nullable();
-            $table->timestamps();
-        });
+    Schema::create('notes', function (Blueprint $table) {
+        $table->id();
+        $table->date('date');
+        $table->text('content');
+        $table->timestamps();
+    });
     }
+
 
     /**
      * Reverse the migrations.

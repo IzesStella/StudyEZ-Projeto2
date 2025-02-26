@@ -15,7 +15,7 @@ class User extends Authenticatable
     // Relacionamento com cursos (muitos para muitos)
     public function courses(): BelongsToMany
 {
-    return $this->belongsToMany(Course::class, 'users_courses');
+        return $this->belongsToMany(Course::class, 'course_user', 'user_id', 'course_id');
 }
 
     // Relacionamento com perguntas no fórum

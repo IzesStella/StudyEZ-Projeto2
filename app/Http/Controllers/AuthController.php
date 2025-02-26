@@ -11,10 +11,8 @@ use App\Models\Note;
 
 class AuthController extends Controller
 {
-    // Método de registro
     public function register(Request $request)
     {
-        // Validação dos dados do usuário
         try {
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
@@ -28,17 +26,13 @@ class AuthController extends Controller
                 'password' => bcrypt($validatedData['password']),
             ]);
     
-            // Redireciona para a página de login após o registro
-            return Inertia::location('/login'); // Altere para a rota correta da sua página de login
+            return Inertia::location('/login'); 
         } catch (\Exception $e) {
-            // Log the error
             \Log::error($e->getMessage());
-    
             return response()->json(['error' => 'Erro ao registrar usuário.'], 500);
         }
     }
 
-    // Método de login
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -48,7 +42,7 @@ class AuthController extends Controller
     
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = $user->createToken('YourAppName')->plainTextToken(); // Gera o token
+            $token = $user->createToken('YourAppName')->plainTextToken();
             return response()->json(['token' => $token]);
         }
     
@@ -85,7 +79,21 @@ public function getNotes()
     $notes = Note::where('user_id', Auth::id())->get();
     return response()->json($notes);
 }
-    
+
+    public function checkEnrollment()
+{
+    if (!Auth::check()) {
+        return response()->json(['status' => 'guest']);
+    }
+
+    $user = Auth::user();
+    $isEnrolled = $user->courses()->exists();
+
+    return response()->json([
+        'status' => $isEnrolled ? 'enrolled' : 'not_enrolled'
+    ]);
+}
+
 }
 
 

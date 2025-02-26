@@ -8,7 +8,6 @@ use Inertia\Inertia;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
 
-
 // 📌 Página inicial ANTES do login (Prelogin.vue)
 Route::get('/', function () {
     return Inertia::render('Prelogin'); // Mantendo a página inicial antes do login
@@ -29,16 +28,9 @@ Route::post('Auth/login', [AuthController::class, 'login']);
 Route::middleware('auth')->post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 // 📌 Esqueci minha senha
-    Route::get('/forgot-password', function () {
+Route::get('/forgot-password', function () {
     return Inertia::render('Auth/ForgotPassword');
 })->name('password.request');
- 
-
-// 📌 Rota para salvar e obter notas
-    Route::middleware('auth:api')->group(function() {
-    Route::post('/notes', [AuthController::class, 'saveNote']); // Para salvar a nota
-    Route::get('/notes', [AuthController::class, 'getNotes']);  // Para pegar as notas
-});
 
 // 📌 Rotas protegidas (somente usuários autenticados podem acessar)
 Route::middleware('auth')->group(function () {
@@ -46,8 +38,8 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-     // 📌 Nova Rota para a Tela de Pesquisa (SearchScreen)
-     Route::middleware(['auth'])->get('/search', function () {
+    // 📌 Nova Rota para a Tela de Pesquisa (SearchScreen)
+    Route::middleware(['auth'])->get('/search', function () {
         return Inertia::render('SearchScreen');
     })->name('search');
 
@@ -55,6 +47,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // 📌 Verificação de inscrição em cursos
+    Route::middleware('auth:sanctum')->get('/user/enrollment', [AuthController::class, 'checkEnrollment']);
 });
 
 // 📌 Página Sobre Nós
@@ -62,6 +57,6 @@ Route::get('/about', function () {
     return Inertia::render('About');
 })->name('about');
 
-//Rota para ver todos cursos e um curso especifico
+// 📌 Rotas para ver todos cursos e um curso específico
 Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/courses/{id}', [CourseController::class, 'show']);

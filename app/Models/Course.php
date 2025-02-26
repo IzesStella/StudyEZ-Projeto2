@@ -12,7 +12,7 @@ class Course extends Model
     // Relacionamento com usuários (muitos para muitos)
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'users_courses');
+        return $this->belongsToMany(User::class, 'course_user', 'course_id', 'user_id');
     }
 
     // Relacionamento com perguntas no fórum
