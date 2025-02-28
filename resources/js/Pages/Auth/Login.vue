@@ -64,18 +64,18 @@ export default {
     },
     methods: {
         async login() {
-            console.log("Tentando logar...");
-            this.$inertia.post("/login", this.form, {
-                onSuccess: () => {
-                    console.log("Login bem-sucedido!");
-                    this.$inertia.visit("/dashboard");
-                },
-                onError: () => {
-                    console.log("Erro no login");
-                },
-            });
-        },
+      console.log("Tentando logar...");
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/api/login', this.form);
+        localStorage.setItem('token', response.data.token);
+
+        console.log("Login bem-sucedido!");
+        this.$inertia.visit("/dashboard");
+      } catch (error) {
+        console.log("Erro no login", error.response.data);
+      }
     },
+  },
 };
 </script>
 

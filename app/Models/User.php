@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
+
+    use HasApiTokens, Notifiable;
+
     protected $fillable = ['name', 'email', 'password'];
 
     // Relacionamento com cursos (muitos para muitos)

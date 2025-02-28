@@ -42,8 +42,8 @@ class AuthController extends Controller
     
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = $user->createToken('YourAppName')->plainTextToken();
-            return response()->json(['token' => $token]);
+            $token = $user->createToken('ZiZiToken');
+            return response()->json(['token' => $token->plainTextToken]);
         }
     
         return back()->withErrors(['email' => 'Credenciais inválidas.']);
