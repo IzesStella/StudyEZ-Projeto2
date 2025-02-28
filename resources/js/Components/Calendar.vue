@@ -1,8 +1,8 @@
 <template>
   <div class="calendar">
     <Calendar expanded @dayclick="selectDay" />
-    <div v-if="selectedDay" class="notes">
-      <h3>Anotações para {{ selectedDay }}:</h3>
+    <div class="notes">
+      <h3>Anotações para: {{ selectedDay }}</h3>
       <textarea v-model="notes[selectedDay]" placeholder="Adicione suas anotações aqui..."></textarea>
       <div class="notes-actions">
         <button class="btn save-button" @click="saveNotes">Salvar</button>
@@ -42,27 +42,27 @@ export default {
         const response = await apiClient.get(`/notes/${this.selectedDay}`);
         this.notes[this.selectedDay] = response.data ? response.data.content : '';
       } catch (error) {
-        console.error('Erro ao carregar anotações:', error);
+        console.error('Erro ao carregar anotações:', error.response.data);
       }
     },
     async saveNotes() {
-  try {
-    console.log('Enviando dados:', {
-      date: this.selectedDay,
-      content: this.notes[this.selectedDay],
-    });
+      try {
+        console.log('Enviando dados:', {
+          date: this.selectedDay,
+          content: this.notes[this.selectedDay],
+        });
 
-    const response = await apiClient.post('/notes', {
-      date: this.selectedDay,
-      content: this.notes[this.selectedDay],
-    });
+        const response = await apiClient.post('/notes', {
+          date: this.selectedDay,
+          content: this.notes[this.selectedDay],
+        });
 
-    console.log('Resposta do backend:', response.data);
-    alert('Anotações salvas com sucesso!');
-  } catch (error) {
-    console.error('Erro ao salvar anotações:', error);
-  }
-},
+        console.log('Resposta do backend:', response.data);
+        alert('Anotações salvas com sucesso!');
+      } catch (error) {
+        console.error('Erro ao salvar anotações:', error.response.data);
+      }
+    },
     clearNotes() {
       if (this.selectedDay) {
         this.notes[this.selectedDay] = '';

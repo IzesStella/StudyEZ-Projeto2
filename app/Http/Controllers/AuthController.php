@@ -50,6 +50,9 @@ class AuthController extends Controller
     }
     public function logout()
     {
+        $request->user()->tokens->each(function ($token) {
+            $token->delete(); 
+        });
         Auth::logout();
         return redirect('/');
     }

@@ -49,25 +49,25 @@ export default {
   },
   methods: {
     sendForm() {
-  if (this.form.password !== this.form.password_confirmation) {
-    this.errors = { password: ['As senhas não correspondem.'] };
-    return;
-  }
+      if (this.form.password !== this.form.password_confirmation) {
+        this.errors = { password: ['As senhas não correspondem.'] };
+        return;
+      }
 
-  this.errors = {}; // Limpa erros antes de enviar
+      this.errors = {}; // Limpa erros antes de enviar
 
-  this.$inertia.post('/register', this.form, {
-    onSuccess: () => {
-      console.log('Usuário cadastrado com sucesso!');
-      this.$inertia.visit(route('login'));
-    },
+      this.$inertia.post('/register', this.form, {
+        onSuccess: () => {
+          console.log('Usuário cadastrado com sucesso!');
+          this.$inertia.visit(route('login'));
+        },
 
-    onError: (errors) => {
-      console.log(errors);
-      this.errors = errors;
+        onError: (errors) => {
+          console.log(errors);
+          this.errors = errors;
+        }
+      });
     }
-  });
-}
   }
 };
 
