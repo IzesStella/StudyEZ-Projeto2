@@ -1,31 +1,14 @@
 <template>
   <div class="searchscreen-container">
     <!-- Sidebar -->
-    <div class="sidebar">
-      <img src="/images/zizi.png" alt="StudyEZ Logo" class="logo small-logo" />
-      <nav>
-        <button class="nav-button" @click="goToHome">
-          <font-awesome-icon icon="home" style="color: #ce9e10" />
-        </button>
-        <button class="nav-button" style="color: #3885a7" @click="goToSearch">
-          <font-awesome-icon icon="plus" />
-        </button>
-      </nav>
-      <div class="profile-section" @click="goToProfile">
-        <img
-          src="/images/profile-icon.png"
-          alt="User Profile"
-          class="profile-icon"
-        />
-      </div>
-    </div>
-
+    <SideBar />
     <!-- Main Content -->
     <div class="main-content">
       <!-- Top Bar with Search -->
       <div class="top-bar">
         <input
           type="text"
+          v-model="searchQuery"
           placeholder="Pesquisar novas comunidades..."
           class="search-bar"
         />
@@ -36,7 +19,7 @@
         <h2>Conheça novas disciplinas:</h2>
         <div class="disciplinas-grid">
           <div
-            v-for="disciplina in disciplinas"
+            v-for="disciplina in filteredDisciplinas"
             :key="disciplina.nome"
             class="disciplina-card"
             :style="{ backgroundColor: disciplina.cor }"
@@ -63,15 +46,16 @@
 
 <script>
 import { router } from '@inertiajs/vue3';
-
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
+import SideBar from '../Components/SideBar.vue';
 export default {
   components: {
     FontAwesomeIcon,
+    SideBar,
   },
   data() {
     return {
+      searchQuery: '',
       disciplinas: [
         {
           nome: 'Lógica de Programação',
@@ -121,6 +105,21 @@ export default {
     },
     goToCommunity() {
       router.get('/community');
+    },
+  },
+  computed: {
+    filteredDisciplinas() {
+      if (!this.searchQuery) {
+        return this.disciplinas;
+      }
+
+      const query = this.searchQuery.toLowerCase();
+      return this.disciplinas.filter((disciplina) => {
+        return (
+          disciplina.nome.toLowerCase().includes(query) ||
+          disciplina.descricao.toLowerCase().includes(query)
+        );
+      });
     },
   },
 };
