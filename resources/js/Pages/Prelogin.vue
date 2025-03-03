@@ -1,154 +1,157 @@
 <template>
-  <div class="prelogin-container">
-    <!-- Sidebar -->
+  <MainLayout>
+    <div class="prelogin-container">
+      <!-- Sidebar -->
 
-    <SideBar />
-
-    <div class="main-content">
-      <!-- Top Bar -->
-      <div class="top-bar">
-        <div class="auth-options">
-          <p>Não tem uma conta ainda?</p>
-          <button @click="goToRegister" class="btn secondary">
-            CADASTRE-SE
-          </button>
+      <div class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+          <div class="auth-options">
+            <p>Não tem uma conta ainda?</p>
+            <button @click="goToRegister" class="btn secondary">
+              CADASTRE-SE
+            </button>
+          </div>
+          <div class="auth-options">
+            <p>Já é cadastrado?</p>
+            <button @click="goToLogin" class="btn primary">ENTRAR</button>
+          </div>
         </div>
-        <div class="auth-options">
-          <p>Já é cadastrado?</p>
-          <button @click="goToLogin" class="btn primary">ENTRAR</button>
+
+        <!-- Banner -->
+        <div class="banner">
+          <img
+            src="/images/bannercoruja.jpg"
+            alt="Banner StudyEZ"
+            class="banner-image"
+          />
         </div>
-      </div>
 
-      <!-- Banner -->
-      <div class="banner">
-        <img
-          src="/images/bannercoruja.jpg"
-          alt="Banner StudyEZ"
-          class="banner-image"
-        />
-      </div>
-
-      <section class="comunidades">
-        <h2>NOSSAS COMUNIDADES</h2>
-        <div class="comunidades-grid">
-          <div
-            class="comunidade-card logica de peogramação"
-            style="background-color: #dabee9"
-          >
-            <div class="comunidade-header">
-              <img src="logica.jpg" class="perfil-img" />
-              <h3>Lógica de Programação</h3>
+        <section class="comunidades">
+          <h2>NOSSAS COMUNIDADES</h2>
+          <div class="comunidades-grid">
+            <div
+              class="comunidade-card logica de peogramação"
+              style="background-color: #dabee9"
+            >
+              <div class="comunidade-header">
+                <img src="logica.jpg" class="perfil-img" />
+                <h3>Lógica de Programação</h3>
+              </div>
+              <p>
+                Essa comunidade foca em conceitos básicos e avançados de lógica
+                de programação.
+              </p>
+              <button class="btn join-button">UNIR-SE</button>
             </div>
+
+            <div
+              class="comunidade-card desenvolvimento-web"
+              style="background-color: #b0d4f2"
+            >
+              <div class="comunidade-header">
+                <img src="web.jpg" class="perfil-img" />
+                <h3>Desenvolvimento Web</h3>
+              </div>
+              <p>Aprenda sobre criação de sites e aplicações modernas.</p>
+              <button class="btn join-button">UNIR-SE</button>
+            </div>
+
+            <div
+              class="comunidade-card banco-dados"
+              style="background-color: #dabee9"
+            >
+              <div class="comunidade-header">
+                <img src="banco.jpg" class="perfil-img" />
+                <h3>Banco de Dados</h3>
+              </div>
+              <p>Explore conceitos de modelagem e gerenciamento de dados.</p>
+              <button class="btn join-button">UNIR-SE</button>
+            </div>
+
+            <div
+              class="comunidade-card inteligencia-artificial"
+              style="background-color: #e5e17f"
+            >
+              <div class="comunidade-header">
+                <img src="ia.jpg" class="perfil-img" />
+                <h3>Inteligência Artificial</h3>
+              </div>
+              <p>Descubra técnicas de machine learning e redes neurais.</p>
+              <button class="btn join-button">UNIR-SE</button>
+            </div>
+
+            <div
+              class="comunidade-card redes-computadores"
+              style="background-color: #f7bde0"
+            >
+              <div class="comunidade-header">
+                <img src="images/redes.jpg" class="perfil-img" />
+                <h3>Redes de Computadores</h3>
+              </div>
+              <p>
+                Entenda como funcionam as redes e a segurança da informação.
+              </p>
+              <button class="btn join-button">UNIR-SE</button>
+            </div>
+
+            <div
+              class="comunidade-card engenharia-software"
+              style="background-color: #ffc384"
+            >
+              <div class="comunidade-header">
+                <img src="images/engenhariasoftware.png" class="perfil-img" />
+                <h3>Engenharia de Software</h3>
+              </div>
+              <p>
+                Aprenda sobre design, arquitetura e ciclo de vida do software.
+              </p>
+              <button class="btn join-button">UNIR-SE</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="faq">
+          <h2>FAQ - COMO FUNCIONA NOSSO SITE?</h2>
+          <div class="faq-item">
+            <h3>O QUE É O STUDYEZ?</h3>
             <p>
-              Essa comunidade foca em conceitos básicos e avançados de lógica de
-              programação.
+              O StudyEZ é uma plataforma de monitorias online onde alunos podem
+              receber ajuda em diversas matérias, tirar dúvidas e organizar seus
+              estudos de forma eficiente.
             </p>
-            <button class="btn join-button">UNIR-SE</button>
           </div>
 
-          <div
-            class="comunidade-card desenvolvimento-web"
-            style="background-color: #b0d4f2"
-          >
-            <div class="comunidade-header">
-              <img src="web.jpg" class="perfil-img" />
-              <h3>Desenvolvimento Web</h3>
-            </div>
-            <p>Aprenda sobre criação de sites e aplicações modernas.</p>
-            <button class="btn join-button">UNIR-SE</button>
-          </div>
-
-          <div
-            class="comunidade-card banco-dados"
-            style="background-color: #dabee9"
-          >
-            <div class="comunidade-header">
-              <img src="banco.jpg" class="perfil-img" />
-              <h3>Banco de Dados</h3>
-            </div>
-            <p>Explore conceitos de modelagem e gerenciamento de dados.</p>
-            <button class="btn join-button">UNIR-SE</button>
-          </div>
-
-          <div
-            class="comunidade-card inteligencia-artificial"
-            style="background-color: #e5e17f"
-          >
-            <div class="comunidade-header">
-              <img src="ia.jpg" class="perfil-img" />
-              <h3>Inteligência Artificial</h3>
-            </div>
-            <p>Descubra técnicas de machine learning e redes neurais.</p>
-            <button class="btn join-button">UNIR-SE</button>
-          </div>
-
-          <div
-            class="comunidade-card redes-computadores"
-            style="background-color: #f7bde0"
-          >
-            <div class="comunidade-header">
-              <img src="images/redes.jpg" class="perfil-img" />
-              <h3>Redes de Computadores</h3>
-            </div>
-            <p>Entenda como funcionam as redes e a segurança da informação.</p>
-            <button class="btn join-button">UNIR-SE</button>
-          </div>
-
-          <div
-            class="comunidade-card engenharia-software"
-            style="background-color: #ffc384"
-          >
-            <div class="comunidade-header">
-              <img src="images/engenhariasoftware.png" class="perfil-img" />
-              <h3>Engenharia de Software</h3>
-            </div>
+          <div class="faq-item">
+            <h3>COMO POSSO ENCONTRAR UMA MONITORIA?</h3>
             <p>
-              Aprenda sobre design, arquitetura e ciclo de vida do software.
+              Você pode navegar pelas comunidades e se unir a elas. Cada
+              comunidade possui um título com a matéria relacionada, uma <br />
+              breve descrição e um botão para saber mais e dentro dela tem o
+              espaço de perguntas e respostas.
             </p>
-            <button class="btn join-button">UNIR-SE</button>
           </div>
-        </div>
-      </section>
 
-      <!-- FAQ -->
-      <section class="faq">
-        <h2>FAQ - COMO FUNCIONA NOSSO SITE?</h2>
-        <div class="faq-item">
-          <h3>O QUE É O STUDYEZ?</h3>
-          <p>
-            O StudyEZ é uma plataforma de monitorias online onde alunos podem
-            receber ajuda em diversas matérias, tirar dúvidas e organizar seus
-            estudos de forma eficiente.
-          </p>
-        </div>
-
-        <div class="faq-item">
-          <h3>COMO POSSO ENCONTRAR UMA MONITORIA?</h3>
-          <p>
-            Você pode navegar pelas comunidades e se unir a elas. Cada
-            comunidade possui um título com a matéria relacionada, uma <br />
-            breve descrição e um botão para saber mais e dentro dela tem o
-            espaço de perguntas e respostas.
-          </p>
-        </div>
-
-        <div class="faq-item">
-          <h3>O QUE É O PLANNER DO SITE?</h3>
-          <p>
-            O planner é uma ferramenta integrada ao aplicativo que permite
-            organizar seus estudos. Você pode anotar tarefas e adicionar
-            lembretes diários.
-          </p>
-        </div>
-      </section>
-      <button class="footer-btn" @click="goToAbout">SOBRE NÓS</button>
+          <div class="faq-item">
+            <h3>O QUE É O PLANNER DO SITE?</h3>
+            <p>
+              O planner é uma ferramenta integrada ao aplicativo que permite
+              organizar seus estudos. Você pode anotar tarefas e adicionar
+              lembretes diários.
+            </p>
+          </div>
+        </section>
+        <button class="footer-btn" @click="goToAbout">SOBRE NÓS</button>
+      </div>
     </div>
-  </div>
+  </MainLayout>
 </template>
 
 <script>
 import { router } from '@inertiajs/vue3';
 import SideBar from '../Components/SideBar.vue';
+import MainLayout from '@/Layouts/MainLayout.vue';
 
 export default {
   methods: {
@@ -165,6 +168,7 @@ export default {
 
   components: {
     SideBar,
+    MainLayout,
   },
 
   name: 'Prelogin',
