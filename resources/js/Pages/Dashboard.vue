@@ -12,7 +12,7 @@
                 <div class="center-card">
                     <p>Parece que você ainda não está inscrito em nenhuma disciplina.</p>
                     <p>Explore as disciplinas disponíveis!</p>
-                    <button class="btn explore-button">Explorar</button>
+                    <button class="btn explore-button" @click="goToSearch">Explorar</button>
                 </div>
     
                 <!-- Planner Section -->
@@ -40,7 +40,7 @@ export default {
         },
         goToSearch() {
         this.$inertia.get('/search');
-        }
+        },
     },
     components: {
         Calendar,

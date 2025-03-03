@@ -36,7 +36,9 @@
                             <h3>{{ disciplina.nome }}</h3>
                         </div>
                         <p>{{ disciplina.descricao }}</p>
-                        <button class="btn inscrever-button">ENTRAR</button>
+                        <button class="btn community-button" @click="goToCommunity">
+                            ENTRAR
+                        </button>
                     </div>
                 </div>
             </section>
@@ -46,6 +48,7 @@
 
 <script>
 import { router } from '@inertiajs/vue3';
+
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 export default {
@@ -73,6 +76,9 @@ export default {
         },
         goToSearch() {
             router.get('/search');
+        },
+        goToCommunity() {
+        router.get('/community'); 
         }
     }
 };
@@ -252,7 +258,7 @@ h2{
     margin: 15px 0;
 }
 
-.inscrever-button {
+.community-button {
     background-color: #ffffff;
     color: #000;
     font-weight: bold;
@@ -272,7 +278,7 @@ h2{
     margin-left: 0; 
 }
 
-.inscrever-button:hover {
+.community-button:hover {
     background-color: #c5c5c5; 
 }
 

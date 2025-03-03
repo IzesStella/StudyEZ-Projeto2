@@ -1,13 +1,7 @@
 <template>
     <div class="community-container">
       <!-- Sidebar -->
-      <aside class="sidebar">
-        <img src="/images/owl.png" alt="Logo Comunidade" class="sidebar-logo" />
-        <nav class="sidebar-nav">
-          <img src="/icons/home.png" alt="Home" class="nav-icon" />
-          <img src="/icons/user.png" alt="Usuário" class="nav-icon" />
-        </nav>
-      </aside>
+      <SideBar />
   
       <!-- Conteúdo principal -->
       <main class="main-content">
@@ -46,7 +40,10 @@
   
   <script>
   export default {
-    data() {
+      components: {
+        SideBar,
+     },
+     data() {
       return {
         posts: [
           {

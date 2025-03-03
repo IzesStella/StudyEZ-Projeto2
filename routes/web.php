@@ -43,6 +43,11 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('SearchScreen');
     })->name('search');
 
+    Route::get('/community', function () { //ROTA PRA TELA DE COMUNIDADE
+        return Inertia::render('CommunityPage'); 
+    })->name('community');
+    
+
     // 📌 Perfil do usuário
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
