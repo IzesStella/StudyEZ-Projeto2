@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import { toast } from 'vue3-toastify';
+
 export default {
   data() {
     return {
@@ -68,10 +70,19 @@ export default {
         );
         localStorage.setItem('token', response.data.token);
 
-        console.log('Login bem-sucedido!');
+        toast.success('Login bem-sucedido!', {
+          position: 'top-center',
+          duration: 3000,
+        });
+
         this.$inertia.get('/dashboard');
       } catch (error) {
-        console.log('Erro no login', error.response.data);
+        if (error.response && error.response.status === 422) {
+          this.errors = Object.values(error.response.data.errors).flat();
+        } else {
+          this.errors = ['Ocorreu um erro ao tentar fazer login.'];
+        }
+        toast.error(this.errors[0], { position: 'top-center', duration: 3000 });
       }
     },
   },

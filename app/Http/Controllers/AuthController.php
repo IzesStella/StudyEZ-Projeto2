@@ -39,18 +39,38 @@ class AuthController extends Controller
 
   public function login(Request $request)
   {
-    $credentials = $request->validate([
-      'email' => 'required|email',
-      'password' => 'required',
-    ]);
+    try {
+      $validatedData = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+      ]);
 
-    if (Auth::attempt($credentials)) {
+      if (!Auth::attempt($validatedData)) {
+        return response()->json(
+          [
+            'errors' => [
+              'email' => ['Credenciais inválidas.'],
+            ],
+          ],
+          422
+        );
+      }
+
       $user = Auth::user();
       $token = $user->createToken('ZiZiToken');
-      return response()->json(['token' => $token->plainTextToken]);
-    }
 
-    return back()->withErrors(['email' => 'Credenciais inválidas.']);
+      return response()->json(['token' => $token->plainTextToken]);
+    } catch (Exception $e) {
+      \Log::error('Erro no login: ' . $e->getMessage());
+      return response()->json(
+        [
+          'errors' => [
+            'message' => ['Ocorreu um erro ao tentar fazer login.'],
+          ],
+        ],
+        500
+      );
+    }
   }
   public function logout()
   {
@@ -59,35 +79,6 @@ class AuthController extends Controller
     });
     Auth::logout();
     return redirect('/');
-  }
-
-  public function saveNote(Request $request)
-  {
-    $request->validate([
-      'date' => 'required|date',
-      'content' => 'required|string',
-    ]);
-
-    $note = Note::updateOrCreate(
-      [
-        'user_id' => Auth::id(),
-        'date' => $request->date,
-      ],
-      [
-        'content' => $request->content,
-      ]
-    );
-
-    return response()->json([
-      'message' => 'Anotação salva com sucesso!',
-      'note' => $note,
-    ]);
-  }
-
-  public function getNotes()
-  {
-    $notes = Note::where('user_id', Auth::id())->get();
-    return response()->json($notes);
   }
 
   public function checkEnrollment()
