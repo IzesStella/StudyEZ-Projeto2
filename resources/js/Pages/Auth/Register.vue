@@ -88,6 +88,7 @@ export default {
           position: 'top-center',
           duration: 3000,
         });
+        this.loading = false;
         return;
       }
 
