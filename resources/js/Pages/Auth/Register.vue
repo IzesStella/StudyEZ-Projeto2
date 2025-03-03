@@ -58,9 +58,11 @@
       </div>
     </div>
   </div>
+  <Preloading :show="loading" />
 </template>
 
 <script>
+import Preloading from '@/Components/Utils/Preloading.vue';
 import { toast } from 'vue3-toastify';
 
 export default {
@@ -74,10 +76,12 @@ export default {
         password_confirmation: '',
       },
       errors: [],
+      loading: false,
     };
   },
   methods: {
     sendForm() {
+      this.loading = true;
       if (this.form.password !== this.form.password_confirmation) {
         this.errors = { password: ['As senhas não correspondem.'] };
         toast.error(this.errors.password, {
@@ -103,8 +107,15 @@ export default {
           });
           this.errors = errors;
         },
+
+        onFinish: () => {
+          this.loading = false;
+        },
       });
     },
+  },
+  components: {
+    Preloading,
   },
 };
 </script>
