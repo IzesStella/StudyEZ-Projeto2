@@ -1,40 +1,51 @@
 <template>
-  <div class="searchscreen-container">
+  <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
     <SideBar />
     <!-- Main Content -->
-    <div class="main-content">
+    <div
+      class="flex-1 ml-32 p-5 text-center overflow-y-auto h-screen box-border"
+    >
       <!-- Top Bar with Search -->
-      <div class="top-bar">
+      <div
+        class="flex justify-center items-center w-full py-2 px-8 bg-white z-10"
+      >
         <input
           type="text"
           v-model="searchQuery"
           placeholder="Pesquisar novas comunidades..."
-          class="search-bar"
+          class="w-3/5 p-2 text-base border border-gray-300 rounded-full outline-none"
         />
       </div>
 
       <!-- Cards Section -->
-      <section class="disciplinas">
+      <section class="mt-5 text-center">
         <h2>Conheça novas disciplinas:</h2>
-        <div class="disciplinas-grid">
+        <div class="grid grid-cols-3 gap-5 mt-5 relative">
           <div
             v-for="disciplina in filteredDisciplinas"
             :key="disciplina.nome"
-            class="disciplina-card"
+            class="bg-gray-50 rounded-xl p-5 text-left shadow-lg transition-transform transform hover:translate-y-[-5px] hover:shadow-2xl w-[350px] mx-auto min-h-[210px] flex flex-col relative"
             :style="{ backgroundColor: disciplina.cor }"
           >
             <!-- Cabeçalho com imagem circular e título alinhados -->
-            <div class="card-header">
+            <div class="flex items-center mb-2">
               <img
                 src="/images/logic-icon.png"
                 alt="Comunidade"
-                class="community-icon"
+                class="w-10 h-10 rounded-full object-cover mr-2"
               />
-              <h3>{{ disciplina.nome }}</h3>
+              <h3 class="text-lg font-bold text-black m-0">
+                {{ disciplina.nome }}
+              </h3>
             </div>
-            <p>{{ disciplina.descricao }}</p>
-            <button class="btn community-button" @click="goToCommunity">
+            <p class="text-sm text-black leading-6 text-center my-3">
+              {{ disciplina.descricao }}
+            </p>
+            <button
+              class="bg-white text-black font-bold rounded-lg py-2 px-4 block mt-auto self-end mr-2 mb-2 hover:bg-gray-300"
+              @click="goToCommunity"
+            >
               ENTRAR
             </button>
           </div>
@@ -127,211 +138,4 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
-.searchscreen-container {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-  overflow: auto;
-}
-
-.sidebar {
-  width: 100px;
-  background-color: #fdf5cc;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px 0;
-  border-right: 1px solid #e0e0e0;
-  margin-left: 30px;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  border-radius: 12px;
-  position: fixed;
-  height: calc(100% - 30px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-}
-
-.small-logo {
-  width: 80px;
-}
-
-nav {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  padding-bottom: 20px;
-}
-
-h2 {
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Open Sans',
-    'Helvetica Neue',
-    sans-serif;
-  font-size: 135%;
-  font-weight: bold;
-  margin-top: 30px;
-  margin-bottom: 30px;
-}
-
-.nav-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50px;
-  height: 50px;
-  background-color: #ffffff;
-  border: none;
-  border-radius: 50%;
-  font-size: 1.5rem;
-  cursor: pointer;
-  margin-bottom: 10px;
-  transition: all 0.2s ease-in-out;
-}
-
-.nav-button:hover {
-  color: #000;
-}
-
-.profile-section {
-  margin-top: auto;
-  cursor: pointer;
-}
-
-.profile-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 2px solid #ccc;
-}
-
-.main-content {
-  flex: 1;
-  margin-left: 130px;
-  padding: 20px;
-  text-align: center;
-  overflow-y: auto;
-  height: 100vh;
-  box-sizing: border-box;
-}
-
-.top-bar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 10px 30px;
-  font-family: 'Montserrat', sans-serif;
-  background: white;
-  z-index: 1000;
-}
-
-.search-bar {
-  width: 60%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  outline: none;
-}
-
-.disciplinas {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.disciplinas-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin-top: 20px;
-  position: relative;
-}
-
-.disciplina-card {
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  padding: 20px 20px 10px 20px;
-  text-align: left;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-  width: 350px;
-  margin: 0 auto;
-  min-height: 210px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.disciplina-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Cabeçalho do card com imagem e título alinhados */
-.card-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.community-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 10px;
-}
-
-.disciplina-card h3 {
-  font-size: 15px;
-  font-weight: bold;
-  color: #000000;
-  margin: 0;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.disciplina-card p {
-  font-size: 14px;
-  color: #000000;
-  line-height: 1.5;
-  text-align: center;
-  margin: 15px 0;
-}
-
-.community-button {
-  background-color: #ffffff;
-  color: #000;
-  font-weight: bold;
-  border-radius: 10px;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  display: block;
-
-  /* Empurra o botão para baixo e alinha à direita */
-  margin-top: auto;
-  align-self: flex-end;
-
-  /* Margens menores para ficar mais perto das bordas */
-  margin-right: 10px;
-  margin-bottom: 10px;
-  margin-left: 0;
-}
-
-.community-button:hover {
-  background-color: #c5c5c5;
-}
 </style>
