@@ -1,117 +1,25 @@
 <template>
-    <div class="sidebar">
-        <img src="/images/zizi.png" alt="StudyEZ Logo" class="logo small-logo" />
-    <nav>
-      <button class="nav-button">
-      <font-awesome-icon icon="home" style="color: #CE9E10;" />
-    </button>
-    <button class="nav-button" style="color: #3885A7;">
-      <font-awesome-icon icon="plus" />
-    </button>
-
+  <div
+    class="bg-[#fdf5cc] hidden flex-col items-center h-[calc(100%_-_30px)] py-[20px] border-r border-[#E0E0E0] fixed left-0 mt-[15px] ml-[30px] rounded-xl shadow-[0_4px_6px_rgba(0,0,0,0.15)] min-[480px]:flex min-[480px]:w-[60px] min-[480px]:ml-[10px] min-[480px]:py-[10px] min-[480px]:px-0 z-40 sm:w-[80px] lg:w-[100px] lg:ml-[30px]"
+  >
+    <img
+      src="/images/zizi.png"
+      alt="StudyEZ Logo"
+      class="w-[50px] md:w-[60px] lg:w-[80px]"
+    />
+    <nav class="flex flex-col items-center justify-center h-[100%]">
+      <NavButton icon="home" color="#ce9e10" route="/dashboard" />
+      <NavButton icon="plus" color="#3885a7" route="/" />
     </nav>
   </div>
-
-
 </template>
 
 <script>
+import NavButton from './NavButton.vue';
 
-import { router } from '@inertiajs/vue3';
-
+export default {
+  components: {
+    NavButton,
+  },
+};
 </script>
-
-<style scoped>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
-    .sidebar {
-    width: 100px;
-    background-color: #fdf5cc;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 0;
-    border-right: 1px solid #e0e0e0;
-    margin-left: 30px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    border-radius: 12px;
-    position: fixed;
-    height: calc(100% - 30px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-    }
-
-    .small-logo {
-    width: 80px;
-    }
-
-    nav {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-    }
-
-    .nav-button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 50px;
-        height: 50px;
-        background-color: #ffffff;
-        border: none;
-        border-radius: 50%;
-        font-size: 1.5rem;
-        cursor: pointer;
-        margin-bottom: 10px;
-        transition: all 0.2s ease-in-out;
-    }
-    
-    .nav-button:hover {
-        color: #000;
-    }
-
-    @media (max-width: 1024px) {
-        
-        .sidebar {
-            width: 80px;
-            padding: 10px 0;
-        }
-        
-        .small-logo {
-            width: 60px;
-        }
-        
-        .nav-button {
-            width: 40px;
-            height: 40px;
-            font-size: 1.2rem;
-        }     
-
-    }
-    @media (max-width: 768px) {
-
-        .sidebar {
-            width: 60px;
-            padding: 5px 0;
-            z-index:3;
-          }
-        
-        .small-logo {
-            width: 50px;
-          }
-        
-        .nav-button {
-            width: 35px;
-            height: 35px;
-            font-size: 1rem;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .sidebar {
-            display: none;
-        }
-    }
-</style>
