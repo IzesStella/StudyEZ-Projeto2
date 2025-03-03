@@ -46,23 +46,29 @@
       </div>
     </div>
   </div>
+  <Preloading :show="loading" />
 </template>
 
 <script>
 import { toast } from 'vue3-toastify';
+import Preloading from '@/Components/Utils/Preloading.vue';
 
 export default {
+  components: {
+    Preloading,
+  },
   data() {
     return {
       form: {
         email: '',
         password: '',
       },
+      loading: false,
     };
   },
   methods: {
     async login() {
-      console.log('Tentando logar...');
+      this.loading = true;
       try {
         const response = await axios.post(
           'http://127.0.0.1:8000/api/login',
@@ -83,6 +89,8 @@ export default {
           this.errors = ['Ocorreu um erro ao tentar fazer login.'];
         }
         toast.error(this.errors[0], { position: 'top-center', duration: 3000 });
+      } finally {
+        this.loading = false;
       }
     },
   },
