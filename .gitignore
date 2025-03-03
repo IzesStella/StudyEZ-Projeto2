@@ -16,6 +16,5 @@ npm-debug.log
 yarn-error.log
 /.fleet
 /.idea
-/.vscode
 User::destroy(1);
 Userdestroy(1);
