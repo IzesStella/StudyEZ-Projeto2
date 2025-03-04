@@ -44,8 +44,7 @@
             </p>
             <button
               class="bg-white text-black font-bold rounded-lg py-2 px-4 block mt-auto self-end mr-2 mb-2 hover:bg-gray-300"
-              @click="goToCommunity"
-            >
+              @click="goToCommunityByDiscipline(disciplina)"> <!--botao pra acessar a comunidade deve ser assim-->
               ENTRAR
             </button>
           </div>
@@ -69,33 +68,39 @@ export default {
       searchQuery: '',
       disciplinas: [
         {
+          id: 1, 
           nome: 'Lógica de Programação',
           descricao:
             'Essa comunidade foca em conceitos básicos e avançados de lógica de programação.',
           cor: '#d9f8c4',
         },
         {
+          id: 2,
           nome: 'Engenharia de Software',
           descricao:
             'Aprenda sobre design, arquitetura e ciclo de vida do software.',
           cor: '#c4f0f8',
         },
         {
+          id: 3,
           nome: 'Banco de Dados',
           descricao: 'Explore conceitos de modelagem e gerenciamento de dados.',
           cor: '#e3d9f8',
         },
         {
+          id: 4,
           nome: 'Desenvolvimento Web',
           descricao: 'Aprenda sobre criação de sites e aplicações modernas.',
           cor: '#f8d9d9',
         },
         {
-          nome: 'Inteligência Artificial',
-          descricao: 'Descubra técnicas de machine learning e redes neurais.',
+          id: 5,
+          nome: 'Design',
+          descricao: 'Descubra técnicas de {mudar isso dps}.',
           cor: '#fff2d4',
         },
         {
+          id: 6,
           nome: 'Redes de Computadores',
           descricao:
             'Entenda como funcionam as redes e a segurança da informação.',
@@ -114,8 +119,9 @@ export default {
     goToSearch() {
       router.get('/search');
     },
-    goToCommunity() {
-      router.get('/community');
+    goToCommunityByDiscipline(disciplina) {
+      // Redireciona para a comunidade específica com base no ID da disciplina
+      router.get(`/community/${disciplina.id}`);
     },
   },
   computed: {
