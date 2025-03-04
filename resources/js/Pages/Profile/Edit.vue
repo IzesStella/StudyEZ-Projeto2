@@ -20,27 +20,6 @@ defineProps({
         <span class="text-2xl font-bold">
           {{ $page.props.auth.user.name }}
         </span>
-        <!-- <div
-          class="mt-8 w-full max-w-4xl mx-auto px-4 py-6 bg-white rounded-lg shadow-lg"
-        >
-          <h2 class="text-xl font-semibold text-gray-800">Comentários</h2>
-
-          <div v-if="comments.length === 0" class="mt-4 text-gray-500">
-            Nenhum comentário ainda.
-          </div>
-
-          <div
-            v-for="(comment, index) in comments"
-            :key="index"
-            class="mt-4 p-4 bg-gray-100 rounded-lg shadow-sm"
-          >
-            <div class="text-gray-700 font-medium">{{ comment.user }}</div>
-            <p class="mt-2 text-gray-600">{{ comment.content }}</p>
-            <p class="text-xs text-gray-400 mt-2">
-              Publicado em {{ comment.date }}
-            </p>
-          </div>
-        </div> -->
       </div>
 
       <Dropdown align="right" width="48">
@@ -118,19 +97,24 @@ defineProps({
     <div class="flex flex-col justify-center ml-5 mb-5">
       <div class="relative flex flex-row justify-start">
         <button
-          class="px-4 py-2 bg-transparent rounded-xl mr-10"
-          :class="{ 'bg-blue-800 text-white': activeTab === 'comments' }"
-          @click="showComments"
-        >
-          Comentarios
-        </button>
-
-        <button
-          class="px-4 py-2 bg-transparent rounded-xl"
-          :class="{ 'bg-blue-800 text-white': activeTab === 'posts' }"
+          class="px-4 py-2 bg-transparent rounded-xl focus:outline-none"
+          :class="{
+            'bg-blue-700 transition ease-in-out duration-150':
+              activeTab === 'posts',
+          }"
           @click="showPosts"
         >
           Postagens
+        </button>
+        <button
+          class="px-4 py-2 bg-transparent rounded-xl focus:outline-none"
+          :class="{
+            'bg-blue-700 transition ease-in-out duration-150 ':
+              activeTab === 'comments',
+          }"
+          @click="showComments"
+        >
+          Comentarios
         </button>
       </div>
 
@@ -188,9 +172,9 @@ export default {
     return {
       photoUrl: 'https://via.placeholder.com/150',
       isEditProfileVisible: false,
-      isCommentsVisible: true,
-      isPostsVisible: false,
-      activeTab: 'comments',
+      isCommentsVisible: false,
+      isPostsVisible: true,
+      activeTab: 'posts',
     };
   },
   methods: {
