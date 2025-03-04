@@ -15,8 +15,9 @@
           class="community-logo"
         />
         <div class="community-info">
-          <h1>Lógica de Programação</h1>
-          <p>Um espaço para aprender e compartilhar conhecimento</p>
+          <!-- Utiliza dados da prop "course" com os atributos corretos -->
+          <h1>{{ course.name }}</h1>
+          <p>{{ course.description }}</p>
         </div>
         <div class="actions">
           <button class="subscribe">Inscreva-se</button>
@@ -31,12 +32,10 @@
             <img :src="post.userAvatar" alt="Avatar" class="avatar" />
             <div>
               <span class="username">{{ post.username }}</span>
-              <!-- Nome do usuário aqui -->
               <span class="timestamp">• {{ post.timestamp }}</span>
             </div>
           </div>
           <h2 class="post-title">{{ post.title }}</h2>
-          <!-- Título da postagem movido para baixo -->
           <p class="post-content">{{ post.content }}</p>
           <div class="post-footer">
             <button class="comment-btn">💬 {{ post.comments }}</button>
@@ -51,6 +50,13 @@
 import SideBar from '../Components/SideBar.vue';
 
 export default {
+  props: {
+    // A prop course é obrigatória e virá do backend via Inertia
+    course: {
+      type: Object,
+      required: true,
+    },
+  },
   components: {
     SideBar,
   },
@@ -60,7 +66,7 @@ export default {
         {
           id: 1,
           userAvatar: '/images/user1.png',
-          username: 'user1', // Nome do usuário adicionado
+          username: 'user1',
           title: 'Como estudar programação?',
           content:
             'Como vocês estudam? Ainda mais uma linguagem diferente? Digo, não só copiar o código, mas realmente aprender sobre?',
@@ -70,7 +76,7 @@ export default {
         {
           id: 2,
           userAvatar: '/images/user2.png',
-          username: 'user2', // Nome do usuário adicionado
+          username: 'user2',
           title: 'Botão não redireciona e baixa arquivo',
           content:
             'Criamos uma página de HTML para cadastro, mas há um botão que baixa o arquivo ao invés de redirecionar. Como corrigir?',
@@ -86,7 +92,7 @@ export default {
 <style scoped>
 .community-container {
   padding: 40px;
-  color: #000000;
+  color: #000;
   max-width: 80%;
   margin: auto;
   font-family: 'Montserrat', sans-serif;
@@ -129,18 +135,17 @@ export default {
 }
 
 .post {
-  border-bottom: 1px solid #000000;
-  padding: 35px 0px;
+  border-bottom: 1px solid #000;
+  padding: 35px 0;
   margin-top: 30px;
 }
 
 .post-header {
   display: flex;
-
   gap: 10px;
   font-size: 14px;
   font-weight: bold;
-  color: #000000;
+  color: #000;
 }
 
 .avatar {

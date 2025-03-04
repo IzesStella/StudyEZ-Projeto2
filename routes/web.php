@@ -7,13 +7,14 @@ use App\Http\Controllers\ProfileController;
 use Inertia\Inertia;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
+use App\Models\Course;
 
-// 📌 Página inicial ANTES do login (Prelogin.vue)
+//  Página inicial ANTES do login (Prelogin.vue)
 Route::get('/', function () {
     return Inertia::render('Prelogin'); // Mantendo a página inicial antes do login
 })->name('prelogin');
 
-// 📌 Rotas de autenticação (Login e Cadastro)
+//  Rotas de autenticação (Login e Cadastro)
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
@@ -38,26 +39,31 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    // 📌 Nova Rota para a Tela de Pesquisa (SearchScreen)
+    // rota para a Tela de Pesquisa (SearchScreen)
     Route::middleware(['auth'])->get('/search', function () {
         return Inertia::render('SearchScreen');
     })->name('search');
 
-    Route::get('/community', function () { //ROTA PRA TELA DE COMUNIDADE
-        return Inertia::render('CommunityPage'); 
-    })->name('community');
-    
 
-    // 📌 Perfil do usuário
+    
+ // 📌 Nova Rota dinâmica para Comunidade, baseada no ID do curso
+ Route::get('/community/{id}', function ($id) {
+    $course = Course::findOrFail($id); // Busca o curso pelo ID ou retorna erro 404
+    return Inertia::render('CommunityPage', ['course' => $course]);
+})->name('community.show');
+
+
+
+    //  Perfil do usuário
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // 📌 Verificação de inscrição em cursos
+    //  Verificação de inscrição em cursos
     Route::middleware('auth:sanctum')->get('/user/enrollment', [AuthController::class, 'checkEnrollment']);
 });
 
-// 📌 Página Sobre Nós
+// Página Sobre Nós
 Route::get('/about', function () {
     return Inertia::render('About');
 })->name('about');
@@ -65,3 +71,4 @@ Route::get('/about', function () {
 // 📌 Rotas para ver todos cursos e um curso específico
 Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/courses/{id}', [CourseController::class, 'show']);
+
