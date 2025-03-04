@@ -10,6 +10,7 @@
     <nav class="flex flex-col items-center justify-center h-[100%]">
       <NavButton icon="home" color="#ce9e10" route="/dashboard" />
       <NavButton icon="plus" color="#3885a7" route="/" />
+      <NavButton icon="home" color="#3885a7" route="/profile" />
     </nav>
   </div>
 </template>
