@@ -7,10 +7,14 @@
       alt="StudyEZ Logo"
       class="w-[50px] md:w-[60px] lg:w-[80px]"
     />
-    <nav class="flex flex-col items-center justify-center h-[100%]">
-      <NavButton icon="home" color="#ce9e10" route="/dashboard" />
-      <NavButton icon="plus" color="#3885a7" route="/" />
-      <NavButton icon="home" color="#3885a7" route="/profile" />
+    <nav class="flex flex-col items-center justify-between h-[100%]">
+      <div class="grow flex flex-col justify-center items-center gap-4">
+        <NavButton icon="home" color="#ce9e10" route="/dashboard" />
+        <NavButton icon="plus" color="#3885a7" route="/" />
+      </div>
+      <div class="pb-4">
+        <NavButton icon="home" color="#3885a7" route="/profile" />
+      </div>
     </nav>
   </div>
 </template>
