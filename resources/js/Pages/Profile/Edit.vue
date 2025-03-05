@@ -13,9 +13,9 @@ defineProps({
     <div class="relative flex justify-center items-center gap-[48%]">
       <div class="h-[230] w-[230] mt-16 flex justify-center items-center">
         <img
-          src="https://placehold.co/230x230"
-          alt="img"
-          class="rounded-full mr-5"
+          :src="profilePhoto"
+          alt="Foto de perfil"
+          class="rounded-full w-[230px] h-[230px] object-cover"
         />
         <span class="text-2xl font-bold">
           {{ $page.props.auth.user.name }}
@@ -80,6 +80,10 @@ defineProps({
               </svg>
             </button>
           </div>
+          <div class="p-6">
+            <h1 class="text-2xl font-bold mb-4">Meu Perfil</h1>
+            <ProfilePhotoUploader />
+          </div>
           <div class="bg-gray-50 p-6 rounded-lg shadow-md">
             <UpdateProfileInformationForm
               :must-verify-email="mustVerifyEmail"
@@ -131,9 +135,9 @@ defineProps({
           <!-- conteudo dos comentarios aqui  -->
           <div class="flex flex-row self-start">
             <img
-              src="https://placehold.co/60x60"
-              alt="img"
-              class="rounded-full mr-5"
+              :src="profilePhoto"
+              alt="Foto de perfil"
+              class="rounded-full w-[60px] h-[60px] object-cover"
             />
             <span class="">
               {{ $page.props.auth.user.name }}
@@ -148,9 +152,9 @@ defineProps({
           <!-- conteudo dos posts aqui  -->
           <div class="flex flex-row self-start">
             <img
-              src="https://placehold.co/60x60"
-              alt="img"
-              class="rounded-full mr-5"
+              :src="profilePhoto"
+              alt="Foto de perfil"
+              class="rounded-full w-[60px] h-[60px] object-cover"
             />
             <span class="">
               {{ $page.props.auth.user.name }}
@@ -171,11 +175,14 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
+import ProfilePhotoUploader from '@/Components/ProfilePhotoUploader.vue';
 
 export default {
   data() {
     return {
-      photoUrl: 'https://via.placeholder.com/150',
+      profilePhoto: this.$page.props.auth.user.profile_photo
+        ? '/' + this.$page.props.auth.user.profile_photo
+        : '/images/default-avatar.png',
       isEditProfileVisible: false,
       isCommentsVisible: false,
       isPostsVisible: true,
@@ -207,6 +214,7 @@ export default {
     MainLayout,
     Dropdown,
     DropdownLink,
+    ProfilePhotoUploader,
   },
 };
 </script>

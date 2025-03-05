@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
@@ -72,6 +73,54 @@ class AuthController extends Controller
       );
     }
   }
+
+  public function updateProfilePhoto(Request $request)
+  {
+    $request->validate([
+      'profile_photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
+
+    $user = auth()->user();
+
+    if ($user->profile_photo) {
+      $oldPhotoPath = public_path(
+        'images/profile_photos/' . $user->profile_photo
+      );
+      if (file_exists($oldPhotoPath)) {
+        unlink($oldPhotoPath);
+      }
+    }
+
+    $fileName =
+      time() .
+      '.' .
+      $request->file('profile_photo')->getClientOriginalExtension();
+    $path = $request
+      ->file('profile_photo')
+      ->move(public_path('images/profile_photos'), $fileName);
+
+    $user->profile_photo = 'images/profile_photos/' . $fileName;
+    $user->save();
+
+    return response()->json([
+      'message' => 'Foto de perfil atualizada com sucesso!',
+      'photo_url' => asset('images/profile_photos/' . $fileName),
+    ]);
+  }
+
+  public function getUserData()
+  {
+    $user = auth()->user();
+
+    return response()->json([
+      'name' => $user->name,
+      'email' => $user->email,
+      'profile_photo' => $user->profile_photo
+        ? asset($user->profile_photo)
+        : asset('images/default-avatar.png' . $fileName),
+    ]);
+  }
+
   public function logout()
   {
     $request->user()->tokens->each(function ($token) {

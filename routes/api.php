@@ -17,13 +17,18 @@ use App\Http\Controllers\NoteController;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+  return $request->user();
 });
+
+Route::middleware('auth:sanctum')->post('/user/profile-photo', [
+  AuthController::class,
+  'updateProfilePhoto',
+]);
 
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/notes', [NoteController::class, 'saveNote']);
-    Route::get('/notes', [NoteController::class, 'getNotes']);
-    Route::get('/notes/{date}', [NoteController::class, 'show']);
+  Route::post('/notes', [NoteController::class, 'saveNote']);
+  Route::get('/notes', [NoteController::class, 'getNotes']);
+  Route::get('/notes/{date}', [NoteController::class, 'show']);
 });

@@ -13,7 +13,15 @@
         <NavButton icon="plus" color="#3885a7" route="/" />
       </div>
       <div class="pb-4">
-        <NavButton icon="home" color="#3885a7" route="/profile" />
+        <NavButton
+          :icon="
+            $page.props.auth.user.profile_photo
+              ? '/storage/' + $page.props.auth.user.profile_photo
+              : '/images/default-profile.png'
+          "
+          color="#3885a7"
+          route="/profile"
+        />
       </div>
     </nav>
   </div>
@@ -23,6 +31,14 @@
 import NavButton from './NavButton.vue';
 
 export default {
+  data() {
+    return {
+      profilePhoto: this.$page.props.auth.user.profile_photo
+        ? '/' + this.$page.props.auth.user.profile_photo
+        : '/images/default-avatar.png',
+    };
+  },
+
   components: {
     NavButton,
   },
