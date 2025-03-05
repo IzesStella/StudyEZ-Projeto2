@@ -99,7 +99,7 @@ defineProps({
         <button
           class="px-4 py-2 bg-transparent rounded-xl focus:outline-none"
           :class="{
-            'bg-blue-700 transition ease-in-out duration-150':
+            'bg-blue-300 transition ease-in-out duration-150':
               activeTab === 'posts',
           }"
           @click="showPosts"
@@ -109,7 +109,7 @@ defineProps({
         <button
           class="px-4 py-2 bg-transparent rounded-xl focus:outline-none"
           :class="{
-            'bg-blue-700 transition ease-in-out duration-150 ':
+            'bg-blue-300 transition ease-in-out duration-150 ':
               activeTab === 'comments',
           }"
           @click="showComments"
