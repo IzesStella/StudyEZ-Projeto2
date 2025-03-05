@@ -27,12 +27,12 @@
             >
               <!-- Cabeçalho com imagem circular e título alinhados -->
               <div class="flex items-center gap-2 mb-2">
-                <!-- <img
-                  src="/images/logic-icon.png"
-                  alt="Comunidade"
-                  class="w-10 h-10 rounded-full object-cover mr-2"
-                /> -->
-                <div class="w-10 h-10 rounded-full bg-black" />
+                <img
+                  :src="disciplina.imagem"
+                  alt="Ícone da disciplina"
+                  class="w-10 h-10 rounded-full object-cover"
+                />
+
                 <h3 class="text-lg font-bold text-black m-0">
                   {{ disciplina.nome }}
                 </h3>
@@ -73,6 +73,7 @@ export default {
       disciplinas: [
         {
           id: 1,
+          imagem: '/images/logicadeprogramacao.png',
           nome: 'Lógica de Programação',
           descricao:
             'Essa comunidade foca em conceitos básicos e avançados de lógica de programação.',
@@ -80,6 +81,7 @@ export default {
         },
         {
           id: 2,
+          imagem: '/images/engenharia.png',
           nome: 'Engenharia de Software',
           descricao:
             'Aprenda sobre design, arquitetura e ciclo de vida do software.',
@@ -87,24 +89,28 @@ export default {
         },
         {
           id: 3,
+          imagem: '/images/bancodedados.png',
           nome: 'Banco de Dados',
           descricao: 'Explore conceitos de modelagem e gerenciamento de dados.',
           cor: '#e3d9f8',
         },
         {
           id: 4,
+          imagem: '/images/web.png',
           nome: 'Desenvolvimento Web',
           descricao: 'Aprenda sobre criação de sites e aplicações modernas.',
           cor: '#f8d9d9',
         },
         {
           id: 5,
+          imagem: '/images/design.png',
           nome: 'Design',
           descricao: 'Descubra técnicas de {mudar isso dps}.',
           cor: '#fff2d4',
         },
         {
           id: 6,
+          imagem: '/images/redes.png',
           nome: 'Redes de Computadores',
           descricao:
             'Entenda como funcionam as redes e a segurança da informação.',
