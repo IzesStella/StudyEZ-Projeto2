@@ -10,7 +10,7 @@ defineProps({
 <template>
   <Head title="Profile" />
   <MainLayout class>
-    <div class="relative flex justify-center items-center gap-[50%]">
+    <div class="relative flex justify-center items-center gap-[48%]">
       <div class="h-[230] w-[230] mt-16 flex justify-center items-center">
         <img
           src="https://placehold.co/230x230"
@@ -56,25 +56,30 @@ defineProps({
         <div
           class="bg-white w-full max-w-4xl max-h-[90%] overflow-auto rounded-xl shadow-lg p-6 space-y-8 relative"
         >
-          <button
-            class="absolute top-6 right-6 text-gray-500 hover:text-gray-700 transition"
-            @click="closeEditProfile"
+          <div
+            class="bg-gray-800 text-white p-4 rounded-t-xl shadow-md flex justify-between items-center"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+            <h3 class="text-lg font-semibold">Editar Perfil</h3>
+            <button
+              class="text-gray-500 hover:text-gray-700 transition"
+              @click="closeEditProfile"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
           <div class="bg-gray-50 p-6 rounded-lg shadow-md">
             <UpdateProfileInformationForm
               :must-verify-email="mustVerifyEmail"
@@ -94,8 +99,8 @@ defineProps({
       </div>
     </div>
 
-    <div class="flex flex-col justify-center ml-5 mb-5">
-      <div class="relative flex flex-row justify-start">
+    <div class="flex flex-col justify-center ml-5">
+      <div class="relative flex flex-row justify-start ml-32">
         <button
           class="px-4 py-2 bg-transparent rounded-xl focus:outline-none"
           :class="{
@@ -118,9 +123,7 @@ defineProps({
         </button>
       </div>
 
-      <div
-        class="border border-red-500 h-full overflow-hidden flex flex-col place-items-center"
-      >
+      <div class="h-full overflow-hidden flex flex-col place-items-center">
         <div
           v-if="isCommentsVisible"
           class="border-b border-black w-[80%] flex flex-col items-center justify-center p-4"
@@ -135,6 +138,7 @@ defineProps({
             <span class="">
               {{ $page.props.auth.user.name }}
             </span>
+            <p>Comentarios</p>
           </div>
         </div>
         <div
@@ -151,6 +155,7 @@ defineProps({
             <span class="">
               {{ $page.props.auth.user.name }}
             </span>
+            <p>Posts</p>
           </div>
         </div>
       </div>

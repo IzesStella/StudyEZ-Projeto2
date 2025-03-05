@@ -74,7 +74,6 @@ export default {
 
 .main-content {
   flex: 1;
-  margin-left: 130px;
   padding: 20px;
   text-align: left;
   overflow-y: auto;
