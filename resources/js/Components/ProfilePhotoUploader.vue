@@ -30,6 +30,15 @@ const uploadPhoto = async () => {
   }
 };
 
+const deleteProfilePhoto = async () => {
+  try {
+    await axios.post('/api/user/delete-photo');
+    profilePhoto.value = '/images/default-avatar.png';
+  } catch (error) {
+    console.error('Erro ao deletar a foto:', error);
+  }
+};
+
 onMounted(async () => {
   try {
     const response = await axios.get('/api/user');
@@ -43,7 +52,7 @@ onMounted(async () => {
 <template>
   <div class="text-center">
     <img
-      :src="profilePhoto"
+      :src="profilePhoto || '/images/default-profile.png'"
       alt="Foto de Perfil"
       class="rounded-full w-32 h-32 mx-auto mb-4"
     />
@@ -52,6 +61,10 @@ onMounted(async () => {
       Escolher Foto
       <input type="file" ref="fileInput" class="hidden" @change="uploadPhoto" />
     </label>
+
+    <button @click="deleteProfilePhoto" class="mt-4 text-red-500">
+      Deletar Foto
+    </button>
 
     <p v-if="isUploading" class="text-gray-500 mt-2">Enviando...</p>
   </div>

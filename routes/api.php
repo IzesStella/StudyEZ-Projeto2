@@ -25,6 +25,10 @@ Route::middleware('auth:sanctum')->post('/user/profile-photo', [
   'updateProfilePhoto',
 ]);
 
+Route::post('/user/delete-photo', [
+  AuthController::class,
+  'deleteProfilePhoto',
+])->middleware('auth');
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {

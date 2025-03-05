@@ -108,6 +108,22 @@ class AuthController extends Controller
     ]);
   }
 
+  public function deleteProfilePhoto(Request $request)
+  {
+    $user = auth()->user();
+
+    if ($user->profile_photo) {
+      Storage::delete('public/' . $user->profile_photo);
+
+      $user->profile_photo = null;
+      $user->save();
+    }
+
+    return response()->json([
+      'message' => 'Imagem de perfil removida com sucesso.',
+    ]);
+  }
+
   public function getUserData()
   {
     $user = auth()->user();

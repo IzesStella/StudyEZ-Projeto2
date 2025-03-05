@@ -13,7 +13,7 @@ defineProps({
     <div class="relative flex justify-center items-center gap-[48%]">
       <div class="h-[230] w-[230] mt-16 flex justify-center items-center">
         <img
-          :src="profilePhoto"
+          :src="profilePhoto || '/images/default-profile.png'"
           alt="Foto de perfil"
           class="rounded-full w-[230px] h-[230px] object-cover"
         />
@@ -152,7 +152,7 @@ defineProps({
           <!-- conteudo dos posts aqui  -->
           <div class="flex flex-row self-start">
             <img
-              :src="profilePhoto"
+              :src="profilePhoto || '/images/default-profile.png'"
               alt="Foto de perfil"
               class="rounded-full w-[60px] h-[60px] object-cover"
             />
