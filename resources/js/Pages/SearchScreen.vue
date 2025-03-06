@@ -75,37 +75,36 @@ export default {
           id: 1,
           imagem: '/images/logicadeprogramacao.png',
           nome: 'Lógica de Programação',
-          descricao:
-            'Essa comunidade foca em conceitos básicos e avançados de lógica de programação.',
+          descricao: 'Aprenda a resolver problemas com código e algoritmos.',
           cor: '#d9f8c4',
         },
         {
           id: 2,
           imagem: '/images/engenharia.png',
           nome: 'Engenharia de Software',
-          descricao:
-            'Aprenda sobre design, arquitetura e ciclo de vida do software.',
+          descricao: 'Estude metodologias para criar software de qualidade.',
           cor: '#c4f0f8',
         },
         {
           id: 3,
           imagem: '/images/bancodedados.png',
           nome: 'Banco de Dados',
-          descricao: 'Explore conceitos de modelagem e gerenciamento de dados.',
+          descricao: 'Gerencie e otimize bancos de dados com SQL.',
           cor: '#e3d9f8',
         },
         {
           id: 4,
           imagem: '/images/web.png',
           nome: 'Desenvolvimento Web',
-          descricao: 'Aprenda sobre criação de sites e aplicações modernas.',
+          descricao:
+            'Crie sites e apps com HTML, CSS, JavaScript e frameworks.',
           cor: '#f8d9d9',
         },
         {
           id: 5,
           imagem: '/images/design.png',
           nome: 'Design',
-          descricao: 'Descubra técnicas de {mudar isso dps}.',
+          descricao: 'Crie interfaces funcionais e responsivas.',
           cor: '#fff2d4',
         },
         {

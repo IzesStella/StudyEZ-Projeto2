@@ -35,12 +35,12 @@
               style="background-color: #dabee9"
             >
               <div class="comunidade-header">
-                <img src="logica.jpg" class="perfil-img" />
+                <img src="/images/logicadeprogramacao.png" class="perfil-img" />
                 <h3>Lógica de Programação</h3>
               </div>
               <p>
-                Essa comunidade foca em conceitos básicos e avançados de lógica
-                de programação.
+                Aprenda a resolver problemas com lógica e algoritmos, dominando
+                estruturas de controle e otimização de código.
               </p>
               <button class="btn join-button">UNIR-SE</button>
             </div>
@@ -50,10 +50,13 @@
               style="background-color: #b0d4f2"
             >
               <div class="comunidade-header">
-                <img src="web.jpg" class="perfil-img" />
+                <img src="/images/web.png" class="perfil-img" />
                 <h3>Desenvolvimento Web</h3>
               </div>
-              <p>Aprenda sobre criação de sites e aplicações modernas.</p>
+              <p>
+                Crie sites e aplicações dinâmicas com HTML, CSS, JavaScript e
+                explore frameworks como Vue.js e Laravel.
+              </p>
               <button class="btn join-button">UNIR-SE</button>
             </div>
 
@@ -62,10 +65,13 @@
               style="background-color: #dabee9"
             >
               <div class="comunidade-header">
-                <img src="banco.jpg" class="perfil-img" />
+                <img src="/images/bancodedados.png" class="perfil-img" />
                 <h3>Banco de Dados</h3>
               </div>
-              <p>Explore conceitos de modelagem e gerenciamento de dados.</p>
+              <p>
+                Aprenda a modelar, gerenciar e otimizar bancos de dados
+                relacionais e não relacionais com SQL.
+              </p>
               <button class="btn join-button">UNIR-SE</button>
             </div>
 
@@ -74,10 +80,13 @@
               style="background-color: #e5e17f"
             >
               <div class="comunidade-header">
-                <img src="ia.jpg" class="perfil-img" />
-                <h3>Inteligência Artificial</h3>
+                <img src="/images/design.png" class="perfil-img" />
+                <h3>Design de Interface</h3>
               </div>
-              <p>Descubra técnicas de machine learning e redes neurais.</p>
+              <p>
+                Desenvolva interfaces intuitivas e responsivas, focando na
+                usabilidade e na experiência do usuário.
+              </p>
               <button class="btn join-button">UNIR-SE</button>
             </div>
 
@@ -86,11 +95,12 @@
               style="background-color: #f7bde0"
             >
               <div class="comunidade-header">
-                <img src="images/redes.jpg" class="perfil-img" />
+                <img src="/images/redes.png" class="perfil-img" />
                 <h3>Redes de Computadores</h3>
               </div>
               <p>
-                Entenda como funcionam as redes e a segurança da informação.
+                Compreenda o funcionamento de redes, protocolos e a importância
+                da segurança da informação.
               </p>
               <button class="btn join-button">UNIR-SE</button>
             </div>
@@ -100,11 +110,12 @@
               style="background-color: #ffc384"
             >
               <div class="comunidade-header">
-                <img src="images/engenhariasoftware.png" class="perfil-img" />
+                <img src="/images/engenharia.png" class="perfil-img" />
                 <h3>Engenharia de Software</h3>
               </div>
               <p>
-                Aprenda sobre design, arquitetura e ciclo de vida do software.
+                Estude práticas e metodologias de desenvolvimento ágil e
+                qualidade de software, como Agile e DevOps.
               </p>
               <button class="btn join-button">UNIR-SE</button>
             </div>
