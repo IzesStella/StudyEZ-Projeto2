@@ -10,35 +10,30 @@ defineProps({
 <template>
   <Head title="Profile" />
   <MainLayout class>
-    <div class="relative flex justify-center items-center gap-[48%]">
-      <div class="h-[230] w-[230] mt-16 flex justify-center items-center">
+    <!-- Cabeçalho do Perfil: estrutura original -->
+    <div class="profile-header">
+      <div class="profile-photo-and-name">
         <img
           :src="profilePhoto || '/images/default-profile.png'"
           alt="Foto de perfil"
-          class="rounded-full w-[230px] h-[230px] object-cover"
+          class="profile-photo"
         />
-        <span class="text-2xl font-bold">
+        <span class="profile-name">
           {{ $page.props.auth.user.name }}
         </span>
       </div>
 
       <Dropdown align="right" width="48">
         <template #trigger>
-          <span class="inline-flex rounded-md">
-            <button
-              type="button"
-              class="self-end inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
-            >
+          <span class="dropdown-trigger">
+            <button type="button" class="profile-options-button">
               Opções de Perfil
             </button>
           </span>
         </template>
 
         <template #content>
-          <button
-            class="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
-            @click="showEditProfile"
-          >
+          <button class="dropdown-item" @click="showEditProfile">
             Editar Perfil
           </button>
           <DropdownLink :href="route('logout')" method="post" as="button">
@@ -48,117 +43,76 @@ defineProps({
       </Dropdown>
     </div>
 
-    <div class="py-12 flex justify-center items-center">
-      <div
-        v-if="isEditProfileVisible"
-        class="fixed inset-0 bg-gray-500 bg-opacity-50 z-50 flex items-center justify-center overflow-auto"
-      >
-        <div
-          class="bg-white w-full max-w-4xl max-h-[90%] overflow-auto rounded-xl shadow-lg p-6 space-y-8 relative"
-        >
-          <div
-            class="bg-gray-800 text-white p-4 rounded-t-xl shadow-md flex justify-between items-center"
-          >
-            <h3 class="text-lg font-semibold">Editar Perfil</h3>
-            <button
-              class="text-gray-500 hover:text-gray-700 transition"
-              @click="closeEditProfile"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
+    <!-- Modal de edição do perfil (permanece inalterado) -->
+    <div class="profile-edit-modal-container">
+      <div v-if="isEditProfileVisible" class="modal-backdrop">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Editar Perfil</h3>
+            <button class="close-button" @click="closeEditProfile">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
-          <div class="p-6">
-            <h1 class="text-2xl font-bold mb-4">Meu Perfil</h1>
+          <div class="modal-section">
+            <h1 class="section-title">Meu Perfil</h1>
             <ProfilePhotoUploader />
           </div>
-          <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+          <div class="modal-section form-section">
             <UpdateProfileInformationForm
               :must-verify-email="mustVerifyEmail"
               :status="status"
-              class="max-w-xl mx-auto"
             />
           </div>
-
-          <div class="bg-gray-50 p-6 rounded-lg shadow-md">
-            <UpdatePasswordForm class="max-w-xl mx-auto" />
+          <div class="modal-section form-section">
+            <UpdatePasswordForm />
           </div>
-
-          <div class="bg-gray-50 p-6 rounded-lg shadow-md">
-            <DeleteUserForm class="max-w-xl mx-auto" />
+          <div class="modal-section form-section">
+            <DeleteUserForm />
           </div>
         </div>
       </div>
     </div>
 
-    <div class="flex flex-col justify-center ml-5">
-      <div class="relative flex flex-row justify-start ml-32">
+    <!-- Abas (Postagens e Comentários) permanecem inalteradas -->
+    <div class="tabs-container">
+      <div class="tabs-header">
         <button
-          class="px-4 py-2 bg-transparent rounded-xl focus:outline-none"
-          :class="{
-            'bg-blue-300 transition ease-in-out duration-150':
-              activeTab === 'posts',
-          }"
+          :class="['tabs-button', activeTab === 'posts' ? 'tabs-button-active' : '']"
           @click="showPosts"
         >
           Postagens
         </button>
         <button
-          class="px-4 py-2 bg-transparent rounded-xl focus:outline-none"
-          :class="{
-            'bg-blue-300 transition ease-in-out duration-150 ':
-              activeTab === 'comments',
-          }"
+          :class="['tabs-button', activeTab === 'comments' ? 'tabs-button-active' : '']"
           @click="showComments"
         >
           Comentarios
         </button>
       </div>
-
-      <div class="h-full overflow-hidden flex flex-col place-items-center">
-        <div
-          v-if="isCommentsVisible"
-          class="border-b border-black w-[80%] flex flex-col items-center justify-center p-4"
-        >
-          <!-- conteudo dos comentarios aqui  -->
-          <div class="flex flex-row self-start">
+      <div class="tabs-content">
+        <!-- Conteúdo Comentários -->
+        <div v-if="isCommentsVisible" class="tab-pane">
+          <div class="tab-item">
             <img
               :src="profilePhoto"
               alt="Foto de perfil"
-              class="rounded-full w-[60px] h-[60px] object-cover"
+              class="tab-item-photo"
             />
-            <span class="">
-              {{ $page.props.auth.user.name }}
-            </span>
+            <span>{{ $page.props.auth.user.name }}</span>
             <p>Comentarios</p>
           </div>
         </div>
-        <div
-          v-if="isPostsVisible"
-          class="border-b border-black w-[80%] flex flex-col items-center justify-center p-4"
-        >
-          <!-- conteudo dos posts aqui  -->
-          <div class="flex flex-row self-start">
+        <!-- Conteúdo Postagens -->
+        <div v-if="isPostsVisible" class="tab-pane">
+          <div class="tab-item">
             <img
               :src="profilePhoto || '/images/default-profile.png'"
               alt="Foto de perfil"
-              class="rounded-full w-[60px] h-[60px] object-cover"
+              class="tab-item-photo"
             />
-            <span class="">
-              {{ $page.props.auth.user.name }}
-            </span>
+            <span>{{ $page.props.auth.user.name }}</span>
             <p>Posts</p>
           </div>
         </div>
@@ -215,6 +169,232 @@ export default {
     Dropdown,
     DropdownLink,
     ProfilePhotoUploader,
+    DeleteUserForm,
+    UpdatePasswordForm,
+    UpdateProfileInformationForm,
   },
 };
 </script>
+
+<style scoped>
+/* ----- Cabeçalho do Perfil (layout original) ----- */
+.profile-header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48%;
+}
+
+.profile-photo-and-name {
+  height: 230px;
+  width: 230px;
+  margin-top: 4rem; /* equivalente a mt-16 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-photo {
+  border-radius: 50%;
+  width: 230px;
+  height: 230px;
+  object-fit: cover;
+}
+
+.profile-name {
+  font-size: 2rem; /* text-2xl */
+  font-weight: bold;
+  margin-left: 0.5rem; /* pequeno afastamento */
+}
+
+/* ----- Botão "Opções de Perfil" ----- */
+.profile-options-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: #135572; /* cor solicitada */
+  color: #fff;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background 0.15s ease-in-out;
+}
+
+.profile-options-button:hover {
+  background-color: #135572;
+}
+
+/* Wrapper para o trigger do Dropdown */
+.dropdown-trigger {
+  display: inline-flex;
+  border-radius: 0.375rem;
+}
+
+/* Itens do Dropdown */
+.dropdown-item {
+  width: 100%;
+  text-align: left;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  color: #374151;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease-in-out;
+}
+
+.dropdown-item:hover {
+  background: #f3f4f6;
+}
+
+/* ----- Modal (Editar Perfil) ----- */
+.profile-edit-modal-container {
+  padding: 3rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(107, 114, 128, 0.5);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+.modal-content {
+  background-color: #fff;
+  width: 100%;
+  max-width: 60rem; /* ~ 60rem */
+  max-height: 90%;
+  overflow: auto;
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  position: relative;
+}
+
+.modal-header {
+  background-color: #1f2937;
+  color: #fff;
+  padding: 1rem;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.15s ease-in-out;
+}
+
+.close-button:hover {
+  color: #374151;
+}
+
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.modal-section {
+  padding: 1.5rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.form-section {
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ----- Abas (Postagens / Comentários) ----- */
+.tabs-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 1.25rem;
+}
+
+.tabs-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-left: 8rem;
+}
+
+.tabs-button {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  outline: none;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  transition: background 0.15s ease-in-out;
+}
+
+.tabs-button-active {
+  background-color: #93c5fd;
+}
+
+.tabs-content {
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tab-pane {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.9); /* 90% opacidade */
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: row;
+  align-self: flex-start;
+  gap: 0.5rem;
+}
+
+.tab-item-photo {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
+</style>

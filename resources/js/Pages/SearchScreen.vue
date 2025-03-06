@@ -15,7 +15,10 @@
 
         <!-- Cards Section -->
         <section class="flex w-full flex-col justify-center items-center p-2">
-          <h2>Conheça novas disciplinas:</h2>
+          <h2 class="text-xl font-bold mt-8" style="font-family: 'Montserrat', sans-serif;">
+               Conheça novas disciplinas:
+          </h2>
+
           <div
             class="grid w-ful grid-cols-1 min-[830px]:grid-cols-2 xl:grid-cols-3 gap-5 mt-5 relative"
           >
