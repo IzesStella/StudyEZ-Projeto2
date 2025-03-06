@@ -73,15 +73,16 @@ export default {
 }
 
 .main-content {
-  flex: 1;
-  padding: 20px;
-  text-align: left;
-  overflow-y: auto;
-  height: 100vh;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+    flex: 1;
+    margin-left: 130px;
+    padding: 20px;
+    text-align: left;
+    overflow-y: auto;
+    height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 h1 {
@@ -89,6 +90,7 @@ h1 {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 0;
+  margin-left: 40px; 
 }
 
 .aside {

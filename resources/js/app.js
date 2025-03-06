@@ -12,9 +12,10 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faHome, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faPlus, faUser } from '@fortawesome/free-solid-svg-icons'; 
+
 import 'vue3-toastify/dist/index.css';
-library.add(faHome, faPlus);
+library.add(faHome, faPlus, faUser);
 
 const appName =
   window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
