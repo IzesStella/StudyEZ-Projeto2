@@ -34,18 +34,17 @@ const updatePassword = () => {
 </script>
 
 <template>
-    <section>
-        <header>
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Update Password</h2>
+    <section class="password-container">
+        <!-- Alterar Senha -->
+        <div class="password"> 
+            <h2> Alterar Senha</h2>
+        </div>
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Ensure your account is using a long, random password to stay secure.
-            </p>
-        </header>
-
+        <!-- Formulário de edição -->
         <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
-            <div>
-                <InputLabel for="current_password" value="Current Password" />
+            <!-- Senha atual -->
+            <div class="input-group">
+                <InputLabel for="current_password" value="Senha Atual" />
 
                 <TextInput
                     id="current_password"
@@ -59,8 +58,9 @@ const updatePassword = () => {
                 <InputError :message="form.errors.current_password" class="mt-2" />
             </div>
 
-            <div>
-                <InputLabel for="password" value="New Password" />
+            <!-- nova senha -->
+            <div class="input-group">
+                <InputLabel for="password" value="Nova Senha" />
 
                 <TextInput
                     id="password"
@@ -74,8 +74,9 @@ const updatePassword = () => {
                 <InputError :message="form.errors.password" class="mt-2" />
             </div>
 
-            <div>
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+            <!-- consirmar senha -->
+            <div class="input-group">
+                <InputLabel for="password_confirmation" value="Confirme sua nova senha" />
 
                 <TextInput
                     id="password_confirmation"
@@ -86,15 +87,66 @@ const updatePassword = () => {
                 />
 
                 <InputError :message="form.errors.password_confirmation" class="mt-2" />
-            </div>
-
-            <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
-
-                <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
-                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600 dark:text-gray-400">Saved.</p>
-                </Transition>
+              <!-- Botão de salvar -->
+              <div class="button-salve">
+    <button
+        class="custom-button"
+        :disabled="form.processing"
+    >
+        Salvar
+    </button>
+    </div>
+    
+    <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
+    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600 dark:text-gray-400">Saved.</p>
+    </Transition>
             </div>
         </form>
     </section>
 </template>
+
+<style scoped>
+.password-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.password{
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.input-group {
+    margin-bottom: 24px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: #686767;
+    margin-bottom: 8px;
+} 
+
+.input-group input {
+    background-color: #ffffff; /* Cor de fundo clara */
+    color: #333; /* Cor do texto */
+    border: 1px solid #135572; /* Cor da borda */
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.button-salve {
+    margin-top: 30px;
+    background-color:  #135572;;
+    color: white;
+    padding: 10px 20px;
+    font-size: 15px;
+    border-radius: 25px;
+    width: 85px;
+}
+
+</style>

@@ -38,27 +38,26 @@ const closeModal = () => {
 </script>
 
 <template>
-    <section class="space-y-6">
+    <section class="delete-container">
         <header>
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Delete Account</h2>
-
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting
-                your account, please download any data or information that you wish to retain.
-            </p>
         </header>
 
-        <DangerButton @click="confirmUserDeletion">Delete Account</DangerButton>
+        <div class="delete"> 
+            <h2> Deseja remover sua conta?</h2>
+        </div>
+
+        
+        <DangerButton @click="confirmUserDeletion" class="button-delete">Remover</DangerButton>
 
         <Modal :show="confirmingUserDeletion" @close="closeModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    Are you sure you want to delete your account?
+                    Tem certeza de que deseja excluir sua conta?
                 </h2>
 
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Once your account is deleted, all of its resources and data will be permanently deleted. Please
-                    enter your password to confirm you would like to permanently delete your account.
+                    Depois que sua conta for excluída, todos os seus recursos e dados serão excluídos permanentemente. Por favor
+Digite sua senha para confirmar que deseja excluir permanentemente sua conta.
                 </p>
 
                 <div class="mt-6">
@@ -78,7 +77,7 @@ const closeModal = () => {
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+                    <SecondaryButton @click="closeModal"> Cancelar </SecondaryButton>
 
                     <DangerButton
                         class="ml-3"
@@ -86,10 +85,43 @@ const closeModal = () => {
                         :disabled="form.processing"
                         @click="deleteUser"
                     >
-                        Delete Account
+                        Conta Excluida!
                     </DangerButton>
                 </div>
             </div>
         </Modal>
     </section>
 </template>
+
+<style scoped>
+.delete-container {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.delete{
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 10px;
+}
+
+.button-delete{
+    display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px; 
+  background-color: #ef4444; 
+  color: #ffffff;
+  border-radius: 15px; 
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 auto; 
+}
+</style>

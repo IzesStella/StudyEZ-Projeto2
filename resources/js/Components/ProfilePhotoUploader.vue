@@ -57,15 +57,38 @@ onMounted(async () => {
       class="rounded-full w-32 h-32 mx-auto mb-4"
     />
 
-    <label class="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-md">
+    <label class="upload-photo">
       Escolher Foto
       <input type="file" ref="fileInput" class="hidden" @change="uploadPhoto" />
     </label>
 
-    <button @click="deleteProfilePhoto" class="mt-4 text-red-500">
+    <button @click="deleteProfilePhoto" class="delete-photo">
       Deletar Foto
     </button>
 
     <p v-if="isUploading" class="text-gray-500 mt-2">Enviando...</p>
   </div>
 </template>
+
+<style scoped>
+.upload-photo {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 10px;
+  background-color: #135572; 
+  color: white;
+  border-radius: 15px;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.delete-photo {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 10px;
+  background-color: #ef4444;
+  color: #ffffff;
+  border-radius: 15px;
+  cursor: pointer;
+}
+</style>

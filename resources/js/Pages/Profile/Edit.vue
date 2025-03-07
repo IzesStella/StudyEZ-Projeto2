@@ -43,7 +43,7 @@ defineProps({
       </Dropdown>
     </div>
 
-    <!-- Modal de edição do perfil (permanece inalterado) -->
+    <!-- Modal de edição do perfil-->
     <div class="profile-edit-modal-container">
       <div v-if="isEditProfileVisible" class="modal-backdrop">
         <div class="modal-content">
@@ -56,7 +56,6 @@ defineProps({
             </button>
           </div>
           <div class="modal-section">
-            <h1 class="section-title">Meu Perfil</h1>
             <ProfilePhotoUploader />
           </div>
           <div class="modal-section form-section">
@@ -239,15 +238,14 @@ export default {
   text-align: left;
   font-size: 0.875rem;
   padding: 0.5rem 1rem;
-  color: #374151;
-  background: transparent;
+  color: #ffffff;
+  background: #3b3b3b;
   border: none;
   cursor: pointer;
-  transition: background 0.15s ease-in-out;
 }
 
 .dropdown-item:hover {
-  background: #f3f4f6;
+  background: #000000;
 }
 
 /* ----- Modal (Editar Perfil) ----- */
@@ -261,7 +259,7 @@ export default {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(107, 114, 128, 0.5);
+  background-color: rgba(28, 33, 43, 0.5);
   z-index: 50;
   display: flex;
   align-items: center;
@@ -272,66 +270,52 @@ export default {
 .modal-content {
   background-color: #fff;
   width: 100%;
-  max-width: 60rem; /* ~ 60rem */
+  max-width: 50%; 
   max-height: 90%;
   overflow: auto;
-  border-radius: 1rem;
+  border-radius: 20px;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
   position: relative;
 }
 
 .modal-header {
-  background-color: #1f2937;
+  background-color: #135572;
   color: #fff;
-  padding: 1rem;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 3%;
+  border-radius: 20px 20px 0px 0px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
 .modal-title {
-  font-size: 1.125rem;
-  font-weight: 600;
+  font-size: 24px; 
+  font-weight: bold;
 }
 
 .close-button {
-  background: none;
-  border: none;
-  color: #6b7280;
+  color: #ffffff;
   cursor: pointer;
   transition: color 0.15s ease-in-out;
 }
 
 .close-button:hover {
-  color: #374151;
+  color: #940000;
 }
 
 .icon {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 20px;
+  height: 20px;
 }
 
 .modal-section {
-  padding: 1.5rem;
-  background-color: #fff;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
+  padding: 5%;
+  margin-bottom: 1%;
 }
 
 .section-title {
-  font-size: 1.5rem;
+  font-size: 1.rem;
   font-weight: bold;
   margin-bottom: 1rem;
-}
-
-.form-section {
-  background-color: #f9fafb;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 /* ----- Abas (Postagens / Comentários) ----- */

@@ -104,7 +104,7 @@ export default {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #7d94a1; /*azul do fundo da tela*/
+  background-color: #ffffff; /*azul do fundo da tela*/
 }
 
 /* Caixa branca */
@@ -202,7 +202,7 @@ export default {
 
 .botao {
   width: 50%; /* largura do butaum */
-  background: #007bff;
+  background: #135572;
   color: white;
   padding: 12px;
   border: none;

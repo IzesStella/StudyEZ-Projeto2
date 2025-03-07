@@ -19,18 +19,19 @@ const form = useForm({
 </script>
 
 <template>
-    <section>
-        <header>
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Profile Information</h2>
+    <section class="profile-container">
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Update your account's profile information and email address.
-            </p>
-        </header>
+        <!-- Título da seção -->
+        <div class="profile"> 
+            <h2> Alterar nome</h2>
+        </div>
 
-        <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
-            <div>
-                <InputLabel for="name" value="Name" />
+        <!-- Formulário de edição -->
+        <form @submit.prevent="form.patch(route('profile.update'))">
+
+            <!-- Nome -->
+            <div class="input-group">
+                <InputLabel for="name" value="Nome" />
 
                 <TextInput
                     id="name"
@@ -45,7 +46,8 @@ const form = useForm({
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
 
-            <div>
+            <!-- Email -->
+            <div class="input-group">
                 <InputLabel for="email" value="Email" />
 
                 <TextInput
@@ -60,16 +62,17 @@ const form = useForm({
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div v-if="props.mustVerifyEmail && user.email_verified_at === null">
+            <!-- Verificação de e-mail -->
+            <div v-if="props.mustVerifyEmail && user.email_verified_at === null" class="verification-section">
                 <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                    Your email address is unverified.
+                    Endereço de Email inválido.
                     <Link
                         :href="route('verification.send')"
                         method="post"
                         as="button"
                         class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                     >
-                        Click here to re-send the verification email.
+                    Clique aqui para reenviar o e-mail de verificação.
                     </Link>
                 </p>
 
@@ -77,17 +80,69 @@ const form = useForm({
                     v-show="props.status === 'verification-link-sent'"
                     class="mt-2 font-medium text-sm text-green-600 dark:text-green-400"
                 >
-                    A new verification link has been sent to your email address.
+                Um novo link de verificação foi enviado para o seu e-mail.
                 </div>
             </div>
 
-            <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
-
-                <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
-                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600 dark:text-gray-400">Saved.</p>
-                </Transition>
-            </div>
+            <!-- Botão de salvar -->
+            <div class="button-salve">
+    <button
+        class="custom-button"
+        :disabled="form.processing"
+    >
+        Salvar
+    </button>
+    </div>
+    
+    <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
+    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600 dark:text-gray-400">Saved.</p>
+    </Transition>
         </form>
     </section>
 </template>
+
+<style scoped>
+.profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.profile{
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.input-group {
+    margin-bottom: 24px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: #686767;
+    margin-bottom: 8px;
+} 
+
+.input-group input {
+    background-color: #ffffff; /* Cor de fundo clara */
+    color: #333; /* Cor do texto */
+    border: 1px solid #135572; /* Cor da borda */
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.button-salve {
+    background-color:  #135572;;
+    color: white;
+    padding: 10px 20px;
+    font-size: 15px;
+    border-radius: 25px;
+    width: 85px;
+}
+
+
+</style>

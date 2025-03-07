@@ -52,7 +52,7 @@
             class="campo-entrada"
           />
           <div class="flex justify-center">
-            <button type="submit" class="botao-enviar">Registar</button>
+            <button type="submit" class="botao-enviar">Cadastre-se</button>
           </div>
         </form>
       </div>
@@ -139,7 +139,7 @@ export default {
 
 .botao-enviar {
   width: 70%;
-  background-color: #3b82f6;
+  background-color: #135572;
   color: white;
   font-weight: bold;
   padding: 12px;
@@ -149,6 +149,7 @@ export default {
 }
 
 .botao-enviar:hover {
-  background-color: #2563eb;
+  background-color: #53bbe9;
 }
+
 </style>
