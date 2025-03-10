@@ -9,8 +9,8 @@ defineProps({
 
 <template>
   <Head title="Profile" />
-  <MainLayout class>
-    <!-- Cabeçalho do Perfil: estrutura original -->
+  <MainLayout>
+    <!-- Cabeçalho do Perfil -->
     <div class="profile-header">
       <div class="profile-photo-and-name">
         <img
@@ -18,9 +18,7 @@ defineProps({
           alt="Foto de perfil"
           class="profile-photo"
         />
-        <span class="profile-name">
-          {{ $page.props.auth.user.name }}
-        </span>
+        <span class="profile-name">{{ $page.props.auth.user.name }}</span>
       </div>
 
       <Dropdown align="right" width="48">
@@ -43,7 +41,7 @@ defineProps({
       </Dropdown>
     </div>
 
-    <!-- Modal de edição do perfil-->
+    <!-- Modal de Edição do Perfil -->
     <div class="profile-edit-modal-container">
       <div v-if="isEditProfileVisible" class="modal-backdrop">
         <div class="modal-content">
@@ -55,26 +53,23 @@ defineProps({
               </svg>
             </button>
           </div>
+          <!-- Seção de Upload da Foto -->
           <div class="modal-section">
-            <ProfilePhotoUploader />
+            <ProfilePhotoUploader ref="profilePhotoUploader" />
           </div>
+          <!-- Formulário de atualização do nome e email -->
           <div class="modal-section form-section">
             <UpdateProfileInformationForm
+              ref="updateProfileInformationForm"
               :must-verify-email="mustVerifyEmail"
               :status="status"
             />
-          </div>
-          <div class="modal-section form-section">
-            <UpdatePasswordForm />
-          </div>
-          <div class="modal-section form-section">
-            <DeleteUserForm />
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Abas (Postagens e Comentários) permanecem inalteradas -->
+    <!-- Abas (Postagens e Comentários) -->
     <div class="tabs-container">
       <div class="tabs-header">
         <button
@@ -94,11 +89,7 @@ defineProps({
         <!-- Conteúdo Comentários -->
         <div v-if="isCommentsVisible" class="tab-pane">
           <div class="tab-item">
-            <img
-              :src="profilePhoto"
-              alt="Foto de perfil"
-              class="tab-item-photo"
-            />
+            <img :src="profilePhoto" alt="Foto de perfil" class="tab-item-photo" />
             <span>{{ $page.props.auth.user.name }}</span>
             <p>Comentarios</p>
           </div>
@@ -106,11 +97,7 @@ defineProps({
         <!-- Conteúdo Postagens -->
         <div v-if="isPostsVisible" class="tab-pane">
           <div class="tab-item">
-            <img
-              :src="profilePhoto || '/images/default-profile.png'"
-              alt="Foto de perfil"
-              class="tab-item-photo"
-            />
+            <img :src="profilePhoto || '/images/default-profile.png'" alt="Foto de perfil" class="tab-item-photo" />
             <span>{{ $page.props.auth.user.name }}</span>
             <p>Posts</p>
           </div>
@@ -125,10 +112,8 @@ import { router } from '@inertiajs/vue3';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
-import DeleteUserForm from './Partials/DeleteUserForm.vue';
-import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import ProfilePhotoUploader from '@/Components/ProfilePhotoUploader.vue';
+import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 
 export default {
   data() {
@@ -161,22 +146,20 @@ export default {
     },
     goToRoute(route) {
       router.visit(route);
-    },
+    }
   },
   components: {
     MainLayout,
     Dropdown,
     DropdownLink,
     ProfilePhotoUploader,
-    DeleteUserForm,
-    UpdatePasswordForm,
     UpdateProfileInformationForm,
   },
 };
 </script>
 
 <style scoped>
-/* ----- Cabeçalho do Perfil (layout original) ----- */
+/* ----- Cabeçalho do Perfil ----- */
 .profile-header {
   position: relative;
   display: flex;
@@ -188,7 +171,7 @@ export default {
 .profile-photo-and-name {
   height: 230px;
   width: 230px;
-  margin-top: 4rem; /* equivalente a mt-16 */
+  margin-top: 4rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -202,9 +185,9 @@ export default {
 }
 
 .profile-name {
-  font-size: 2rem; /* text-2xl */
+  font-size: 2rem;
   font-weight: bold;
-  margin-left: 0.5rem; /* pequeno afastamento */
+  margin-left: 0.5rem;
 }
 
 /* ----- Botão "Opções de Perfil" ----- */
@@ -215,7 +198,7 @@ export default {
   border: none;
   font-size: 1rem;
   font-weight: 500;
-  background-color: #135572; /* cor solicitada */
+  background-color: #135572;
   color: #fff;
   border-radius: 0.375rem;
   cursor: pointer;
@@ -226,13 +209,11 @@ export default {
   background-color: #135572;
 }
 
-/* Wrapper para o trigger do Dropdown */
 .dropdown-trigger {
   display: inline-flex;
   border-radius: 0.375rem;
 }
 
-/* Itens do Dropdown */
 .dropdown-item {
   width: 100%;
   text-align: left;
@@ -270,7 +251,7 @@ export default {
 .modal-content {
   background-color: #fff;
   width: 100%;
-  max-width: 50%; 
+  max-width: 50%;
   max-height: 90%;
   overflow: auto;
   border-radius: 20px;
@@ -288,7 +269,7 @@ export default {
 }
 
 .modal-title {
-  font-size: 24px; 
+  font-size: 24px;
   font-weight: bold;
 }
 
@@ -310,12 +291,6 @@ export default {
 .modal-section {
   padding: 5%;
   margin-bottom: 1%;
-}
-
-.section-title {
-  font-size: 1.rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
 }
 
 /* ----- Abas (Postagens / Comentários) ----- */
@@ -358,7 +333,7 @@ export default {
 }
 
 .tab-pane {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.9); /* 90% opacidade */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.9);
   width: 80%;
   display: flex;
   flex-direction: column;

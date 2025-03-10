@@ -20,14 +20,14 @@ const form = useForm({
 
 <template>
     <section class="profile-container">
-
         <!-- Título da seção -->
         <div class="profile"> 
-            <h2> Alterar nome</h2>
+            <h2>Alterar nome</h2>
         </div>
 
         <!-- Formulário de edição -->
-        <form @submit.prevent="form.patch(route('profile.update'))">
+        <!-- Alterado de form.patch para form.put -->
+        <form @submit.prevent="form.put(route('profile.update'))">
 
             <!-- Nome -->
             <div class="input-group">
@@ -72,7 +72,7 @@ const form = useForm({
                         as="button"
                         class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                     >
-                    Clique aqui para reenviar o e-mail de verificação.
+                        Clique aqui para reenviar o e-mail de verificação.
                     </Link>
                 </p>
 
@@ -80,23 +80,20 @@ const form = useForm({
                     v-show="props.status === 'verification-link-sent'"
                     class="mt-2 font-medium text-sm text-green-600 dark:text-green-400"
                 >
-                Um novo link de verificação foi enviado para o seu e-mail.
+                    Um novo link de verificação foi enviado para o seu e-mail.
                 </div>
             </div>
 
             <!-- Botão de salvar -->
             <div class="button-salve">
-    <button
-        class="custom-button"
-        :disabled="form.processing"
-    >
-        Salvar
-    </button>
-    </div>
+                <button class="custom-button" :disabled="form.processing">
+                    Salvar
+                </button>
+            </div>
     
-    <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
-    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600 dark:text-gray-400">Saved.</p>
-    </Transition>
+            <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
+                <p v-if="form.recentlySuccessful" class="text-sm text-gray-600 dark:text-gray-400">Saved.</p>
+            </Transition>
         </form>
     </section>
 </template>
@@ -107,7 +104,7 @@ const form = useForm({
     margin: 0 auto;
 }
 
-.profile{
+.profile {
     font-size: 20px;
     font-weight: bold;
     color: #000000;
@@ -126,9 +123,9 @@ const form = useForm({
 } 
 
 .input-group input {
-    background-color: #ffffff; /* Cor de fundo clara */
-    color: #333; /* Cor do texto */
-    border: 1px solid #135572; /* Cor da borda */
+    background-color: #ffffff;
+    color: #333;
+    border: 1px solid #135572;
     padding: 12px;
     font-size: 16px;
     border-radius: 10px;
@@ -136,13 +133,11 @@ const form = useForm({
 }
 
 .button-salve {
-    background-color:  #135572;;
+    background-color: #135572;
     color: white;
     padding: 10px 20px;
     font-size: 15px;
     border-radius: 25px;
     width: 85px;
 }
-
-
 </style>
