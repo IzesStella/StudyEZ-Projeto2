@@ -14,7 +14,6 @@
             <label class="label">E-mail</label>
             <div class="input-box">
               <span class="icone">📧</span>
-              <!-- icone dentro da caixinha de formulario -->
               <input
                 type="email"
                 v-model="form.email"
@@ -63,51 +62,49 @@ export default {
         email: '',
         password: '',
       },
+      errors: [],
       loading: false,
     };
   },
   methods: {
-    async login() {
+    login() {
       this.loading = true;
-      try {
-        const response = await axios.post(
-          'http://127.0.0.1:8000/api/login',
-          this.form
-        );
-        localStorage.setItem('token', response.data.token);
-
-        toast.success('Login bem-sucedido!', {
-          position: 'top-center',
-          duration: 3000,
-        });
-
-        this.$inertia.get('/dashboard');
-      } catch (error) {
-        if (error.response && error.response.status === 422) {
-          this.errors = Object.values(error.response.data.errors).flat();
-        } else {
-          this.errors = ['Ocorreu um erro ao tentar fazer login.'];
-        }
-        toast.error(this.errors[0], { position: 'top-center', duration: 3000 });
-      } finally {
-        this.loading = false;
-      }
+      this.$inertia.post('/login', this.form, {
+        onSuccess: () => {
+          toast.success('Login bem-sucedido!', {
+            position: 'top-center',
+            duration: 3000,
+          });
+          // Redirecionamento pode ser definido aqui ou no controller
+        },
+        onError: (errors) => {
+          const errorMessage =
+            errors.message || 'Ocorreu um erro ao fazer login.';
+          toast.error(errorMessage, {
+            position: 'top-center',
+            duration: 3000,
+          });
+          this.errors = errors;
+        },
+        onFinish: () => {
+          this.loading = false;
+        },
+      });
     },
   },
 };
 </script>
 
 <style scoped>
-/* Tela */
+/* Seus estilos permanecem os mesmos */
 .tela {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #ffffff; /*azul do fundo da tela*/
+  background-color: #ffffff;
 }
 
-/* Caixa branca */
 .caixa {
   display: flex;
   background: white;
@@ -118,7 +115,6 @@ export default {
   width: 90%;
 }
 
-/* Lado esquerdo (imagem) */
 .lado-esquerdo {
   background: #fff5d1;
   display: flex;
@@ -130,16 +126,14 @@ export default {
 
 .coruja {
   width: 100%;
-  max-width: 100%; /*pra aumentar a coruja*/
+  max-width: 100%;
 }
 
-/* Lado direito (formulário) */
 .lado-direito {
   flex: 1;
   padding: 40px;
 }
 
-/* Título */
 .titulo {
   text-align: center;
   font-size: 24px;
@@ -147,7 +141,6 @@ export default {
   margin-bottom: 20px;
 }
 
-/* Campos */
 .campo {
   margin-bottom: 15px;
 }
@@ -184,7 +177,6 @@ export default {
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
 
-/* Esqueci minha senha */
 .esqueci {
   text-align: right;
   font-size: 12px;
@@ -201,7 +193,7 @@ export default {
 }
 
 .botao {
-  width: 50%; /* largura do butaum */
+  width: 50%;
   background: #135572;
   color: white;
   padding: 12px;
@@ -209,15 +201,14 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  display: block; /* Garantindo que o botão seja exibido como um bloco */
-  margin: 20px auto 0; /* Centralizando o botão */
+  display: block;
+  margin: 20px auto 0;
 }
 
 .botao:hover {
   background: #53bbe9;
 }
 
-/* aplicacao de responsividae */
 @media (max-width: 768px) {
   .caixa {
     flex-direction: column;
@@ -230,7 +221,7 @@ export default {
   }
 
   .coruja {
-    max-width: 200px; /* Ajustando para telas menores */
+    max-width: 200px;
   }
 
   .lado-direito {
