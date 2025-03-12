@@ -37,12 +37,6 @@ Route::get('/register', [RegisteredUserController::class, 'create'])->name(
 );
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
-// === Removidas as seguintes rotas da API ===
-// Removida a rota duplicada de registro via AuthController:
-// Route::post('/register', [AuthController::class, 'register']);
-// Removida a rota de login via API:
-// Route::post('Auth/login', [AuthController::class, 'login']);
-
 // Rota para deslogar
 Route::middleware('auth')
   ->post('/logout', [AuthenticatedSessionController::class, 'destroy'])
@@ -54,9 +48,15 @@ Route::get('/forgot-password', function () {
 })->name('password.request');
 
 // Rotas protegidas (somente usuários autenticados podem acessar)
+
 Route::middleware('auth')->group(function () {
+  // Dashboard: envia os cursos inscritos do usuário para o Inertia
   Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $user = auth()->user();
+    $courses = $user->courses()->get();
+    return Inertia::render('Dashboard', [
+      'courses' => $courses,
+    ]);
   })->name('dashboard');
 
   // Rota para a Tela de Pesquisa (SearchScreen)
@@ -90,11 +90,15 @@ Route::get('/about', function () {
   return Inertia::render('About');
 })->name('about');
 
-Route::get('/courses/{id}/is-enrolled', [
-  CourseController::class,
-  'isEnrolled',
-])->middleware('auth');
+Route::middleware('auth')->group(function () {
+  // Rota para verificar se o usuário já está inscrito
+  Route::get('/courses/{id}/is-enrolled', [
+    CourseController::class,
+    'isEnrolled',
+  ])->middleware('auth');
 
-Route::post('/courses/{id}/enroll', [CourseController::class, 'enroll'])
-  ->middleware('auth')
-  ->name('courses.enroll');
+  // Rota para inscrever o usuário no curso
+  Route::post('/courses/{id}/enroll', [CourseController::class, 'enroll'])
+    ->middleware('auth')
+    ->name('courses.enroll');
+});

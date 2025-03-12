@@ -6,10 +6,22 @@
     <!-- Main Content -->
     <div class="main-content">
       <h1>Olá! O que você deseja aprender hoje?</h1>
-      <!-- Center Card -->
       <div class="aside">
-        <!-- Center Card (ao lado da Sidebar) -->
-        <div class="center-card">
+        <!-- Se o usuário estiver inscrito em algum curso, exibe os cards -->
+        <div v-if="courses.length > 0" class="courses-list">
+          <div class="course-card" v-for="course in courses" :key="course.id">
+            <h2>{{ course.name }}</h2>
+            <p>{{ course.description }}</p>
+            <button
+              class="btn community-button"
+              @click="goToCommunity(course.id)"
+            >
+              Ver Comunidade
+            </button>
+          </div>
+        </div>
+        <!-- Caso não esteja inscrito em nenhum curso -->
+        <div v-else class="center-card">
           <p>Parece que você ainda não está inscrito em nenhuma disciplina.</p>
           <p>Explore as disciplinas disponíveis!</p>
           <button class="btn explore-button" @click="goToSearch">
@@ -36,12 +48,21 @@ import Calendar from '@/Components/Calendar.vue';
 import SideBar from '../Components/SideBar.vue';
 
 export default {
+  props: {
+    courses: {
+      type: Array,
+      default: () => [],
+    },
+  },
   methods: {
     goToProfile() {
       router.get('/profile');
     },
     goToSearch() {
       this.$inertia.get('/search');
+    },
+    goToCommunity(courseId) {
+      this.$inertia.get(`/community/${courseId}`);
     },
   },
   components: {
@@ -73,16 +94,16 @@ export default {
 }
 
 .main-content {
-    flex: 1;
-    margin-left: 130px;
-    padding: 20px;
-    text-align: left;
-    overflow-y: auto;
-    height: 100vh;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  flex: 1;
+  margin-left: 130px;
+  padding: 20px;
+  text-align: left;
+  overflow-y: auto;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 h1 {
@@ -90,15 +111,15 @@ h1 {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 0;
-  margin-left: 40px; 
+  margin-left: 40px;
 }
 
 .aside {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  width: 100%; /* Ocupará todo o espaço disponível */
-  justify-content: space-between; /* Mantém espaçamento adequado */
+  width: 100%;
+  justify-content: space-between;
 }
 
 /* Center Card */
@@ -118,11 +139,50 @@ h1 {
 
 .center-card p {
   font-size: 16px;
-  text-align: justify; /* Justifica o texto */
   margin: 10px 0;
-  width: 100%; /* Garante que ocupe toda a largura do card */
+  width: 100%;
 }
 
+/* Cards dos cursos inscritos */
+.courses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-left: 40px;
+}
+
+.course-card {
+  background-color: #e0ffe0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 400px;
+}
+
+.course-card h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.course-card p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.community-button {
+  background-color: #ffffff;
+  color: #0a60e0;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.community-button:hover {
+  background-color: #0056b3;
+}
+
+/* Explore Button */
 .explore-button {
   background-color: #ffffff;
   color: #0a60e0;
@@ -144,12 +204,12 @@ h1 {
   width: 400px;
   height: 200px;
   z-index: 10;
-  margin-top: -3%; /*pra ficar ao lado e "olá"*/
+  margin-top: -3%;
 }
 
 .planner-right {
   width: 100%;
-  min-width: 300px; /* Evita que fique muito pequeno */
+  min-width: 300px;
 }
 
 .calendar {

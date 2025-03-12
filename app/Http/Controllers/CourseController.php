@@ -36,8 +36,6 @@ class CourseController extends Controller
     }
 
     $user = Auth::user();
-
-    // Verifica se o curso existe
     $course = Course::find($id);
     if (!$course) {
       return response()->json(['error' => 'Curso não encontrado.'], 404);
@@ -45,7 +43,6 @@ class CourseController extends Controller
 
     // Verifica se o usuário já está inscrito
     if ($user->courses()->where('courses_id', $id)->exists()) {
-      // ✅ Correção aqui
       return response()->json(
         ['error' => 'Você já está inscrito neste curso!'],
         400
@@ -56,5 +53,19 @@ class CourseController extends Controller
     $user->courses()->attach($id);
 
     return response()->json(['success' => 'Inscrição realizada com sucesso!']);
+  }
+
+  /**
+   * Verifica se o usuário está inscrito no curso.
+   */
+  public function isEnrolled($id)
+  {
+    $user = Auth::user();
+    if (!$user) {
+      return response()->json(['enrolled' => false], 200);
+    }
+
+    $enrolled = $user->courses()->where('courses_id', $id)->exists();
+    return response()->json(['enrolled' => $enrolled]);
   }
 }
