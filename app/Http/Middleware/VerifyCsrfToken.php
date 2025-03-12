@@ -13,6 +13,7 @@ class VerifyCsrfToken extends Middleware
    */
   protected $except = [
     'api/login',
+    'community/*/enroll',
     // other routes if necessary
   ];
 }

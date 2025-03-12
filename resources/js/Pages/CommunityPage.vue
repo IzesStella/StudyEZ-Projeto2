@@ -15,12 +15,17 @@
           class="community-logo"
         />
         <div class="community-info">
-          <!-- Utiliza dados da prop "course" com os atributos corretos -->
           <h1>{{ course.name }}</h1>
           <p>{{ course.description }}</p>
         </div>
         <div class="actions">
-          <button class="subscribe">Inscreva-se</button>
+          <button
+            class="subscribe"
+            :disabled="loading"
+            @click="enroll(course.id)"
+          >
+            {{ loading ? 'Inscrevendo...' : 'Inscreva-se' }}
+          </button>
           <button class="post">+ Postar</button>
         </div>
       </div>
@@ -51,7 +56,6 @@ import SideBar from '../Components/SideBar.vue';
 
 export default {
   props: {
-    // A prop course é obrigatória e virá do backend via Inertia
     course: {
       type: Object,
       required: true,
@@ -84,7 +88,63 @@ export default {
           comments: 0,
         },
       ],
+      loading: false, // Indicador de carregamento
     };
+  },
+  methods: {
+    async enroll(courseId) {
+      if (this.loading) return; // Evita múltiplos cliques
+      this.loading = true;
+
+      try {
+        console.log(`Tentando inscrever no curso ID: ${courseId}`);
+
+        const response = await fetch(`/courses/${courseId}/enroll`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+              .content,
+          },
+        });
+
+        const responseText = await response.text();
+        let responseData;
+
+        try {
+          responseData = JSON.parse(responseText);
+        } catch (error) {
+          throw new Error('Resposta inesperada do servidor.');
+        }
+
+        if (response.ok) {
+          this.$toast.success(
+            responseData.success || 'Inscrição realizada com sucesso!'
+          );
+        } else {
+          if (response.status === 401) {
+            this.$toast.error('Você precisa estar logado para se inscrever.');
+          } else if (response.status === 404) {
+            this.$toast.error('Curso não encontrado.');
+          } else if (response.status === 400) {
+            this.$toast.warning(
+              responseData.message || 'Você já está inscrito neste curso.'
+            );
+          } else {
+            throw new Error(
+              responseData.error || 'Erro ao tentar se inscrever.'
+            );
+          }
+        }
+      } catch (error) {
+        console.error('Erro ao se inscrever:', error);
+        this.$toast.error(
+          error.message || 'Erro inesperado ao tentar se inscrever.'
+        );
+      } finally {
+        this.loading = false;
+      }
+    },
   },
 };
 </script>
@@ -132,6 +192,17 @@ export default {
   background: #135572;
   color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.actions button:hover {
+  background: #0e3d53;
+}
+
+.actions button:disabled {
+  background: #b3b3b3;
+  cursor: not-allowed;
 }
 
 .post {

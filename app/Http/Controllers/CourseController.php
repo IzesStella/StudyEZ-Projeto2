@@ -2,30 +2,59 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Course;
 
 class CourseController extends Controller
 {
-    // Retorna todos os cursos como JSON
-    public function index()
-    {
-        return response()->json(Course::all());
+  /**
+   * Exibir todos os cursos
+   */
+  public function index()
+  {
+    $courses = Course::all();
+    return view('courses.index', compact('courses'));
+  }
+
+  /**
+   * Exibir um curso específico
+   */
+  public function show($id)
+  {
+    $course = Course::findOrFail($id);
+    return view('courses.show', compact('course'));
+  }
+
+  /**
+   * Inscrever o usuário no curso
+   */
+  public function enroll($id)
+  {
+    if (!Auth::check()) {
+      return response()->json(['error' => 'Usuário não autenticado.'], 401);
     }
 
-    // Retorna os detalhes de um curso específico
-    public function show($id)
-    {
-        $course = Course::find($id);
+    $user = Auth::user();
 
-        if (!$course) {
-            return response()->json(['message' => 'Curso não encontrado'], 404);
-        }
-
-        return response()->json($course);
+    // Verifica se o curso existe
+    $course = Course::find($id);
+    if (!$course) {
+      return response()->json(['error' => 'Curso não encontrado.'], 404);
     }
+
+    // Verifica se o usuário já está inscrito
+    if ($user->courses()->where('courses_id', $id)->exists()) {
+      // ✅ Correção aqui
+      return response()->json(
+        ['error' => 'Você já está inscrito neste curso!'],
+        400
+      );
+    }
+
+    // Inscreve o usuário no curso
+    $user->courses()->attach($id);
+
+    return response()->json(['success' => 'Inscrição realizada com sucesso!']);
+  }
 }

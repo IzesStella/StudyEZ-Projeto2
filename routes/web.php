@@ -90,6 +90,11 @@ Route::get('/about', function () {
   return Inertia::render('About');
 })->name('about');
 
-// Rotas para ver todos os cursos e um curso específico
-Route::get('/courses', [CourseController::class, 'index']);
-Route::get('/courses/{id}', [CourseController::class, 'show']);
+Route::get('/courses/{id}/is-enrolled', [
+  CourseController::class,
+  'isEnrolled',
+])->middleware('auth');
+
+Route::post('/courses/{id}/enroll', [CourseController::class, 'enroll'])
+  ->middleware('auth')
+  ->name('courses.enroll');
