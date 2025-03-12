@@ -30,14 +30,16 @@ class AuthController extends Controller
       return Inertia::location('/login');
     } catch (\Exception $e) {
       \Log::error($e->getMessage());
-      return Inertia::render('Auth/Register', [
-        'errors' => [
-          'message' => $e->getMessage(),
+      return response()->json(
+        [
+          'errors' => [
+            'message' => $e->getMessage(),
+          ],
         ],
-      ]);
+        422
+      );
     }
   }
-
   public function login(Request $request)
   {
     try {
