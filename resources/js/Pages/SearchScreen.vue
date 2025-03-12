@@ -1,72 +1,53 @@
 <template>
   <MainLayout>
-    <div class="flex h-screen overflow-hidden">
-      <!-- Main Content -->
-      <div class="flex-1 p-5 text-center overflow-y-auto h-screen box-border">
-        <!-- Top Bar with Search -->
-        <div class="flex justify-center items-center w-full py-2 bg-white z-10">
-          <input
-            type="text"
-            v-model="searchQuery"
-            placeholder="Pesquisar novas comunidades..."
-            class="w-full max-w-[1090px] p-2 text-base border border-gray-300 rounded-full outline-none"
-          />
-        </div>
+    <div class="container">
+      <!-- Top Bar com busca -->
+      <div class="top-bar">
+        <input
+          type="text"
+          v-model="searchQuery"
+          placeholder="Pesquisar novas comunidades..."
+        />
+      </div>
 
-        <!-- Cards Section -->
-        <section class="flex w-full flex-col justify-center items-center p-2">
-          <h2 class="text-xl font-bold mt-8" style="font-family: 'Montserrat', sans-serif;">
-               Conheça novas disciplinas:
-          </h2>
-
+      <!-- Seção dos Cards -->
+      <section class="cards-section">
+        <h2>Conheça novas disciplinas:</h2>
+        <div class="cards-grid">
           <div
-            class="grid w-ful grid-cols-1 min-[830px]:grid-cols-2 xl:grid-cols-3 gap-5 mt-5 relative"
+            v-for="disciplina in filteredDisciplinas"
+            :key="disciplina.nome"
+            class="card"
+            :style="{ backgroundColor: disciplina.cor }"
           >
-            <div
-              v-for="disciplina in filteredDisciplinas"
-              :key="disciplina.nome"
-              class="bg-gray-50 rounded-xl p-5 text-left shadow-lg transition-transform transform hover:translate-y-[-5px] hover:shadow-2xl w-full min-[830px]:w-[350px] mx-auto min-h-[210px] flex flex-col relative"
-              :style="{ backgroundColor: disciplina.cor }"
-            >
-              <!-- Cabeçalho com imagem circular e título alinhados -->
-              <div class="flex items-center gap-2 mb-2">
-                <img
-                  :src="disciplina.imagem"
-                  alt="Ícone da disciplina"
-                  class="w-10 h-10 rounded-full object-cover"
-                />
-
-                <h3 class="text-lg font-bold text-black m-0">
-                  {{ disciplina.nome }}
-                </h3>
-              </div>
-              <p class="text-sm text-black leading-6 text-start my-3">
-                {{ disciplina.descricao }}
-              </p>
-              <div class="flex justify-end items-end h-full">
-                <button
-                  class="bg-white text-black font-bold rounded-lg py-2 px-4 block hover:bg-gray-300"
-                  @click="goToCommunityByDiscipline(disciplina)"
-                >
-                  ENTRAR
-                </button>
-              </div>
+            <!-- Cabeçalho com imagem e título -->
+            <div class="card-header">
+              <img
+                :src="disciplina.imagem"
+                alt="Ícone da disciplina"
+              />
+              <h3>{{ disciplina.nome }}</h3>
+            </div>
+            <p>{{ disciplina.descricao }}</p>
+            <div class="card-footer">
+              <button @click="goToCommunityByDiscipline(disciplina)">
+                ENTRAR
+              </button>
             </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </div>
   </MainLayout>
 </template>
 
 <script>
 import { router } from '@inertiajs/vue3';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import SideBar from '../Components/SideBar.vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
+
 export default {
   components: {
-    FontAwesomeIcon,
     SideBar,
     MainLayout,
   },
@@ -121,27 +102,11 @@ export default {
       ],
     };
   },
-  methods: {
-    goToProfile() {
-      router.get('/profile');
-    },
-    goToHome() {
-      router.get('/dashboard');
-    },
-    goToSearch() {
-      router.get('/search');
-    },
-    goToCommunityByDiscipline(disciplina) {
-      // Redireciona para a comunidade específica com base no ID da disciplina
-      router.get(`/community/${disciplina.id}`);
-    },
-  },
   computed: {
     filteredDisciplinas() {
       if (!this.searchQuery) {
         return this.disciplinas;
       }
-
       const query = this.searchQuery.toLowerCase();
       return this.disciplinas.filter((disciplina) => {
         return (
@@ -151,9 +116,161 @@ export default {
       });
     },
   },
+  methods: {
+    goToCommunityByDiscipline(disciplina) {
+      router.get(`/community/${disciplina.id}`);
+    },
+  },
 };
 </script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+/* Container principal (equivalente a flex h-screen overflow-hidden) */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Top Bar: centralizado, fundo branco, com padding */
+.top-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 8px 0;
+  background-color: #ffffff;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+/* Estilo do input de busca */
+.top-bar input[type="text"] {
+  width: 100%;
+  max-width: 1090px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 9999px;
+  outline: none;
+}
+
+/* Seção de cards */
+.cards-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* Título da seção */
+.cards-section h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 32px;
+  margin-bottom: 16px;
+}
+
+/* Grid de cards: 1 coluna por padrão */
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* 2 colunas para telas maiores que 830px */
+@media (min-width: 830px) {
+  .cards-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* 3 colunas para telas maiores que 1200px */
+@media (min-width: 1200px) {
+  .cards-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+/* Card individual (equivalente ao div com classes do Tailwind) */
+.card {
+  background-color: #f9fafb; /* Cor de fundo padrão, mas sobrescrita via inline com disciplina.cor */
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  min-height: 210px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Efeito hover: eleva o card e aumenta a sombra */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Cabeçalho do card: exibe a imagem e o título */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+/* Imagem circular do card */
+.card-header img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Título do card */
+.card-header h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+  color: #000;
+}
+
+/* Parágrafo de descrição do card */
+.card p {
+  font-size: 16px;
+  color: #000;
+  line-height: 1.5;
+  margin: 12px 0;
+  flex-grow: 1;
+}
+
+/* Botão do card */
+.card-footer {
+  text-align: right;
+}
+.card-footer button {
+  background-color: #ffffff;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.card-footer button:hover {
+  background-color: #d1d5db;
+}
 </style>
