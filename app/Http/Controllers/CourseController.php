@@ -27,36 +27,7 @@ class CourseController extends Controller
   }
 
   /**
-   * Inscrever o usuário no curso
-   */
-  public function enroll($id)
-  {
-    if (!Auth::check()) {
-      return response()->json(['error' => 'Usuário não autenticado.'], 401);
-    }
-
-    $user = Auth::user();
-    $course = Course::find($id);
-    if (!$course) {
-      return response()->json(['error' => 'Curso não encontrado.'], 404);
-    }
-
-    // Verifica se o usuário já está inscrito
-    if ($user->courses()->where('courses_id', $id)->exists()) {
-      return response()->json(
-        ['error' => 'Você já está inscrito neste curso!'],
-        400
-      );
-    }
-
-    // Inscreve o usuário no curso
-    $user->courses()->attach($id);
-
-    return response()->json(['success' => 'Inscrição realizada com sucesso!']);
-  }
-
-  /**
-   * Verifica se o usuário está inscrito no curso.
+   * Verifica se o usuário está inscrito no curso
    */
   public function isEnrolled($id)
   {
@@ -67,5 +38,59 @@ class CourseController extends Controller
 
     $enrolled = $user->courses()->where('courses_id', $id)->exists();
     return response()->json(['enrolled' => $enrolled]);
+  }
+
+  /**
+   * Inscrever o usuário no curso
+   */
+  public function enroll($id)
+  {
+    if (!Auth::check()) {
+      return response()->json(['error' => 'Usuário não autenticado.'], 401);
+    }
+
+    $user = Auth::user();
+    $course = Course::find($id);
+    
+    if (!$course) {
+      return response()->json(['error' => 'Curso não encontrado.'], 404);
+    }
+
+    if ($user->courses()->where('courses_id', $id)->exists()) {
+      return response()->json(
+        ['error' => 'Você já está inscrito neste curso!'],
+        400
+      );
+    }
+
+    $user->courses()->attach($id);
+    return response()->json(['success' => 'Inscrição realizada com sucesso!']);
+  }
+
+  /**
+   * Desinscrever o usuário do curso (NOVO MÉTODO)
+   */
+  public function unenroll($id)
+  {
+    if (!Auth::check()) {
+      return response()->json(['error' => 'Usuário não autenticado.'], 401);
+    }
+
+    $user = Auth::user();
+    $course = Course::find($id);
+    
+    if (!$course) {
+      return response()->json(['error' => 'Curso não encontrado.'], 404);
+    }
+
+    if (!$user->courses()->where('courses_id', $id)->exists()) {
+      return response()->json(
+        ['error' => 'Você não está inscrito neste curso!'],
+        400
+      );
+    }
+
+    $user->courses()->detach($id);
+    return response()->json(['success' => 'Desinscrição realizada com sucesso!']);
   }
 }

@@ -259,6 +259,7 @@ export default {
 /* Botão do card */
 .card-footer {
   text-align: right;
+  
 }
 .card-footer button {
   background-color: #ffffff;

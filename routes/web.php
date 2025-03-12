@@ -50,6 +50,7 @@ Route::get('/forgot-password', function () {
 // Rotas protegidas (somente usuários autenticados podem acessar)
 
 Route::middleware('auth')->group(function () {
+
   // Dashboard: envia os cursos inscritos do usuário para o Inertia
   Route::get('/dashboard', function () {
     $user = auth()->user();
@@ -58,6 +59,12 @@ Route::middleware('auth')->group(function () {
       'courses' => $courses,
     ]);
   })->name('dashboard');
+
+ // Nova rota para desinscrever
+    Route::post('/courses/{id}/unenroll', [CourseController::class, 'unenroll'])
+        ->middleware('auth')
+        ->name('courses.unenroll');
+});
 
   // Rota para a Tela de Pesquisa (SearchScreen)
   Route::get('/search', function () {
@@ -83,7 +90,6 @@ Route::middleware('auth')->group(function () {
 
   // Se a rota de verificação de inscrição não for necessária, pode ser removida.
   // Route::middleware('auth:sanctum')->get('/user/enrollment', [AuthController::class, 'checkEnrollment']);
-});
 
 // Página Sobre Nós
 Route::get('/about', function () {

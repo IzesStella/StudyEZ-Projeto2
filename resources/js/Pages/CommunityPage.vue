@@ -22,7 +22,7 @@
           <button
             class="subscribe"
             :disabled="loading || isEnrolled"
-            @click="enroll(course.id)"
+            @click="isEnrolled ? unenroll(course.id) : enroll(course.id)"
           >
             {{
               isEnrolled
@@ -94,12 +94,11 @@ export default {
           comments: 0,
         },
       ],
-      loading: false, // Indicador de carregamento
-      isEnrolled: false, // Estado de inscrição do usuário
+      loading: false,
+      isEnrolled: false,
     };
   },
   methods: {
-    // Método para checar se o usuário já está inscrito
     async checkEnrollment() {
       try {
         const response = await fetch(`/courses/${this.course.id}/is-enrolled`);
@@ -110,9 +109,8 @@ export default {
       }
     },
 
-    // Método para inscrever o usuário
     async enroll(courseId) {
-      if (this.loading || this.isEnrolled) return; // Evita múltiplos cliques
+      if (this.loading || this.isEnrolled) return;
       this.loading = true;
 
       try {
@@ -128,45 +126,59 @@ export default {
         const responseData = await response.json();
 
         if (response.ok) {
-          if (this.$toast && typeof this.$toast.success === 'function') {
-            this.$toast.success(
-              responseData.success || 'Inscrição realizada com sucesso!'
-            );
-          } else {
-            alert(responseData.success || 'Inscrição realizada com sucesso!');
-          }
+          this.showNotification('success', responseData.success || 'Inscrição realizada com sucesso!');
           this.isEnrolled = true;
         } else {
-          if (this.$toast && typeof this.$toast.warning === 'function') {
-            this.$toast.warning(
-              responseData.error ||
-                responseData.message ||
-                'Você já está inscrito neste curso.'
-            );
-          } else {
-            alert(
-              responseData.error ||
-                responseData.message ||
-                'Você já está inscrito neste curso.'
-            );
-          }
+          this.showNotification('warning', responseData.error || 'Você já está inscrito neste curso.');
         }
       } catch (error) {
+        this.showNotification('error', error.message || 'Erro inesperado ao tentar se inscrever.');
         console.error('Erro ao se inscrever:', error);
-        if (this.$toast && typeof this.$toast.error === 'function') {
-          this.$toast.error(
-            error.message || 'Erro inesperado ao tentar se inscrever.'
-          );
-        } else {
-          alert(error.message || 'Erro inesperado ao tentar se inscrever.');
-        }
       } finally {
         this.loading = false;
       }
     },
+
+    async unenroll(courseId) {
+      if (this.loading) return;
+      this.loading = true;
+
+      try {
+        const response = await fetch(`/courses/${courseId}/unenroll`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+              .content,
+          },
+        });
+
+        const responseData = await response.json();
+
+        if (response.ok) {
+          this.showNotification('success', responseData.success || 'Desinscrição realizada com sucesso!');
+          this.isEnrolled = false;
+        } else {
+          this.showNotification('warning', responseData.error || 'Erro ao desinscrever.');
+        }
+      } catch (error) {
+        this.showNotification('error', error.message || 'Erro inesperado ao tentar desinscrever.');
+        console.error('Erro ao desinscrever:', error);
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    showNotification(type, message) {
+      if (this.$toast && typeof this.$toast[type] === 'function') {
+        this.$toast[type](message);
+      } else {
+        alert(message);
+      }
+    }
   },
   mounted() {
-    this.checkEnrollment(); // Verifica o status da inscrição ao carregar a página
+    this.checkEnrollment();
   },
 };
 </script>
@@ -211,20 +223,33 @@ export default {
   border-radius: 10px;
   margin: 10px 5px;
   font-size: 14px;
-  background: #135572;
   color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: background 0.3s;
 }
 
-.actions button:hover {
-  background: #0e3d53;
+/* Botão Inscreva-se/Inscrito */
+.actions button.subscribe {
+  background: #135572; /* Azul original */
 }
 
-.actions button:disabled {
-  background: #b3b3b3;
+.actions button.subscribe:hover:not(:disabled) {
+  background: #0e3d53; /* Azul escuro no hover */
+}
+
+.actions button.subscribe:disabled {
+  background: #b3b3b3; /* Cinza quando inscrito */
   cursor: not-allowed;
+}
+
+/* Botão Postar */
+.actions button.post {
+  background: #135572; /* Mesmo azul do botão de inscrição */
+}
+
+.actions button.post:hover {
+  background: #0e3d53; /* Azul escuro no hover */
 }
 
 .post {
