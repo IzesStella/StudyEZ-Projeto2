@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-  public function store(Request $request)
+  public function store(Request $request, \App\Models\Course $course)
   {
     try {
       $request->validate([
@@ -22,6 +23,7 @@ class PostController extends Controller
       $post->user_id = $user->id;
       $post->user_name = $user->name;
       $post->user_profile_photo = $user->profile_photo;
+      $post->course_id = $course->id;
       $post->save();
 
       return response()->json(
@@ -32,6 +34,7 @@ class PostController extends Controller
           'user_id' => $post->user_id,
           'user_name' => $post->user_name,
           'user_profile_photo' => $post->user_profile_photo,
+          'course_id' => $post->course_id,
           'created_at' => $post->created_at,
         ],
         201
