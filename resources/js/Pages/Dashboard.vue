@@ -7,20 +7,29 @@
     <div class="main-content">
       <h1>Olá! O que você deseja aprender hoje?</h1>
       <div class="aside">
-        <!-- Se o usuário estiver inscrito em algum curso, exibe os cards -->
-        <div v-if="courses.length > 0" class="courses-list">
-          <div class="course-card" v-for="course in courses" :key="course.id">
-            <h2>{{ course.name }}</h2>
+        <div v-if="enrichedCourses.length > 0" class="courses-list">
+          <div 
+            class="course-card" 
+            v-for="course in enrichedCourses" 
+            :key="course.id"
+            :style="{ backgroundColor: course.color }"
+          >
+            <div class="card-header">
+              <img
+                :src="course.image"
+                alt="Ícone da disciplina"
+              />
+              <h3>{{ course.name }}</h3>
+            </div>
             <p>{{ course.description }}</p>
-            <button
-              class="btn community-button"
-              @click="goToCommunity(course.id)"
-            >
-              Ver Comunidade
-            </button>
+            <div class="card-footer">
+              <button class="btn community-button" @click="goToCommunity(course.id)">
+                ENTRAR
+              </button>
+            </div>
           </div>
         </div>
-        <!-- Caso não esteja inscrito em nenhum curso -->
+
         <div v-else class="center-card">
           <p>Parece que você ainda não está inscrito em nenhuma disciplina.</p>
           <p>Explore as disciplinas disponíveis!</p>
@@ -29,7 +38,6 @@
           </button>
         </div>
 
-        <!-- Planner Section -->
         <div class="planner-section">
           <div class="planner-right">
             <div class="calendar">
@@ -47,12 +55,66 @@ import { router } from '@inertiajs/vue3';
 import Calendar from '@/Components/Calendar.vue';
 import SideBar from '../Components/SideBar.vue';
 
+const DISCIPLINAS = [
+  {
+    id: 1,
+    nome: 'Lógica de Programação',
+    cor: '#d9f8c4',
+    imagem: '/images/logicadeprogramacao.png'
+  },
+  {
+    id: 2,
+    nome: 'Engenharia de Software',
+    cor: '#c4f0f8',
+    imagem: '/images/engenharia.png'
+  },
+  {
+    id: 3,
+    nome: 'Banco de Dados',
+    cor: '#e3d9f8',
+    imagem: '/images/bancodedados.png'
+  },
+  {
+    id: 4,
+    nome: 'Desenvolvimento Web',
+    cor: '#f8d9d9',
+    imagem: '/images/web.png'
+  },
+  {
+    id: 5,
+    nome: 'Design',
+    cor: '#fff2d4',
+    imagem: '/images/design.png'
+  },
+  {
+    id: 6,
+    nome: 'Redes de Computadores',
+    cor: '#f8d4e4',
+    imagem: '/images/redes.png'
+  }
+];
+
 export default {
   props: {
     courses: {
       type: Array,
       default: () => [],
     },
+  },
+  computed: {
+    enrichedCourses() {
+      return this.courses.map(course => {
+        const disciplina = DISCIPLINAS.find(d => 
+          d.id === course.id || 
+          d.nome.toLowerCase() === course.name.toLowerCase()
+        );
+        return {
+          ...course,
+          color: disciplina?.cor || '#e3d9f8',
+          image: disciplina?.imagem || '/images/default-course.png'
+        };
+      });
+    }
   },
   methods: {
     goToProfile() {
@@ -79,18 +141,6 @@ export default {
   display: flex;
   height: 100vh;
   overflow: hidden;
-}
-
-.profile-section {
-  margin-top: auto;
-  cursor: pointer;
-}
-
-.profile-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 2px solid #ccc;
 }
 
 .main-content {
@@ -145,44 +195,84 @@ h1 {
 
 /* Cards dos cursos inscritos */
 .courses-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   margin-left: 40px;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .course-card {
-  background-color: #e0ffe0;
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 400px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 210px;
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
 }
 
-.course-card h2 {
+.course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.card-header img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.card-header h3 {
   font-size: 20px;
-  margin-bottom: 10px;
+  font-weight: bold;
+  margin: 0;
+  color: #000;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .course-card p {
   font-size: 16px;
-  margin-bottom: 10px;
+  color: #000;
+  line-height: 1.5;
+  font-family: 'Montserrat', sans-serif;
+  margin: 12px 0;
+  flex-grow: 1;
+  margin-top: 32px;
+  margin-bottom: 16px;
+}
+
+.card-footer {
+  text-align: right;
+  margin-top: auto;
 }
 
 .community-button {
   background-color: #ffffff;
-  color: #0a60e0;
+  color: #000;
+  font-weight: bold;
   border: none;
-  padding: 10px 20px;
   border-radius: 8px;
+  padding: 10px 20px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .community-button:hover {
-  background-color: #0056b3;
+  background-color: #d1d5db;
 }
 
-/* Explore Button */
 .explore-button {
   background-color: #ffffff;
   color: #0a60e0;
@@ -196,6 +286,7 @@ h1 {
   background-color: #0056b3;
 }
 
+/* Planner Section - Estilo original */
 .planner-section {
   display: flex;
   flex-direction: column;
@@ -218,9 +309,45 @@ h1 {
   border-radius: 12px;
 }
 
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
+/* Responsividade */
+@media (max-width: 1200px) {
+  .aside {
+    flex-direction: column;
+  }
+  
+  .planner-section {
+    width: 100%;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 900px) {
+  .courses-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .course-card {
+    max-width: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .courses-list {
+    margin-left: 0;
+  }
+  
+  .center-card {
+    width: auto;
+    margin-left: 0;
+  }
+  
+  h1 {
+    margin-left: 0;
+    text-align: center;
+  }
+  
+  .planner-section {
+    margin-top: 20px;
+  }
 }
 </style>
