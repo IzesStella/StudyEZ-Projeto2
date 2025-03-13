@@ -10,7 +10,7 @@
 
       <div class="logo-container">
         <img
-          src="/images/community-logo.png"
+          src="/images/logicadeprogramacao.png"
           alt="Comunidade"
           class="community-logo"
         />
@@ -44,31 +44,33 @@
         </div>
       </div>
 
-     <!-- Modal: Overlay e Formulário -->
-<div v-if="showPostForm" class="modal-container">
-  <!-- Fundo semitransparente -->
-  <div class="modal-overlay" @click="cancelPost"></div>
-  <!-- Caixa do formulário -->
-  <div class="post-form">
-    <h2>{{ editingPost ? 'Editar Post' : 'Novo Post' }}</h2>
-    <input
-      type="text"
-      v-model="newPost.title"
-      placeholder="Título do post"
-      required
-    />
-    <textarea
-      v-model="newPost.content"
-      placeholder="Conteúdo do post"
-      required
-    ></textarea>
-    <div class="form-actions">
-      <button v-if="editingPost" @click="updatePost">Atualizar Post</button>
-      <button v-else @click="createPost">Criar Post</button>
-      <button @click="cancelPost" class="cancel-btn">Cancelar</button>
-    </div>
-  </div>
-</div>
+      <!-- Modal: Overlay e Formulário -->
+      <div v-if="showPostForm" class="modal-container">
+        <!-- Fundo semitransparente -->
+        <div class="modal-overlay" @click="cancelPost"></div>
+        <!-- Caixa do formulário -->
+        <div class="post-form">
+          <h2>{{ editingPost ? 'Editar Post' : 'Novo Post' }}</h2>
+          <input
+            type="text"
+            v-model="newPost.title"
+            placeholder="Título do post"
+            required
+          />
+          <textarea
+            v-model="newPost.content"
+            placeholder="Conteúdo do post"
+            required
+          ></textarea>
+          <div class="form-actions">
+            <button v-if="editingPost" @click="updatePost">
+              Atualizar Post
+            </button>
+            <button v-else @click="createPost">Criar Post</button>
+            <button @click="cancelPost" class="cancel-btn">Cancelar</button>
+          </div>
+        </div>
+      </div>
 
       <!-- Lista de Postagens -->
       <section class="posts">
@@ -385,7 +387,7 @@ export default {
 }
 
 .community-header {
-  background: linear-gradient(to right, #ffffff, #9fd7d7);
+  background: #9fd7d7;
   padding: 8%;
   border-radius: 10px;
 }
@@ -395,7 +397,21 @@ export default {
   align-items: center;
   gap: 30px;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: -50px;
+  padding: 30px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.community-logo {
+  max-width: 100px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  max-height: 120px;
+  flex-shrink: 0;
 }
 
 .community-info {
@@ -404,21 +420,35 @@ export default {
 }
 
 .community-info h1 {
-  font-size: 30px;
-  font-weight: bold;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #135572;
+}
+.community-info p {
+  font-size: 1.1rem;
+  color: #555;
+  max-width: 600px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .actions button {
   margin-top: 10px;
-  padding: 10px 15px;
+  padding: 12px 25px;
   border: none;
-  border-radius: 10px;
-  margin: 10px 5px;
+  border-radius: 8px;
   font-size: 14px;
   color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: background 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* Botão Inscrever (modificado) */
@@ -428,15 +458,18 @@ export default {
 
 .actions button.subscribe:hover:not(:disabled) {
   background: #0e3d53;
+  transform: translateY(-1px);
 }
 
 /* Novo botão Desinscrever */
 .actions button.unsubscribe {
-  background: #dc3545;
+  background: #ffe082;
+  color: #2d2d2d;
 }
 
 .actions button.unsubscribe:hover:not(:disabled) {
-  background: #efdddf;
+  background: #ffd54f;
+  transform: translateY(-1px);
 }
 
 /* Estado desabilitado para ambos */
@@ -450,7 +483,7 @@ export default {
 }
 
 .actions button.post:hover {
-  background: #0e3d53;
+  background: #217ba4;
 }
 
 .modal-container {
@@ -472,7 +505,6 @@ export default {
   z-index: 1001;
 }
 
-
 .post-form {
   position: fixed;
   top: 50%;
@@ -488,7 +520,7 @@ export default {
 }
 
 .post-form h2 {
-  font-weight: bold; 
+  font-weight: bold;
   margin-bottom: 10px;
   font-size: 24px;
 }
@@ -500,7 +532,6 @@ export default {
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  
 }
 
 .form-actions {
@@ -533,7 +564,7 @@ export default {
 }
 
 .post {
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #13557280;
   padding: 35px 0;
   margin-top: 30px;
 }
@@ -547,15 +578,16 @@ export default {
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .username {
   font-weight: bold;
   font-size: 14px;
-  color: #000;
+  color: #135572;
   margin-right: 15px;
 }
 
@@ -565,13 +597,13 @@ export default {
 }
 
 .post-title {
-  font-size: 15px;
-  font-weight: bold;
-  margin-top: 5px;
+  font-size: 1.2rem;
+  color: #135572;
+  margin-bottom: 10px;
 }
 
 .post-content {
-  font-size: 12px;
+  line-height: 1.6;
   color: #444;
   margin-bottom: 10px;
 }
@@ -594,21 +626,22 @@ export default {
 }
 
 .post-actions {
-  margin-top: 10px;
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
 }
 
 .post-actions button {
-  margin-right: 10px;
-  padding: 5px 10px;
+  padding: 8px 20px;
   border: none;
-  border-radius: 4px;
-  background: #135572;
   color: #fff;
-  cursor: pointer;
-  transition: background 0.3s;
+  background-color: #135572;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .post-actions button:hover {
-  background: #0e3d53;
+  background-color: #217ba4;
 }
 </style>
