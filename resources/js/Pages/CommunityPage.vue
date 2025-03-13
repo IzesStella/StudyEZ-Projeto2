@@ -19,18 +19,24 @@
           <p>{{ course.description }}</p>
         </div>
         <div class="actions">
+          <!-- Botão de Inscrever (alterado) -->
           <button
+            v-if="!isEnrolled"
             class="subscribe"
-            :disabled="loading || isEnrolled"
-            @click="isEnrolled ? unenroll(course.id) : enroll(course.id)"
+            :disabled="loading"
+            @click="enroll(course.id)"
           >
-            {{
-              isEnrolled
-                ? 'Inscrito'
-                : loading
-                  ? 'Inscrevendo...'
-                  : 'Inscreva-se'
-            }}
+            {{ loading ? 'Inscrevendo...' : 'Inscreva-se' }}
+          </button>
+
+          <!-- Botão de Desinscrever (novo) -->
+          <button
+            v-else
+            class="unsubscribe"
+            :disabled="loading"
+            @click="unenroll(course.id)"
+          >
+            {{ loading ? 'Desinscrevendo...' : 'Desinscrever-se' }}
           </button>
           <button class="post">+ Postar</button>
         </div>
@@ -110,7 +116,7 @@ export default {
     },
 
     async enroll(courseId) {
-      if (this.loading || this.isEnrolled) return;
+      if (this.loading) return;
       this.loading = true;
 
       try {
@@ -118,8 +124,7 @@ export default {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-              .content,
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
           },
         });
 
@@ -129,11 +134,10 @@ export default {
           this.showNotification('success', responseData.success || 'Inscrição realizada com sucesso!');
           this.isEnrolled = true;
         } else {
-          this.showNotification('warning', responseData.error || 'Você já está inscrito neste curso.');
+          this.showNotification('warning', responseData.error || 'Erro na inscrição');
         }
       } catch (error) {
-        this.showNotification('error', error.message || 'Erro inesperado ao tentar se inscrever.');
-        console.error('Erro ao se inscrever:', error);
+        this.showNotification('error', error.message || 'Erro inesperado');
       } finally {
         this.loading = false;
       }
@@ -148,22 +152,20 @@ export default {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-              .content,
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
           },
         });
 
         const responseData = await response.json();
 
         if (response.ok) {
-          this.showNotification('success', responseData.success || 'Desinscrição realizada com sucesso!');
+          this.showNotification('success', responseData.success || 'Desinscrição realizada!');
           this.isEnrolled = false;
         } else {
-          this.showNotification('warning', responseData.error || 'Erro ao desinscrever.');
+          this.showNotification('warning', responseData.error || 'Erro na desinscrição');
         }
       } catch (error) {
-        this.showNotification('error', error.message || 'Erro inesperado ao tentar desinscrever.');
-        console.error('Erro ao desinscrever:', error);
+        this.showNotification('error', error.message || 'Erro inesperado');
       } finally {
         this.loading = false;
       }
@@ -184,6 +186,7 @@ export default {
 </script>
 
 <style scoped>
+
 .community-container {
   padding: 40px;
   color: #000;
@@ -229,27 +232,37 @@ export default {
   transition: background 0.3s;
 }
 
-/* Botão Inscreva-se/Inscrito */
+/* Botão Inscrever (modificado) */
 .actions button.subscribe {
-  background: #135572; /* Azul original */
+  background: #135572;
 }
 
 .actions button.subscribe:hover:not(:disabled) {
-  background: #0e3d53; /* Azul escuro no hover */
+  background: #0e3d53;
 }
 
-.actions button.subscribe:disabled {
-  background: #b3b3b3; /* Cinza quando inscrito */
+/* Novo botão Desinscrever */
+.actions button.unsubscribe {
+  background: #dc3545;
+}
+
+.actions button.unsubscribe:hover:not(:disabled) {
+  background: #bb2d3b;
+}
+
+/* Estado desabilitado para ambos */
+.actions button:disabled {
+  background: #b3b3b3 !important;
   cursor: not-allowed;
 }
 
-/* Botão Postar */
+/* Botão Postar (mantido) */
 .actions button.post {
-  background: #135572; /* Mesmo azul do botão de inscrição */
+  background: #135572;
 }
 
 .actions button.post:hover {
-  background: #0e3d53; /* Azul escuro no hover */
+  background: #0e3d53;
 }
 
 .post {
