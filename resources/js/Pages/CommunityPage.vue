@@ -38,31 +38,37 @@
           >
             {{ loading ? 'Desinscrevendo...' : 'Desinscrever-se' }}
           </button>
+
           <!-- Botão para mostrar/esconder o formulário de post -->
           <button class="post" @click="togglePostForm">+ Postar</button>
         </div>
       </div>
 
-      <!-- Formulário de criação/edição de post -->
-      <div v-if="showPostForm" class="post-form">
-        <h2>{{ editingPost ? 'Editar Post' : 'Novo Post' }}</h2>
-        <input
-          type="text"
-          v-model="newPost.title"
-          placeholder="Título do post"
-          required
-        />
-        <textarea
-          v-model="newPost.content"
-          placeholder="Conteúdo do post"
-          required
-        ></textarea>
-        <div class="form-actions">
-          <button v-if="editingPost" @click="updatePost">Atualizar Post</button>
-          <button v-else @click="createPost">Criar Post</button>
-          <button @click="cancelPost">Cancelar</button>
-        </div>
-      </div>
+     <!-- Modal: Overlay e Formulário -->
+<div v-if="showPostForm" class="modal-container">
+  <!-- Fundo semitransparente -->
+  <div class="modal-overlay" @click="cancelPost"></div>
+  <!-- Caixa do formulário -->
+  <div class="post-form">
+    <h2>{{ editingPost ? 'Editar Post' : 'Novo Post' }}</h2>
+    <input
+      type="text"
+      v-model="newPost.title"
+      placeholder="Título do post"
+      required
+    />
+    <textarea
+      v-model="newPost.content"
+      placeholder="Conteúdo do post"
+      required
+    ></textarea>
+    <div class="form-actions">
+      <button v-if="editingPost" @click="updatePost">Atualizar Post</button>
+      <button v-else @click="createPost">Criar Post</button>
+      <button @click="cancelPost" class="cancel-btn">Cancelar</button>
+    </div>
+  </div>
+</div>
 
       <!-- Lista de Postagens -->
       <section class="posts">
@@ -430,7 +436,7 @@ export default {
 }
 
 .actions button.unsubscribe:hover:not(:disabled) {
-  background: #bb2d3b;
+  background: #efdddf;
 }
 
 /* Estado desabilitado para ambos */
@@ -447,11 +453,44 @@ export default {
   background: #0e3d53;
 }
 
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+}
+
+
 .post-form {
-  margin: 20px 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
   padding: 15px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 10px;
+  z-index: 1002;
+  max-width: 600px;
+  width: 90%;
+}
+
+.post-form h2 {
+  font-weight: bold; 
+  margin-bottom: 10px;
+  font-size: 24px;
 }
 
 .post-form input,
@@ -461,6 +500,13 @@ export default {
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
 .form-actions button {
@@ -476,6 +522,14 @@ export default {
 
 .form-actions button:hover {
   background: #0e3d53;
+}
+
+.form-actions button.cancel-btn {
+  background: #dc3545;
+}
+
+.form-actions button.cancel-btn:hover {
+  background: #bb2d3b;
 }
 
 .post {
