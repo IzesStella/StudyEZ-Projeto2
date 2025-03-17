@@ -4,46 +4,54 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\PostController;
 use Inertia\Inertia;
+use App\Http\Controllers\CourseController;
 use App\Models\Course;
 
+/*
+|--------------------------------------------------------------------------
+| Rotas Web
+|--------------------------------------------------------------------------
+|
+| Este arquivo foi ajustado para remover os endpoints de API e utilizar
+| apenas os controllers padrão do Laravel (RegisteredUserController e
+| AuthenticatedSessionController) para o fluxo de registro e login.
+|
+*/
+
+// Página inicial ANTES do login (Prelogin.vue)
 Route::get('/', function () {
-  return Inertia::render('Prelogin');
+  return Inertia::render('Prelogin'); // Mantém a página inicial antes do login
 })->name('prelogin');
 
-Route::get('/about', function () {
-  return Inertia::render('About');
-})->name('about');
+// Rotas de autenticação (Login)
+// Utilizando o AuthenticatedSessionController para login, sem chamadas à API.
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name(
+  'login'
+);
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
-Route::middleware('guest')->group(function () {
-  // Login
-  Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name(
-    'login'
-  );
-  Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+// Rotas de registro
+Route::get('/register', [RegisteredUserController::class, 'create'])->name(
+  'register'
+);
+Route::post('/register', [RegisteredUserController::class, 'store']);
 
-  // Registro
-  Route::get('/register', [RegisteredUserController::class, 'create'])->name(
-    'register'
-  );
-  Route::post('/register', [RegisteredUserController::class, 'store']);
+// Rota para deslogar
+Route::middleware('auth')
+  ->post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+  ->name('logout');
 
-  // Recuperação de senha
-  Route::get('/forgot-password', function () {
-    return Inertia::render('Auth/ForgotPassword');
-  })->name('password.request');
-});
+// Esqueci minha senha
+Route::get('/forgot-password', function () {
+  return Inertia::render('Auth/ForgotPassword');
+})->name('password.request');
+
+// Rotas protegidas (somente usuários autenticados podem acessar)
 
 Route::middleware('auth')->group(function () {
-  // Logout
-  Route::post('/logout', [
-    AuthenticatedSessionController::class,
-    'destroy',
-  ])->name('logout');
 
-  // Dashboard
+  // Dashboard: envia os cursos inscritos do usuário para o Inertia
   Route::get('/dashboard', function () {
     $user = auth()->user();
     $courses = $user->courses()->get();
@@ -52,21 +60,24 @@ Route::middleware('auth')->group(function () {
     ]);
   })->name('dashboard');
 
-  // Pesquisa
+ // Nova rota para desinscrever
+    Route::post('/courses/{id}/unenroll', [CourseController::class, 'unenroll'])
+        ->middleware('auth')
+        ->name('courses.unenroll');
+});
+
+  // Rota para a Tela de Pesquisa (SearchScreen)
   Route::get('/search', function () {
     return Inertia::render('SearchScreen');
   })->name('search');
 
-  // Comunidade
+  // Rota para Comunidade: mantém a rota correta para entrar na comunidade
   Route::get('/community/{id}', function ($id) {
-    $course = Course::with('posts')->findOrFail($id);
-    return Inertia::render('CommunityPage', [
-      'course' => $course,
-      'authUser' => Auth::user(),
-    ]);
+    $course = Course::findOrFail($id); // Busca o curso pelo ID ou retorna erro 404
+    return Inertia::render('CommunityPage', ['course' => $course]);
   })->name('community.show');
 
-  // Perfil do Usuário
+  // Perfil do usuário
   Route::get('/profile', [ProfileController::class, 'edit'])->name(
     'profile.edit'
   );
@@ -77,33 +88,23 @@ Route::middleware('auth')->group(function () {
     'profile.destroy'
   );
 
-  // Gestão de Cursos
-  Route::prefix('courses')->group(function () {
-    // Verificar inscrição
-    Route::get('/{id}/is-enrolled', [CourseController::class, 'isEnrolled']);
+  // Se a rota de verificação de inscrição não for necessária, pode ser removida.
+  // Route::middleware('auth:sanctum')->get('/user/enrollment', [AuthController::class, 'checkEnrollment']);
 
-    // Inscrever
-    Route::post('/{id}/enroll', [CourseController::class, 'enroll'])->name(
-      'courses.enroll'
-    );
+// Página Sobre Nós
+Route::get('/about', function () {
+  return Inertia::render('About');
+})->name('about');
 
-    // Desinscrever
-    Route::post('/{id}/unenroll', [CourseController::class, 'unenroll'])->name(
-      'courses.unenroll'
-    );
-  });
+Route::middleware('auth')->group(function () {
+  // Rota para verificar se o usuário já está inscrito
+  Route::get('/courses/{id}/is-enrolled', [
+    CourseController::class,
+    'isEnrolled',
+  ])->middleware('auth');
 
-  // Novas rotas para posts na comunidade
-  Route::post('/community/{course}/posts', [
-    PostController::class,
-    'store',
-  ])->name('posts.store');
-  Route::put('/community/{course}/posts/{post}', [
-    PostController::class,
-    'update',
-  ])->name('posts.update');
-  Route::delete('/community/{course}/posts/{post}', [
-    PostController::class,
-    'destroy',
-  ])->name('posts.destroy');
+  // Rota para inscrever o usuário no curso
+  Route::post('/courses/{id}/enroll', [CourseController::class, 'enroll'])
+    ->middleware('auth')
+    ->name('courses.enroll');
 });

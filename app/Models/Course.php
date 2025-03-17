@@ -37,9 +37,4 @@ class Course extends Model
   {
     return $this->hasManyThrough(Comment::class, Answer::class);
   }
-
-  public function posts()
-  {
-    return $this->hasMany(Post::class);
-  }
 }
