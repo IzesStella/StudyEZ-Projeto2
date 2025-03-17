@@ -9,48 +9,44 @@ use App\Http\Controllers\PostController;
 use Inertia\Inertia;
 use App\Models\Course;
 
-/*
-|--------------------------------------------------------------------------
-| Rotas Web
-|--------------------------------------------------------------------------
-|
-| Este arquivo foi ajustado para remover os endpoints de API e utilizar
-| apenas os controllers padrão do Laravel (RegisteredUserController e
-| AuthenticatedSessionController) para o fluxo de registro e login.
-|
-*/
-
-// Página inicial ANTES do login (Prelogin.vue)
+/* --------------------------- ROTAS PÚBLICAS --------------------------- */
 Route::get('/', function () {
-  return Inertia::render('Prelogin'); // Mantém a página inicial antes do login
+  return Inertia::render('Prelogin');
 })->name('prelogin');
 
-// Rotas de autenticação (Login)
-// Utilizando o AuthenticatedSessionController para login, sem chamadas à API.
-Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name(
-  'login'
-);
-Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+Route::get('/about', function () {
+  return Inertia::render('About');
+})->name('about');
 
-// Rotas de registro
-Route::get('/register', [RegisteredUserController::class, 'create'])->name(
-  'register'
-);
-Route::post('/register', [RegisteredUserController::class, 'store']);
+/* ----------------------- ROTAS DE AUTENTICAÇÃO (Guest) ------------------------- */
+Route::middleware('guest')->group(function () {
+  // Login
+  Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name(
+    'login'
+  );
+  Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
-// Rota para deslogar
-Route::middleware('auth')
-  ->post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-  ->name('logout');
+  // Registro
+  Route::get('/register', [RegisteredUserController::class, 'create'])->name(
+    'register'
+  );
+  Route::post('/register', [RegisteredUserController::class, 'store']);
 
-// Esqueci minha senha
-Route::get('/forgot-password', function () {
-  return Inertia::render('Auth/ForgotPassword');
-})->name('password.request');
+  // Recuperação de senha
+  Route::get('/forgot-password', function () {
+    return Inertia::render('Auth/ForgotPassword');
+  })->name('password.request');
+});
 
-// Rotas protegidas (somente usuários autenticados podem acessar)
+/* ----------------------- ROTAS PROTEGIDAS (Auth) ------------------------ */
 Route::middleware('auth')->group(function () {
-  // Dashboard: envia os cursos inscritos do usuário para o Inertia
+  // Logout
+  Route::post('/logout', [
+    AuthenticatedSessionController::class,
+    'destroy',
+  ])->name('logout');
+
+  // Dashboard
   Route::get('/dashboard', function () {
     $user = auth()->user();
     $courses = $user->courses()->get();
@@ -59,72 +55,56 @@ Route::middleware('auth')->group(function () {
     ]);
   })->name('dashboard');
 
-  // Nova rota para desinscrever
-  Route::post('/courses/{id}/unenroll', [CourseController::class, 'unenroll'])
-    ->middleware('auth')
-    ->name('courses.unenroll');
-});
+  // Pesquisa
+  Route::get('/search', function () {
+    return Inertia::render('SearchScreen');
+  })->name('search');
 
-// Rota para a Tela de Pesquisa (SearchScreen)
-Route::get('/search', function () {
-  return Inertia::render('SearchScreen');
-})->name('search');
+  // Comunidade: rota que envia o curso com os posts e o usuário autenticado
+  Route::get('/community/{id}', function ($id) {
+    $course = Course::with('posts')->findOrFail($id);
+    return Inertia::render('CommunityPage', [
+      'course' => $course,
+      'authUser' => Auth::user(),
+    ]);
+  })->name('community.show');
 
-// Rota para Comunidade: mantém a rota correta para entrar na comunidade
-Route::get('/community/{id}', function ($id) {
-  $course = \App\Models\Course::with('posts')->findOrFail($id);
-  return Inertia::render('CommunityPage', [
-    'course' => $course,
-    'authUser' => Auth::user(),
-  ]);
-})->name('community.show');
+  // Perfil do Usuário
+  Route::get('/profile', [ProfileController::class, 'edit'])->name(
+    'profile.edit'
+  );
+  Route::put('/profile', [ProfileController::class, 'update'])->name(
+    'profile.update'
+  );
+  Route::delete('/profile', [ProfileController::class, 'destroy'])->name(
+    'profile.destroy'
+  );
 
-// Perfil do usuário
-Route::get('/profile', [ProfileController::class, 'edit'])->name(
-  'profile.edit'
-);
-Route::put('/profile', [ProfileController::class, 'update'])->name(
-  'profile.update'
-);
-Route::delete('/profile', [ProfileController::class, 'destroy'])->name(
-  'profile.destroy'
-);
+  // Gestão de Cursos
+  Route::prefix('courses')->group(function () {
+    // Verificar inscrição
+    Route::get('/{id}/is-enrolled', [CourseController::class, 'isEnrolled']);
 
-// Página Sobre Nós
-Route::get('/about', function () {
-  return Inertia::render('About');
-})->name('about');
+    // Inscrever
+    Route::post('/{id}/enroll', [CourseController::class, 'enroll'])->name(
+      'courses.enroll'
+    );
 
-Route::middleware('auth')->group(function () {
-  // Rota para verificar se o usuário já está inscrito
-  Route::get('/courses/{id}/is-enrolled', [
-    CourseController::class,
-    'isEnrolled',
-  ])->middleware('auth');
+    // Desinscrever
+    Route::post('/{id}/unenroll', [CourseController::class, 'unenroll'])->name(
+      'courses.unenroll'
+    );
+  });
 
-  // Rota para inscrever o usuário no curso
-  Route::post('/courses/{id}/enroll', [CourseController::class, 'enroll'])
-    ->middleware('auth')
-    ->name('courses.enroll');
-});
-
-// ===========================
-// Novas rotas para posts na comunidade
-// ===========================
-Route::middleware('auth')->group(function () {
-  // Rota para criar um post na comunidade (curso)
+  // Novas rotas para posts na comunidade
   Route::post('/community/{course}/posts', [
     PostController::class,
     'store',
   ])->name('posts.store');
-
-  // Rota para atualizar um post na comunidade
   Route::put('/community/{course}/posts/{post}', [
     PostController::class,
     'update',
   ])->name('posts.update');
-
-  // Rota para deletar um post na comunidade
   Route::delete('/community/{course}/posts/{post}', [
     PostController::class,
     'destroy',

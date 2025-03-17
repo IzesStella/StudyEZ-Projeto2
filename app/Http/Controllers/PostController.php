@@ -45,7 +45,7 @@ class PostController extends Controller
     }
   }
 
-  public function update(Request $request, $id)
+  public function update(Request $request, \App\Models\Course $course, $postId)
   {
     try {
       $request->validate([
@@ -53,7 +53,7 @@ class PostController extends Controller
         'content' => 'string',
       ]);
 
-      $post = Post::findOrFail($id);
+      $post = Post::where('course_id', $course->id)->findOrFail($postId);
 
       if (Auth::id() !== $post->user_id) {
         return response()->json(['error' => 'Não autorizado.'], 403);
@@ -68,10 +68,10 @@ class PostController extends Controller
     }
   }
 
-  public function destroy($id)
+  public function destroy(\App\Models\Course $course, $postId)
   {
     try {
-      $post = Post::findOrFail($id);
+      $post = Post::where('course_id', $course->id)->findOrFail($postId);
 
       if (Auth::id() !== $post->user_id) {
         return response()->json(['error' => 'Não autorizado.'], 403);

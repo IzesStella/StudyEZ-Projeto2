@@ -10,7 +10,7 @@
 
       <div class="logo-container">
         <img
-          src="/images/community-logo.png"
+          src="/images/logicadeprogramacao.png"
           alt="Comunidade"
           class="community-logo"
         />
@@ -19,42 +19,56 @@
           <p>{{ course.description }}</p>
         </div>
         <div class="actions">
+          <!-- Botão de Inscrever (alterado) -->
           <button
+            v-if="!isEnrolled"
             class="subscribe"
-            :disabled="loading || isEnrolled"
-            @click="isEnrolled ? unenroll(course.id) : enroll(course.id)"
+            :disabled="loading"
+            @click="enroll(course.id)"
           >
-            {{
-              isEnrolled
-                ? 'Inscrito'
-                : loading
-                  ? 'Inscrevendo...'
-                  : 'Inscreva-se'
-            }}
+            {{ loading ? 'Inscrevendo...' : 'Inscreva-se' }}
           </button>
+
+          <!-- Botão de Desinscrever (novo) -->
+          <button
+            v-else
+            class="unsubscribe"
+            :disabled="loading"
+            @click="unenroll(course.id)"
+          >
+            {{ loading ? 'Desinscrevendo...' : 'Desinscrever-se' }}
+          </button>
+
           <!-- Botão para mostrar/esconder o formulário de post -->
           <button class="post" @click="togglePostForm">+ Postar</button>
         </div>
       </div>
 
-      <!-- Formulário de criação/edição de post -->
-      <div v-if="showPostForm" class="post-form">
-        <h2>{{ editingPost ? 'Editar Post' : 'Novo Post' }}</h2>
-        <input
-          type="text"
-          v-model="newPost.title"
-          placeholder="Título do post"
-          required
-        />
-        <textarea
-          v-model="newPost.content"
-          placeholder="Conteúdo do post"
-          required
-        ></textarea>
-        <div class="form-actions">
-          <button v-if="editingPost" @click="updatePost">Atualizar Post</button>
-          <button v-else @click="createPost">Criar Post</button>
-          <button @click="cancelPost">Cancelar</button>
+      <!-- Modal: Overlay e Formulário -->
+      <div v-if="showPostForm" class="modal-container">
+        <!-- Fundo semitransparente -->
+        <div class="modal-overlay" @click="cancelPost"></div>
+        <!-- Caixa do formulário -->
+        <div class="post-form">
+          <h2>{{ editingPost ? 'Editar Post' : 'Novo Post' }}</h2>
+          <input
+            type="text"
+            v-model="newPost.title"
+            placeholder="Título do post"
+            required
+          />
+          <textarea
+            v-model="newPost.content"
+            placeholder="Conteúdo do post"
+            required
+          ></textarea>
+          <div class="form-actions">
+            <button v-if="editingPost" @click="updatePost">
+              Atualizar Post
+            </button>
+            <button v-else @click="createPost">Criar Post</button>
+            <button @click="cancelPost" class="cancel-btn">Cancelar</button>
+          </div>
         </div>
       </div>
 
@@ -106,12 +120,9 @@ export default {
   },
   data() {
     return {
-      // Se o backend enviar os posts dentro de course.posts, você pode usar isso;
-      // Caso contrário, mantenha uma lista estática (ou inicialize como array vazio).
       posts: this.course.posts
         ? this.course.posts
         : [
-            // Exemplo estático (remova se for usar os dados do backend)
             {
               id: 1,
               user_id: 1,
@@ -138,12 +149,10 @@ export default {
       loading: false,
       isEnrolled: false,
       showPostForm: false,
-      // newPost armazena os dados do post a criar ou editar
       newPost: {
         title: '',
         content: '',
       },
-      // editingPost guarda o post que está sendo editado (ou null se for criação)
       editingPost: null,
     };
   },
@@ -159,7 +168,7 @@ export default {
     },
 
     async enroll(courseId) {
-      if (this.loading || this.isEnrolled) return;
+      if (this.loading) return;
       this.loading = true;
 
       try {
@@ -244,14 +253,11 @@ export default {
       }
     },
 
-    // Alterna a exibição do formulário de post
     togglePostForm() {
-      // Se estiver editando, cancela a edição
       if (this.editingPost) {
         this.cancelPost();
       } else {
         this.showPostForm = !this.showPostForm;
-        // Limpa o formulário se estiver abrindo para novo post
         if (this.showPostForm === true) {
           this.newPost = { title: '', content: '' };
         }
@@ -264,7 +270,6 @@ export default {
       this.editingPost = null;
     },
 
-    // Cria um novo post e atualiza a lista local
     async createPost() {
       try {
         const response = await fetch(`/community/${this.course.id}/posts`, {
@@ -282,7 +287,6 @@ export default {
           return;
         }
         const data = await response.json();
-        // Adiciona o novo post na lista local
         this.posts.push({
           id: data.id,
           user_id: data.user_id,
@@ -302,14 +306,12 @@ export default {
       }
     },
 
-    // Inicia a edição de um post: preenche o formulário e salva o índice
     editPost(post, index) {
       this.editingPost = { ...post, index };
       this.newPost = { title: post.title, content: post.content };
       this.showPostForm = true;
     },
 
-    // Atualiza o post e modifica a lista local
     async updatePost() {
       try {
         const response = await fetch(
@@ -333,7 +335,6 @@ export default {
           return;
         }
         const data = await response.json();
-        // Atualiza o post na lista usando o índice salvo
         this.posts[this.editingPost.index].title = data.title;
         this.posts[this.editingPost.index].content = data.content;
         this.showNotification('success', 'Post atualizado com sucesso!');
@@ -344,7 +345,6 @@ export default {
       }
     },
 
-    // Deleta o post e remove-o da lista local
     async deletePost(postId, index) {
       try {
         const response = await fetch(
@@ -387,7 +387,7 @@ export default {
 }
 
 .community-header {
-  background: linear-gradient(to right, #ffffff, #9fd7d7);
+  background: #9fd7d7;
   padding: 8%;
   border-radius: 10px;
 }
@@ -397,7 +397,21 @@ export default {
   align-items: center;
   gap: 30px;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: -50px;
+  padding: 30px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.community-logo {
+  max-width: 100px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  max-height: 120px;
+  flex-shrink: 0;
 }
 
 .community-info {
@@ -406,52 +420,109 @@ export default {
 }
 
 .community-info h1 {
-  font-size: 30px;
-  font-weight: bold;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #135572;
+}
+.community-info p {
+  font-size: 1.1rem;
+  color: #555;
+  max-width: 600px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .actions button {
   margin-top: 10px;
-  padding: 10px 15px;
+  padding: 12px 25px;
   border: none;
-  border-radius: 10px;
-  margin: 10px 5px;
+  border-radius: 8px;
   font-size: 14px;
   color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: background 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/* Botão Inscreva-se/Inscrito */
+/* Botão Inscrever (modificado) */
 .actions button.subscribe {
   background: #135572;
 }
 
 .actions button.subscribe:hover:not(:disabled) {
   background: #0e3d53;
+  transform: translateY(-1px);
 }
 
-.actions button.subscribe:disabled {
-  background: #b3b3b3;
+/* Novo botão Desinscrever */
+.actions button.unsubscribe {
+  background: #ffe082;
+  color: #2d2d2d;
+}
+
+.actions button.unsubscribe:hover:not(:disabled) {
+  background: #ffd54f;
+  transform: translateY(-1px);
+}
+
+/* Estado desabilitado para ambos */
+.actions button:disabled {
+  background: #b3b3b3 !important;
   cursor: not-allowed;
 }
 
-/* Botão Postar */
 .actions button.post {
   background: #135572;
 }
 
 .actions button.post:hover {
-  background: #0e3d53;
+  background: #217ba4;
 }
 
-/* Estilo para o formulário de post */
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+}
+
 .post-form {
-  margin: 20px 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
   padding: 15px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 10px;
+  z-index: 1002;
+  max-width: 600px;
+  width: 90%;
+}
+
+.post-form h2 {
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 24px;
 }
 
 .post-form input,
@@ -461,6 +532,12 @@ export default {
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
 .form-actions button {
@@ -478,9 +555,16 @@ export default {
   background: #0e3d53;
 }
 
-/* Lista de posts */
+.form-actions button.cancel-btn {
+  background: #dc3545;
+}
+
+.form-actions button.cancel-btn:hover {
+  background: #bb2d3b;
+}
+
 .post {
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #13557280;
   padding: 35px 0;
   margin-top: 30px;
 }
@@ -494,15 +578,16 @@ export default {
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .username {
   font-weight: bold;
   font-size: 14px;
-  color: #000;
+  color: #135572;
   margin-right: 15px;
 }
 
@@ -512,13 +597,13 @@ export default {
 }
 
 .post-title {
-  font-size: 15px;
-  font-weight: bold;
-  margin-top: 5px;
+  font-size: 1.2rem;
+  color: #135572;
+  margin-bottom: 10px;
 }
 
 .post-content {
-  font-size: 12px;
+  line-height: 1.6;
   color: #444;
   margin-bottom: 10px;
 }
@@ -540,23 +625,23 @@ export default {
   border-radius: 5px;
 }
 
-/* Ações de edição e exclusão no post */
 .post-actions {
-  margin-top: 10px;
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
 }
 
 .post-actions button {
-  margin-right: 10px;
-  padding: 5px 10px;
+  padding: 8px 20px;
   border: none;
-  border-radius: 4px;
-  background: #135572;
   color: #fff;
-  cursor: pointer;
-  transition: background 0.3s;
+  background-color: #135572;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .post-actions button:hover {
-  background: #0e3d53;
+  background-color: #217ba4;
 }
 </style>
