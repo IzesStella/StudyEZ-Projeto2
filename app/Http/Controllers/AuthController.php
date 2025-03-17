@@ -28,15 +28,22 @@ class AuthController extends Controller
       ]);
 
       return Inertia::location('/login');
+    } catch (\Illuminate\Validation\ValidationException $e) {
+      return response()->json(
+        [
+          'errors' => $e->errors(),
+        ],
+        422
+      );
     } catch (\Exception $e) {
       \Log::error($e->getMessage());
       return response()->json(
         [
           'errors' => [
-            'message' => $e->getMessage(),
+            'message' => ['Ocorreu um erro ao tentar registrar o usuário.'],
           ],
         ],
-        422
+        500
       );
     }
   }

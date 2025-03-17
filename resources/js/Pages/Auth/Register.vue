@@ -84,7 +84,7 @@ export default {
       this.loading = true;
       if (this.form.password !== this.form.password_confirmation) {
         this.errors = { password: ['As senhas não correspondem.'] };
-        toast.error(this.errors.password, {
+        toast.error(this.errors.password[0], {
           position: 'top-center',
           duration: 3000,
         });
@@ -102,10 +102,14 @@ export default {
 
         onError: (errors) => {
           console.log(errors);
-          toast.error(errors.message, {
-            position: 'top-center',
-            duration: 3000,
-          });
+          for (let field in errors) {
+            if (errors[field]) {
+              toast.error(errors[field], {
+                position: 'top-center',
+                duration: 3000,
+              });
+            }
+          }
           this.errors = errors;
         },
 
@@ -151,5 +155,4 @@ export default {
 .botao-enviar:hover {
   background-color: #53bbe9;
 }
-
 </style>
