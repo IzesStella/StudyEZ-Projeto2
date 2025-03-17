@@ -97,6 +97,10 @@ export default {
       this.$inertia.post('/register', this.form, {
         onSuccess: () => {
           console.log('Usuário cadastrado com sucesso!');
+          toast.success('Registro bem-sucedido!', {
+            position: 'top-center',
+            duration: 3000,
+          });
           this.$inertia.visit(route('login'));
         },
 
