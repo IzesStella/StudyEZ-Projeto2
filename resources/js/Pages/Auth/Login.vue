@@ -78,12 +78,22 @@ export default {
           // Redirecionamento pode ser definido aqui ou no controller
         },
         onError: (errors) => {
-          const errorMessage =
-            errors.message || 'Ocorreu um erro ao fazer login.';
-          toast.error(errorMessage, {
-            position: 'top-center',
-            duration: 3000,
-          });
+          console.log(errors);
+          for (let field in errors) {
+            if (Array.isArray(errors[field])) {
+              errors[field].forEach((errorMessage) => {
+                toast.error(errorMessage, {
+                  position: 'top-center',
+                  duration: 3000,
+                });
+              });
+            } else {
+              toast.error(errors[field], {
+                position: 'top-center',
+                duration: 3000,
+              });
+            }
+          }
           this.errors = errors;
         },
         onFinish: () => {
