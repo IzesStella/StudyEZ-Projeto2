@@ -9,7 +9,6 @@ use App\Http\Controllers\PostController;
 use Inertia\Inertia;
 use App\Models\Course;
 
-/* --------------------------- ROTAS PÚBLICAS --------------------------- */
 Route::get('/', function () {
   return Inertia::render('Prelogin');
 })->name('prelogin');
@@ -18,7 +17,6 @@ Route::get('/about', function () {
   return Inertia::render('About');
 })->name('about');
 
-/* ----------------------- ROTAS DE AUTENTICAÇÃO (Guest) ------------------------- */
 Route::middleware('guest')->group(function () {
   // Login
   Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name(
@@ -38,7 +36,6 @@ Route::middleware('guest')->group(function () {
   })->name('password.request');
 });
 
-/* ----------------------- ROTAS PROTEGIDAS (Auth) ------------------------ */
 Route::middleware('auth')->group(function () {
   // Logout
   Route::post('/logout', [
@@ -60,7 +57,7 @@ Route::middleware('auth')->group(function () {
     return Inertia::render('SearchScreen');
   })->name('search');
 
-  // Comunidade: rota que envia o curso com os posts e o usuário autenticado
+  // Comunidade
   Route::get('/community/{id}', function ($id) {
     $course = Course::with('posts')->findOrFail($id);
     return Inertia::render('CommunityPage', [

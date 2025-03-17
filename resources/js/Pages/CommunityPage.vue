@@ -3,9 +3,7 @@
   <SideBar />
 
   <div class="community-container">
-    <!-- Conteúdo principal -->
     <main class="main-content">
-      <!-- Header da Comunidade -->
       <header class="community-header"></header>
 
       <div class="logo-container">
@@ -19,7 +17,6 @@
           <p>{{ course.description }}</p>
         </div>
         <div class="actions">
-          <!-- Botão de Inscrever (alterado) -->
           <button
             v-if="!isEnrolled"
             class="subscribe"
@@ -29,7 +26,6 @@
             {{ loading ? 'Inscrevendo...' : 'Inscreva-se' }}
           </button>
 
-          <!-- Botão de Desinscrever (novo) -->
           <button
             v-else
             class="unsubscribe"
@@ -38,17 +34,12 @@
           >
             {{ loading ? 'Desinscrevendo...' : 'Desinscrever-se' }}
           </button>
-
-          <!-- Botão para mostrar/esconder o formulário de post -->
           <button class="post" @click="togglePostForm">+ Postar</button>
         </div>
       </div>
 
-      <!-- Modal: Overlay e Formulário -->
       <div v-if="showPostForm" class="modal-container">
-        <!-- Fundo semitransparente -->
         <div class="modal-overlay" @click="cancelPost"></div>
-        <!-- Caixa do formulário -->
         <div class="post-form">
           <h2>{{ editingPost ? 'Editar Post' : 'Novo Post' }}</h2>
           <input
@@ -72,7 +63,6 @@
         </div>
       </div>
 
-      <!-- Lista de Postagens -->
       <section class="posts">
         <article v-for="(post, index) in posts" :key="post.id" class="post">
           <div class="post-header">
@@ -87,7 +77,6 @@
           <div class="post-footer">
             <button class="comment-btn">💬 {{ post.comments }}</button>
           </div>
-          <!-- Se o post pertencer ao usuário autenticado, mostra as ações -->
           <div
             v-if="authUser && post.user_id === authUser.id"
             class="post-actions"
@@ -451,7 +440,6 @@ export default {
   gap: 8px;
 }
 
-/* Botão Inscrever (modificado) */
 .actions button.subscribe {
   background: #135572;
 }
@@ -461,7 +449,6 @@ export default {
   transform: translateY(-1px);
 }
 
-/* Novo botão Desinscrever */
 .actions button.unsubscribe {
   background: #ffe082;
   color: #2d2d2d;
@@ -472,7 +459,6 @@ export default {
   transform: translateY(-1px);
 }
 
-/* Estado desabilitado para ambos */
 .actions button:disabled {
   background: #b3b3b3 !important;
   cursor: not-allowed;
