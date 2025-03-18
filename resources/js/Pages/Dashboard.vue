@@ -8,22 +8,22 @@
       <h1>Olá! O que você deseja aprender hoje?</h1>
       <div class="aside">
         <div v-if="enrichedCourses.length > 0" class="courses-list">
-          <div 
-            class="course-card" 
-            v-for="course in enrichedCourses" 
+          <div
+            class="course-card"
+            v-for="course in enrichedCourses"
             :key="course.id"
             :style="{ backgroundColor: course.color }"
           >
             <div class="card-header">
-              <img
-                :src="course.image"
-                alt="Ícone da disciplina"
-              />
+              <img :src="course.image" alt="Ícone da disciplina" />
               <h3>{{ course.name }}</h3>
             </div>
             <p>{{ course.description }}</p>
             <div class="card-footer">
-              <button class="btn community-button" @click="goToCommunity(course.id)">
+              <button
+                class="btn community-button"
+                @click="goToCommunity(course.id)"
+              >
                 ENTRAR
               </button>
             </div>
@@ -34,7 +34,7 @@
           <p>Parece que você ainda não está inscrito em nenhuma disciplina.</p>
           <p>Explore as disciplinas disponíveis!</p>
           <button class="btn explore-button" @click="goToSearch">
-            Explorar
+            Clique aqui!
           </button>
         </div>
 
@@ -60,38 +60,38 @@ const DISCIPLINAS = [
     id: 1,
     nome: 'Lógica de Programação',
     cor: '#d9f8c4',
-    imagem: '/images/logicadeprogramacao.png'
+    imagem: '/images/logicadeprogramacao.png',
   },
   {
     id: 2,
     nome: 'Engenharia de Software',
     cor: '#c4f0f8',
-    imagem: '/images/engenharia.png'
+    imagem: '/images/engenharia.png',
   },
   {
     id: 3,
     nome: 'Banco de Dados',
     cor: '#e3d9f8',
-    imagem: '/images/bancodedados.png'
+    imagem: '/images/bancodedados.png',
   },
   {
     id: 4,
     nome: 'Desenvolvimento Web',
     cor: '#f8d9d9',
-    imagem: '/images/web.png'
+    imagem: '/images/web.png',
   },
   {
     id: 5,
     nome: 'Design',
     cor: '#fff2d4',
-    imagem: '/images/design.png'
+    imagem: '/images/design.png',
   },
   {
     id: 6,
     nome: 'Redes de Computadores',
     cor: '#f8d4e4',
-    imagem: '/images/redes.png'
-  }
+    imagem: '/images/redes.png',
+  },
 ];
 
 export default {
@@ -103,18 +103,19 @@ export default {
   },
   computed: {
     enrichedCourses() {
-      return this.courses.map(course => {
-        const disciplina = DISCIPLINAS.find(d => 
-          d.id === course.id || 
-          d.nome.toLowerCase() === course.name.toLowerCase()
+      return this.courses.map((course) => {
+        const disciplina = DISCIPLINAS.find(
+          (d) =>
+            d.id === course.id ||
+            d.nome.toLowerCase() === course.name.toLowerCase()
         );
         return {
           ...course,
           color: disciplina?.cor || '#e3d9f8',
-          image: disciplina?.imagem || '/images/default-course.png'
+          image: disciplina?.imagem || '/images/default-course.png',
         };
       });
-    }
+    },
   },
   methods: {
     goToProfile() {
@@ -207,7 +208,9 @@ h1 {
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   min-height: 210px;
   display: flex;
   flex-direction: column;
@@ -239,7 +242,18 @@ h1 {
   font-weight: bold;
   margin: 0;
   color: #000;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Open Sans',
+    'Helvetica Neue',
+    sans-serif;
 }
 
 .course-card p {
@@ -314,7 +328,7 @@ h1 {
   .aside {
     flex-direction: column;
   }
-  
+
   .planner-section {
     width: 100%;
     margin-top: 20px;
@@ -325,7 +339,7 @@ h1 {
   .courses-list {
     grid-template-columns: 1fr;
   }
-  
+
   .course-card {
     max-width: none;
   }
@@ -335,17 +349,17 @@ h1 {
   .courses-list {
     margin-left: 0;
   }
-  
+
   .center-card {
     width: auto;
     margin-left: 0;
   }
-  
+
   h1 {
     margin-left: 0;
     text-align: center;
   }
-  
+
   .planner-section {
     margin-top: 20px;
   }

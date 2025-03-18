@@ -12,7 +12,12 @@ class User extends Authenticatable
 {
   use HasApiTokens, Notifiable;
 
-  protected $fillable = ['name', 'email', 'password'];
+  protected $fillable = [
+    'name',
+    'email',
+    'password',
+    'profile_photo', // Adicione aqui
+  ];
 
   // Relacionamento com cursos (muitos para muitos)
   public function courses(): BelongsToMany

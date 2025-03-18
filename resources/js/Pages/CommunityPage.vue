@@ -38,6 +38,7 @@
         </div>
       </div>
 
+      <!-- Formulário de Post (Novo/Editar) -->
       <div v-if="showPostForm" class="modal-container">
         <div class="modal-overlay" @click="cancelPost"></div>
         <div class="post-form">
@@ -63,6 +64,7 @@
         </div>
       </div>
 
+      <!-- Lista de Posts -->
       <section class="posts">
         <article v-for="(post, index) in posts" :key="post.id" class="post">
           <div class="post-header">
@@ -109,32 +111,7 @@ export default {
   },
   data() {
     return {
-      posts: this.course.posts
-        ? this.course.posts
-        : [
-            {
-              id: 1,
-              user_id: 1,
-              userAvatar: '/images/user1.png',
-              username: 'user1',
-              title: 'Como estudar programação?',
-              content:
-                'Como vocês estudam? Ainda mais uma linguagem diferente? Digo, não só copiar o código, mas realmente aprender sobre?',
-              timestamp: 'há 7h',
-              comments: 0,
-            },
-            {
-              id: 2,
-              user_id: 2,
-              userAvatar: '/images/user2.png',
-              username: 'user2',
-              title: 'Botão não redireciona e baixa arquivo',
-              content:
-                'Criamos uma página de HTML para cadastro, mas há um botão que baixa o arquivo ao invés de redirecionar. Como corrigir?',
-              timestamp: 'há 1 dia',
-              comments: 0,
-            },
-          ],
+      posts: [], // Agora inicializa vazio
       loading: false,
       isEnrolled: false,
       showPostForm: false,
@@ -145,6 +122,12 @@ export default {
       editingPost: null,
     };
   },
+  async mounted() {
+    // 1) Verifica se o usuário está inscrito
+    this.checkEnrollment();
+    // 2) Busca a lista de posts do backend
+    await this.fetchPosts();
+  },
   methods: {
     async checkEnrollment() {
       try {
@@ -153,6 +136,33 @@ export default {
         this.isEnrolled = data.enrolled;
       } catch (error) {
         console.error('Erro ao verificar inscrição:', error);
+      }
+    },
+
+    // *** NOVO MÉTODO *** - busca posts do backend
+    async fetchPosts() {
+      try {
+        const response = await fetch(`/community/${this.course.id}/posts`);
+        if (!response.ok) {
+          throw new Error('Erro ao carregar posts.');
+        }
+        const data = await response.json();
+
+        // data aqui é um array de posts que vem do PostController@index
+        // Ajuste conforme seu JSON
+        this.posts = data.map((post) => ({
+          id: post.id,
+          user_id: post.user_id,
+          userAvatar: post.user_profile_photo || '/images/default-avatar.png',
+          username: post.user_name,
+          title: post.title,
+          content: post.content,
+          // Usando created_at ou outro campo para timestamp
+          timestamp: post.created_at,
+          comments: 0, // se não tiver comments, inicia com 0
+        }));
+      } catch (error) {
+        console.error('Erro ao carregar posts:', error);
       }
     },
 
@@ -270,23 +280,29 @@ export default {
           },
           body: JSON.stringify(this.newPost),
         });
+
         if (!response.ok) {
           const data = await response.json();
           this.showNotification('error', data.error || 'Erro ao criar post.');
           return;
         }
+
         const data = await response.json();
-        this.posts.push({
+        // LOG PARA DEBUG
+        console.log('POST CRIADO =>', data);
+
+        // Continue depois do console.log
+        this.posts.unshift({
           id: data.id,
           user_id: data.user_id,
-          userAvatar:
-            this.authUser.profile_photo || '/images/default-avatar.png',
+          userAvatar: data.user_profile_photo || '/images/default-avatar.png',
           username: data.user_name,
           title: data.title,
           content: data.content,
           timestamp: 'Agora',
           comments: 0,
         });
+
         this.showNotification('success', 'Post criado com sucesso!');
         this.cancelPost();
       } catch (error) {
@@ -326,6 +342,9 @@ export default {
         const data = await response.json();
         this.posts[this.editingPost.index].title = data.title;
         this.posts[this.editingPost.index].content = data.content;
+        // Se quiser atualizar o user_name ou avatar, inclua aqui
+        // this.posts[this.editingPost.index].username = data.user_name;
+
         this.showNotification('success', 'Post atualizado com sucesso!');
         this.cancelPost();
       } catch (error) {
@@ -359,9 +378,6 @@ export default {
         this.showNotification('error', 'Erro ao excluir post.');
       }
     },
-  },
-  mounted() {
-    this.checkEnrollment();
   },
 };
 </script>

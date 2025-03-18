@@ -106,4 +106,8 @@ Route::middleware('auth')->group(function () {
     PostController::class,
     'destroy',
   ])->name('posts.destroy');
+  Route::get('/community/{course}/posts', [
+    PostController::class,
+    'index',
+  ])->name('posts.index');
 });

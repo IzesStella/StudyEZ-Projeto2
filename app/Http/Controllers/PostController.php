@@ -22,7 +22,9 @@ class PostController extends Controller
       $post->content = $request->content;
       $post->user_id = $user->id;
       $post->user_name = $user->name;
-      $post->user_profile_photo = $user->profile_photo;
+      $post->user_profile_photo =
+        '/images/profile_photos/' . $user->profile_photo;
+
       $post->course_id = $course->id;
       $post->save();
 
@@ -84,5 +86,29 @@ class PostController extends Controller
       \Log::error('Erro ao excluir post: ' . $e->getMessage());
       return response()->json(['error' => 'Erro ao excluir post.'], 500);
     }
+  }
+
+  // PostController.php
+
+  public function index(\App\Models\Course $course)
+  {
+    // Carrega os posts desse curso
+    // Aqui estamos assumindo que user_name e user_profile_photo já estão salvos em cada post
+    // Mas se você quiser pegar diretamente da tabela users, podemos adaptar também.
+
+    $posts = $course->posts->map(function ($post) {
+      return [
+        'id' => $post->id,
+        'title' => $post->title,
+        'content' => $post->content,
+        'user_id' => $post->user_id,
+        'user_name' => $post->user_name, // caso esteja salvo no BD
+        'user_profile_photo' => $post->user_profile_photo,
+        'course_id' => $post->course_id,
+        'created_at' => $post->created_at->diffForHumans(), // ou format() se preferir
+      ];
+    });
+
+    return response()->json($posts);
   }
 }

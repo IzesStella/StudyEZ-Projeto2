@@ -31,38 +31,32 @@
           <h2>NOSSAS COMUNIDADES</h2>
           <div class="comunidades-grid">
             <div
-              class="comunidade-card logica de peogramação"
-              style="background-color: #dabee9"
+              class="comunidade-card logica de programação"
+              style="background-color: #d9f8c4"
             >
               <div class="comunidade-header">
                 <img src="/images/logicadeprogramacao.png" class="perfil-img" />
                 <h3>Lógica de Programação</h3>
               </div>
-              <p>
-                Aprenda a resolver problemas com lógica e algoritmos, dominando
-                estruturas de controle e otimização de código.
-              </p>
-              <button class="btn join-button">UNIR-SE</button>
+              <p>Aprenda a resolver problemas com código e algoritmos.</p>
+              <button class="btn join-button">ENTRAR</button>
             </div>
 
             <div
-              class="comunidade-card desenvolvimento-web"
-              style="background-color: #b0d4f2"
+              class="comunidade-card engenharia-software"
+              style="background-color: #c4f0f8"
             >
               <div class="comunidade-header">
-                <img src="/images/web.png" class="perfil-img" />
-                <h3>Desenvolvimento Web</h3>
+                <img src="/images/engenharia.png" class="perfil-img" />
+                <h3>Engenharia de Software</h3>
               </div>
-              <p>
-                Crie sites e aplicações dinâmicas com HTML, CSS, JavaScript e
-                explore frameworks como Vue.js e Laravel.
-              </p>
-              <button class="btn join-button">UNIR-SE</button>
+              <p>Estude metodologias para criar software de qualidade.</p>
+              <button class="btn join-button">ENTRAR</button>
             </div>
 
             <div
               class="comunidade-card banco-dados"
-              style="background-color: #dabee9"
+              style="background-color: #e3d9f8"
             >
               <div class="comunidade-header">
                 <img src="/images/bancodedados.png" class="perfil-img" />
@@ -72,52 +66,49 @@
                 Aprenda a modelar, gerenciar e otimizar bancos de dados
                 relacionais e não relacionais com SQL.
               </p>
-              <button class="btn join-button">UNIR-SE</button>
+              <button class="btn join-button">ENTRAR</button>
             </div>
 
             <div
-              class="comunidade-card inteligencia-artificial"
-              style="background-color: #e5e17f"
+              class="comunidade-card desenvolvimento-web"
+              style="background-color: #f8d9d9"
+            >
+              <div class="comunidade-header">
+                <img src="/images/web.png" class="perfil-img" />
+                <h3>Desenvolvimento Web</h3>
+              </div>
+              <p>Crie sites e apps com HTML, CSS, JavaScript e frameworks.</p>
+              <button class="btn join-button">ENTRAR</button>
+            </div>
+
+            <div
+              class="comunidade-card design"
+              style="background-color: #fff2d4"
             >
               <div class="comunidade-header">
                 <img src="/images/design.png" class="perfil-img" />
-                <h3>Design de Interface</h3>
+                <h3>Design</h3>
               </div>
               <p>
                 Desenvolva interfaces intuitivas e responsivas, focando na
                 usabilidade e na experiência do usuário.
               </p>
-              <button class="btn join-button">UNIR-SE</button>
+              <button class="btn join-button">ENTRAR</button>
             </div>
 
             <div
               class="comunidade-card redes-computadores"
-              style="background-color: #f7bde0"
+              style="background-color: #f8d4e4"
             >
               <div class="comunidade-header">
                 <img src="/images/redes.png" class="perfil-img" />
                 <h3>Redes de Computadores</h3>
               </div>
               <p>
-                Compreenda o funcionamento de redes, protocolos e a importância
-                da segurança da informação.
+                Entenda como funcionam as redes, protocolos e da segurança da
+                informação.
               </p>
-              <button class="btn join-button">UNIR-SE</button>
-            </div>
-
-            <div
-              class="comunidade-card engenharia-software"
-              style="background-color: #ffc384"
-            >
-              <div class="comunidade-header">
-                <img src="/images/engenharia.png" class="perfil-img" />
-                <h3>Engenharia de Software</h3>
-              </div>
-              <p>
-                Estude práticas e metodologias de desenvolvimento ágil e
-                qualidade de software, como Agile e DevOps.
-              </p>
-              <button class="btn join-button">UNIR-SE</button>
+              <button class="btn join-button">ENTRAR</button>
             </div>
           </div>
         </section>
@@ -362,7 +353,7 @@ p {
   padding: 5px 15px;
 }
 .join-button:hover {
-  background-color: #b3d8ff;
+  background-color: #d1d5db;
 }
 
 .faq {
@@ -415,7 +406,7 @@ p {
 }
 
 .footer-btn:hover {
-  background-color: #91c4ff;
+  transform: translateY(-2px);
 }
 @media (max-width: 1024px) {
   .sidebar {
