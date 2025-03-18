@@ -10,100 +10,102 @@ defineProps({
 <template>
   <Head title="Profile" />
   <MainLayout>
-    <!-- Cabeçalho do Perfil -->
-    <div class="profile-header">
-      <div class="profile-photo-and-name">
-        <img
+    <div class="container">
+      <!-- Cabeçalho do Perfil -->
+      <div class="profile-header">
+        <div class="profile-photo-and-name">
+          <img
           :src="profilePhoto || '/images/default-profile.png'"
           alt="Foto de perfil"
           class="profile-photo"
-        />
-        <span class="profile-name">{{ $page.props.auth.user.name }}</span>
+          />
+          <span class="profile-name">{{ $page.props.auth.user.name }}</span>
+        </div>
+        
+        <Dropdown align="right" width="48">
+          <template #trigger>
+            <span class="dropdown-trigger">
+              <button type="button" class="profile-options-button">
+                Opções de Perfil
+              </button>
+            </span>
+          </template>
+          
+          <template #content>
+            <button class="dropdown-item" @click="showEditProfile">
+              Editar Perfil
+            </button>
+            <DropdownLink class="dropdown-item" :href="route('logout')" method="post" as="button">
+              Log Out
+            </DropdownLink>
+          </template>
+        </Dropdown>
       </div>
-
-      <Dropdown align="right" width="48">
-        <template #trigger>
-          <span class="dropdown-trigger">
-            <button type="button" class="profile-options-button">
-              Opções de Perfil
-            </button>
-          </span>
-        </template>
-
-        <template #content>
-          <button class="dropdown-item" @click="showEditProfile">
-            Editar Perfil
-          </button>
-          <DropdownLink :href="route('logout')" method="post" as="button">
-            Log Out
-          </DropdownLink>
-        </template>
-      </Dropdown>
-    </div>
-
-    <!-- Modal de Edição do Perfil -->
-    <div class="profile-edit-modal-container">
-      <div v-if="isEditProfileVisible" class="modal-backdrop">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3 class="modal-title">Editar Perfil</h3>
-            <button class="close-button" @click="closeEditProfile">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-          <!-- Seção de Upload da Foto -->
-          <div class="modal-section">
-            <ProfilePhotoUploader ref="profilePhotoUploader" />
-          </div>
-          <!-- Formulário de atualização do nome e email -->
-          <div class="modal-section form-section">
-            <UpdateProfileInformationForm
+      
+      <!-- Modal de Edição do Perfil -->
+      <div class="profile-edit-modal-container">
+        <div v-if="isEditProfileVisible" class="modal-backdrop">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title">Editar Perfil</h3>
+              <button class="close-button" @click="closeEditProfile">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <!-- Seção de Upload da Foto -->
+            <div class="modal-section">
+              <ProfilePhotoUploader ref="profilePhotoUploader" />
+            </div>
+            <!-- Formulário de atualização do nome e email -->
+            <div class="modal-section form-section">
+              <UpdateProfileInformationForm
               ref="updateProfileInformationForm"
               :must-verify-email="mustVerifyEmail"
               :status="status"
-            />
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Abas (Postagens e Comentários) -->
-    <div class="tabs-container">
-      <div class="tabs-header">
-        <button
+      
+      <!-- Abas (Postagens e Comentários) -->
+      <div class="tabs-container">
+        <div class="tabs-header">
+          <button
           :class="['tabs-button', activeTab === 'posts' ? 'tabs-button-active' : '']"
           @click="showPosts"
-        >
+          >
           Postagens
         </button>
         <button
-          :class="['tabs-button', activeTab === 'comments' ? 'tabs-button-active' : '']"
-          @click="showComments"
+        :class="['tabs-button', activeTab === 'comments' ? 'tabs-button-active' : '']"
+        @click="showComments"
         >
-          Comentarios
-        </button>
-      </div>
-      <div class="tabs-content">
-        <!-- Conteúdo Comentários -->
-        <div v-if="isCommentsVisible" class="tab-pane">
-          <div class="tab-item">
-            <img :src="profilePhoto" alt="Foto de perfil" class="tab-item-photo" />
-            <span>{{ $page.props.auth.user.name }}</span>
-            <p>Comentarios</p>
-          </div>
+        Comentarios
+      </button>
+    </div>
+    <div class="tabs-content">
+      <!-- Conteúdo Comentários -->
+      <div v-if="isCommentsVisible" class="tab-pane">
+        <div class="tab-item">
+          <img :src="profilePhoto" alt="Foto de perfil" class="tab-item-photo" />
+          <span>{{ $page.props.auth.user.name }}</span>
+          <p>Comentarios</p>
         </div>
-        <!-- Conteúdo Postagens -->
-        <div v-if="isPostsVisible" class="tab-pane">
-          <div class="tab-item">
-            <img :src="profilePhoto || '/images/default-profile.png'" alt="Foto de perfil" class="tab-item-photo" />
-            <span>{{ $page.props.auth.user.name }}</span>
-            <p>Posts</p>
-          </div>
+      </div>
+      <!-- Conteúdo Postagens -->
+      <div v-if="isPostsVisible" class="tab-pane">
+        <div class="tab-item">
+          <img :src="profilePhoto || '/images/default-profile.png'" alt="Foto de perfil" class="tab-item-photo" />
+          <span>{{ $page.props.auth.user.name }}</span>
+          <p>Posts</p>
         </div>
       </div>
     </div>
+  </div>
+</div>
   </MainLayout>
 </template>
 
@@ -159,21 +161,22 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
 /* ----- Cabeçalho do Perfil ----- */
 .profile-header {
-  position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 48%;
+  justify-content: space-between; /* Ou 'center', se preferir */
+  margin-top: 4rem;
 }
 
 .profile-photo-and-name {
-  height: 230px;
-  width: 230px;
-  margin-top: 4rem;
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 
@@ -188,6 +191,9 @@ export default {
   font-size: 2rem;
   font-weight: bold;
   margin-left: 0.5rem;
+  white-space: normal;
+  word-break: break-word;
+  max-width: 700px; 
 }
 
 /* ----- Botão "Opções de Perfil" ----- */
@@ -220,13 +226,13 @@ export default {
   font-size: 0.875rem;
   padding: 0.5rem 1rem;
   color: #ffffff;
-  background: #3b3b3b;
+  background: #135572;
   border: none;
   cursor: pointer;
 }
 
 .dropdown-item:hover {
-  background: #000000;
+  background: #93c5fd;
 }
 
 /* ----- Modal (Editar Perfil) ----- */
@@ -254,7 +260,7 @@ export default {
   max-width: 50%;
   max-height: 90%;
   overflow: auto;
-  border-radius: 20px;
+  border-radius: 5px;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
   position: relative;
 }
@@ -294,18 +300,10 @@ export default {
 }
 
 /* ----- Abas (Postagens / Comentários) ----- */
-.tabs-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: 1.25rem;
-}
-
 .tabs-header {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  margin-left: 8rem;
 }
 
 .tabs-button {
@@ -325,11 +323,9 @@ export default {
 }
 
 .tabs-content {
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;   
 }
 
 .tab-pane {

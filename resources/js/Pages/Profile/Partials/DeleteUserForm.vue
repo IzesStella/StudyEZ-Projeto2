@@ -117,7 +117,7 @@ Digite sua senha para confirmar que deseja excluir permanentemente sua conta.
   padding: 10px 20px; 
   background-color: #ef4444; 
   color: #ffffff;
-  border-radius: 15px; 
+  border-radius: 5px; 
   border: none;
   cursor: pointer;
   font-weight: bold;

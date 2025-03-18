@@ -128,7 +128,7 @@ const form = useForm({
     border: 1px solid #135572;
     padding: 12px;
     font-size: 16px;
-    border-radius: 10px;
+    border-radius: 5px;
     width: 100%;
 }
 
@@ -137,7 +137,7 @@ const form = useForm({
     color: white;
     padding: 10px 20px;
     font-size: 15px;
-    border-radius: 25px;
+    border-radius: 5px;
     width: 85px;
 }
 </style>

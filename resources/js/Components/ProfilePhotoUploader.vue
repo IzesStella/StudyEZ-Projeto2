@@ -77,7 +77,7 @@ onMounted(async () => {
   padding: 8px 10px;
   background-color: #135572; 
   color: white;
-  border-radius: 15px;
+  border-radius: 5px;
   cursor: pointer;
   margin-right: 20px;
 }
@@ -88,7 +88,7 @@ onMounted(async () => {
   padding: 8px 10px;
   background-color: #ef4444;
   color: #ffffff;
-  border-radius: 15px;
+  border-radius: 5px;
   cursor: pointer;
 }
 </style>

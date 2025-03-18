@@ -130,12 +130,12 @@ const updatePassword = () => {
 } 
 
 .input-group input {
-    background-color: #ffffff; /* Cor de fundo clara */
-    color: #333; /* Cor do texto */
-    border: 1px solid #135572; /* Cor da borda */
+    background-color: #ffffff; 
+    color: #333; 
+    border: 1px solid #135572; 
     padding: 12px;
     font-size: 16px;
-    border-radius: 10px;
+    border-radius: 0px;
     width: 100%;
 }
 
@@ -145,7 +145,7 @@ const updatePassword = () => {
     color: white;
     padding: 10px 20px;
     font-size: 15px;
-    border-radius: 25px;
+    border-radius: 5px;
     width: 85px;
 }
 
